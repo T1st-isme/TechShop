@@ -3,7 +3,9 @@ import { PORT, mongoUrl } from "./config.js";
 import mongoose from "mongoose";
 import { Person } from "./models/peopleModel.js";
 import cors from "cors";
+import userRoutes from "./routes/userRoutes.js";
 
+//express app
 const app = express();
 
 //Middleware
@@ -11,6 +13,9 @@ app.use(express.json());
 
 //CORS
 app.use(cors());
+
+//Routes
+app.use("/user", userRoutes);
 
 app.get("/", (req, res) => {
   console.log(res);
