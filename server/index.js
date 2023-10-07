@@ -3,7 +3,7 @@ import { PORT, mongoUrl } from "./config.js";
 import mongoose from "mongoose";
 import { Person } from "./models/peopleModel.js";
 import cors from "cors";
-import userRoutes from "./routes/userRoutes.js";
+import userRoute from "./routes/userRoute.js";
 
 //express app
 const app = express();
@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 //Routes
-app.use("/user", userRoutes);
+app.use("/user", userRoute);
 
 app.get("/", (req, res) => {
   console.log(res);

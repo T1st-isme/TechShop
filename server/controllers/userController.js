@@ -1,14 +1,19 @@
+import { userModels } from "../models/userModels.js";
+
 //login user
 const userLogin = async (req, res, next) => {
-  req.json({ message: "User login" });
+  res.json({ message: "User singin" });
 };
 
 //signup user
 const userSignup = async (req, res, next) => {
-  req.json({ message: "User signup" });
+  const { email, password } = req.body;
+  try {
+    const user1 = await userModels.signUp(email, password);
+    res.status(200).json({ email, user1 });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
-module.exports = {
-  userLogin,
-  userSignup,
-};
+export { userLogin, userSignup };
