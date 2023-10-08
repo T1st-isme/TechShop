@@ -36,6 +36,7 @@
     "babel-plugin-module-resolver": "^5.0.0",
     "eslint": "^8.51.0",
     "nodemon": "^3.0.1",
+    "slug": "^8.2.3",
     "validator": "^13.11.0"
   }
 }
