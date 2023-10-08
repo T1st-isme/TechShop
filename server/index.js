@@ -1,31 +1,29 @@
+import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
-import { PORT, mongoUrl } from "./config.js";
 import mongoose from "mongoose";
-import { Person } from "./models/peopleModel.js";
 import cors from "cors";
+import { Person } from "./models/peopleModel.js";
 import userRoute from "./routes/userRoute.js";
 
-//express app
+// Express app
 const app = express();
 
-//Middleware
+// Middleware
 app.use(express.json());
 
-//CORS
+// CORS
 app.use(cors());
 
-//Routes
+// Routes
 app.use("/user", userRoute);
 
+// GET Request
 app.get("/", (req, res) => {
-  console.log(res);
-  return res.status(234).send("Hello World");
+  return res.status(200).send("Hello World");
 });
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
-
+// POST Request
 app.post("/persons", async (req, res) => {
   try {
     // Check if request body is valid
@@ -46,6 +44,7 @@ app.post("/persons", async (req, res) => {
   }
 });
 
+// GET Request
 app.get("/persons", async (req, res) => {
   try {
     const persons = await Person.find({});
@@ -56,11 +55,17 @@ app.get("/persons", async (req, res) => {
   }
 });
 
+// Connect to MongoDB
 mongoose
-  .connect(mongoUrl)
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("Connected to MongoDB");
   })
   .catch((err) => {
     console.log("Failed to connect to MongoDB", err);
   });
+
+// Start server
+app.listen(process.env.PORT, () => {
+  console.log(`Server listening on port ${process.env.PORT}`);
+});

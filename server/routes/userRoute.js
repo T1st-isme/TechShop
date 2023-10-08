@@ -5,7 +5,7 @@ const router = express.Router();
 import { userLogin, userSignup } from "../controllers/userController.js";
 
 //login route
-router.post("/login", userLogin);
+router.post("/signin", userLogin);
 
 //signup route
 router.post("/signup", userSignup);
