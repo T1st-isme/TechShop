@@ -1,13 +1,18 @@
 import dotenv from "dotenv";
-dotenv.config();
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import { Person } from "./models/peopleModel.js";
 import userRoute from "./routes/userRoute.js";
+import dbConnect from "./dbConnect.js";
 
 // Express app
 const app = express();
+
+//configure dotenv
+dotenv.config();
+
+// Connect to MongoDB
+dbConnect();
 
 // Middleware
 app.use(express.json());
@@ -54,16 +59,6 @@ app.get("/persons", async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 });
-
-// Connect to MongoDB
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => {
-    console.log("Failed to connect to MongoDB", err);
-  });
 
 // Start server
 app.listen(process.env.PORT, () => {

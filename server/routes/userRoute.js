@@ -1,13 +1,19 @@
 import express from "express";
 const router = express.Router();
 
-//importing the functions from the controller
-import { userLogin, userSignup } from "../controllers/userController.js";
+import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { userLogin, userSignup, testToken } from "../controllers/userController.js";
+
+//auth middleware
+router.use(authMiddleware);
 
 //login route
 router.post("/signin", userLogin);
 
 //signup route
 router.post("/signup", userSignup);
+
+//get user
+router.get("/me", testToken);
 
 export default router;
