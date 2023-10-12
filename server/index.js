@@ -4,6 +4,8 @@ import cors from "cors";
 import { Person } from "./models/peopleModel.js";
 import userRoute from "./routes/userRoute.js";
 import dbConnect from "./dbConnect.js";
+import cookieParser from "cookie-parser";
+import errorHandler from "./middlewares/errorHandler.js";
 
 // Express app
 const app = express();
@@ -16,6 +18,8 @@ dbConnect();
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));
 
 // CORS
 app.use(cors());
@@ -59,6 +63,8 @@ app.get("/persons", async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 });
+
+app.use(errorHandler);
 
 // Start server
 app.listen(process.env.PORT, () => {
