@@ -1,4 +1,4 @@
-import NavBar from "../NavBar.jsx";
+import NavBar from "../NavBar/NavBar.jsx";
 import Header from "../Header/Header.jsx";
 import Footer from "../Footer/Footer.jsx";
 

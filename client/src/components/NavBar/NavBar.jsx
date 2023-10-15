@@ -17,6 +17,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
+import "./NavBar.css";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -175,7 +176,7 @@ export default function PrimarySearchAppBar() {
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            MUI
+            TechShop
           </Typography>
           <Search>
             <SearchIconWrapper>
