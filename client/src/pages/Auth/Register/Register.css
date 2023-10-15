@@ -1,0 +1,99 @@
+// Tạo tài khoản 
+color: 'black';
+fontSize: 40;
+fontFamily: 'Roboto';
+fontWeight: '700';
+lineHeight: 50.40;
+wordWrap: 'break-word'
+--- // Số điện thoại 
+color: '#5D5B5D';
+fontSize: 20;
+fontFamily: 'Poppins';
+fontWeight: '400';
+lineHeight: 25.20;
+wordWrap: 'break-word'
+--- // Email 
+color: '#5D5B5D';
+fontSize: 20;
+fontFamily: 'Poppins';
+fontWeight: '400';
+lineHeight: 25.20;
+wordWrap: 'break-word'
+--- // Mật khẩu 
+color: '#5D5B5D';
+fontSize: 20;
+fontFamily: 'Poppins';
+fontWeight: '400';
+lineHeight: 25.20;
+wordWrap: 'break-word'
+--- // Nhập lại mật khẩu 
+color: '#5D5B5D';
+fontSize: 20;
+fontFamily: 'Poppins';
+fontWeight: '400';
+lineHeight: 25.20;
+wordWrap: 'break-word'
+--- // Tạo tài khoản 
+color: '#F5F8FE';
+fontSize: 30;
+fontFamily: 'Roboto';
+fontWeight: '500';
+lineHeight: 37.80;
+wordWrap: 'break-word'
+--- // Bạn đã có tài khoản?  
+color: '#707070';
+fontSize: 20;
+fontFamily: 'Poppins';
+fontWeight: '500';
+wordWrap: 'break-word'
+--- // Đăng nhập ngay 
+color: '#016170';
+fontSize: 20;
+fontFamily: 'Poppins';
+fontWeight: '500';
+wordWrap: 'break-word'
+--- // Họ và tên 
+color: '#5D5B5D';
+fontSize: 20;
+fontFamily: 'Poppins';
+fontWeight: '400';
+lineHeight: 25.20;
+wordWrap: 'break-word'
+--- // Phone Accessories
+color: '#F5F8FE';
+fontSize: 30;
+fontFamily: 'Public Sans';
+fontWeight: '700';
+wordWrap: 'break-word'
+--- // Lựa chọn 
+color: '#F5F8FE';
+fontSize: 20;
+fontFamily: 'PT Serif Caption';
+fontWeight: '400';
+lineHeight: 25.20;
+letterSpacing: 6.20;
+wordWrap: 'break-word'
+--- // đơn giản, 
+color: '#F5F8FE';
+fontSize: 20;
+fontFamily: 'PT Serif Caption';
+fontWeight: '400';
+lineHeight: 25.20;
+letterSpacing: 6.20;
+wordWrap: 'break-word'
+--- //  tuyệt vời  
+color: '#F5F8FE';
+fontSize: 20;
+fontFamily: 'PT Serif Caption';
+fontWeight: '400';
+lineHeight: 25.20;
+letterSpacing: 6.20;
+wordWrap: 'break-word'
+--- // sản phẩm
+color: '#F5F8FE';
+fontSize: 20;
+fontFamily: 'PT Serif Caption';
+fontWeight: '400';
+lineHeight: 25.20;
+letterSpacing: 6.20;
+wordWrap: 'break-word'
