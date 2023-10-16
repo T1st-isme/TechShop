@@ -27,7 +27,8 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.2",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/cli": "^7.22.10",

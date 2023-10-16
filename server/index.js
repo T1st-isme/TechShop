@@ -67,6 +67,7 @@ app.get("/persons", async (req, res) => {
 app.use(errorHandler);
 
 // Start server
+const PORT = process.env.PORT || 8080;
 app.listen(process.env.PORT, () => {
-  console.log(`Server listening on port ${process.env.PORT}`);
+  console.log(`Server listening on port ${PORT}`);
 });
