@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -11,8 +13,10 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { toast } from "react-toastify";
+import axios from "axios";
 
-function MadeWithLove() {
+const MadeWithLove = () => {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Built with love by the "}
@@ -22,7 +26,7 @@ function MadeWithLove() {
       {" team."}
     </Typography>
   );
-}
+};
 
 const useStyles = makeStyles((theme) => ({
   "@global": {
@@ -49,9 +53,31 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
-  const classes = useStyles();
+const port = "http://localhost:8080/";
 
+const SignUp = () => {
+  const classes = useStyles();
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const res = await axios.post(port + "user/signup", {
+      firstname,
+      lastname,
+      email,
+      password,
+    });
+    if (res && res.data.success) {
+      toast.success(res.data && res.data.message);
+      navigate("/login");
+    } else {
+      console.log(res.data.message);
+      toast.error("Đăng ký thất bại!!!");
+    }
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -62,13 +88,15 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
                 autoComplete="fname"
                 name="firstName"
                 variant="outlined"
+                value={firstname}
+                onChange={(e) => setFirstName(e.target.value)}
                 required
                 fullWidth
                 id="firstName"
@@ -83,6 +111,8 @@ export default function SignUp() {
                 fullWidth
                 id="lastName"
                 label="Last Name"
+                value={lastname}
+                onChange={(e) => setLastName(e.target.value)}
                 name="lastName"
                 autoComplete="lname"
               />
@@ -95,6 +125,8 @@ export default function SignUp() {
                 id="email"
                 label="Email Address"
                 name="email"
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
                 autoComplete="email"
               />
             </Grid>
@@ -107,6 +139,8 @@ export default function SignUp() {
                 label="Password"
                 type="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
               />
             </Grid>
@@ -128,7 +162,7 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/" variant="body2">
+              <Link href="/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>
@@ -140,4 +174,6 @@ export default function SignUp() {
       </Box>
     </Container>
   );
-}
+};
+
+export default SignUp;

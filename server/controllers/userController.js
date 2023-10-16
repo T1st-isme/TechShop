@@ -48,57 +48,65 @@ const userLogin = asyncHandler(async (req, res) => {
 });
 
 //signup user
-const userSignup = asyncHandler(async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+const userSignup = async (req, res) => {
+  try {
+    const { firstname, lastname, email, password } = req.body;
 
-  if (!firstname || !lastname || !email || !password) {
-    res.status(400);
-    throw new Error("Vui lòng nhập đầy đủ thông tin!!!");
-  }
+    if (!firstname || !lastname || !email || !password) {
+      return res.send({ message: "Vui lòng điền đầy đủ thông tin!!!" });
+    }
 
-  if (!validator.isEmail(email)) {
-    res.status(400);
-    throw new Error("Email không hợp lệ!!!");
-  }
+    if (!validator.isEmail(email)) {
+      return res.send({ message: "Email không hợp lệ!!!" });
+    }
 
-  if (!validator.isLength(password, { min: 6 })) {
-    res.status(400);
-    throw new Error("Mật khẩu phải có ít nhất 6 ký tự!!!");
-  }
+    if (!validator.isLength(password, { min: 6 })) {
+      res.send({ message: "Mật khẩu phải có ít nhất 6 ký tự!!!" });
+    }
 
-  const exist = await userModels.findOne({ email });
-  if (exist) {
-    throw new Error("Email đã tồn tại!!!");
-  }
+    //check user
+    const exisitingUser = await userModels.findOne({ email });
+    //exisiting user
+    if (exisitingUser) {
+      return res.status(200).send({
+        success: false,
+        message: "Email đã tồn tại!!!",
+      });
+    }
 
-  const user = await userModels.create({
-    firstname,
-    lastname,
-    email,
-    password,
-  });
-
-  const token = createToken(user._id);
-  if (user) {
-    const { lastname, email, password } = user;
-    res.cookie("token", token, {
-      path: "/",
-      httpOnly: true,
-      expires: new Date(Date.now() + 1000 * 86400),
-    });
-    res.status(201).json({
+    const user = await userModels.create({
       firstname,
       lastname,
       email,
       password,
-      token,
     });
-  } else {
-    res.status(400);
-    throw new Error("Đăng ký thất bại!!!");
+
+    const token = createToken(user._id);
+    if (user) {
+      const { lastname, email, password } = user;
+      res.cookie("token", token, {
+        path: "/",
+        httpOnly: true,
+        expires: new Date(Date.now() + 1000 * 86400),
+      });
+      res.status(201).send({
+        firstname,
+        lastname,
+        email,
+        password,
+        token,
+        success: true,
+        message: "Đăng ký thành công!!!",
+      });
+    }
+  } catch (err) {
+    res.status(500).send({
+      success: false,
+      message: "Đăng ký thất bại!!!",
+      err,
+    });
   }
-  res.send("Đăng ký thành công!!!");
-});
+};
 
 //testing
 const testToken = async (req, res) => {
