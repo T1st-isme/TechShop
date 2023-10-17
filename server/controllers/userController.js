@@ -2,7 +2,6 @@ import { userModels } from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
-import asyncHandler from "express-async-handler";
 
 //create token from user id
 const createToken = (_id) => {
@@ -12,46 +11,59 @@ const createToken = (_id) => {
 };
 
 //signin user
-const userLogin = asyncHandler(async (req, res) => {
+const userLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
     //Validateion
     if (!email || !password) {
-      throw new Error("Email và Mật khẩu không được trống!!!");
+      return res.status(404).send({
+        success: false,
+        message: "Email hoặc Mật khẩu không đúng!!!",
+      });
     }
     if (!validator.isEmail(email)) {
-      throw new Error("Email không hợp lệ!!!");
+      return res.send({ message: "Email không hợp lệ!!!" });
     }
     const user = await userModels.findOne({ email });
     if (!user) {
-      throw new Error("Email không đúng!!!");
+      return res.status(404).send({
+        success: false,
+        message: "Email chưa được đăng ký!!!",
+      });
     }
     const isMatch = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
-      throw new Error("Mật khẩu không đúng!!!");
+      return res.status(200).send({
+        success: false,
+        message: "Mật khẩu không đúng!!!",
+      });
     }
     const token = createToken(user._id);
+
     res.status(200).send({
+      success: true,
       message: "Đăng nhập thành công!!!",
       user: {
         firstname: user.firstname,
         lastname: user.lastname,
         email: user.email,
+        role: user.role,
       },
       token,
     });
   } catch (error) {
-    res
-      .status(400)
-      .send({ error: error.message, message: "Đăng nhập thất bại!!!" });
+    res.status(500).send({
+      success: false,
+      message: "Đăng nhập thất bại!!!",
+      error: error.message,
+    });
   }
-});
+};
 
 //signup user
 const userSignup = async (req, res) => {
+  const { firstname, lastname, email, password } = req.body;
   try {
-    const { firstname, lastname, email, password } = req.body;
-
     if (!firstname || !lastname || !email || !password) {
       return res.send({ message: "Vui lòng điền đầy đủ thông tin!!!" });
     }
