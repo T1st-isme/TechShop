@@ -19,8 +19,8 @@ import { port } from "../../../Util.js";
 const MadeWithLove = () => (
   <Typography variant="body2" color="textSecondary" align="center">
     {"Built with love by the "}
-    <Link color="inherit" href="https://material-ui.com/">
-      Material-UI
+    <Link color="inherit" href="https://techshop.com/">
+      TechShop
     </Link>
     {" team."}
   </Typography>
@@ -74,7 +74,7 @@ const SignIn = () => {
       toast.success(res.data && res.data.message);
     } else {
       console.log(res.data.message);
-      toast.error(res.data.message);
+      toast.error(res.data && res.data.message);
     }
   };
   return (

@@ -16,7 +16,7 @@ const userLogin = async (req, res) => {
   try {
     //Validateion
     if (!email || !password) {
-      return res.status(404).send({
+      return res.send({
         success: false,
         message: "Email hoặc Mật khẩu không đúng!!!",
       });
@@ -26,7 +26,7 @@ const userLogin = async (req, res) => {
     }
     const user = await userModels.findOne({ email });
     if (!user) {
-      return res.status(404).send({
+      return res.send({
         success: false,
         message: "Email chưa được đăng ký!!!",
       });
