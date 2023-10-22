@@ -1,25 +1,43 @@
 import jwt from "jsonwebtoken";
 import { userModels } from "../models/userModel.js";
 
-export async function authMiddleware(req, res, next) {
-  // Get token from header
-  const token = req.header("Authorization");
-
-  // Check if token is present
-  if (!token) {
-    return res.status(401).json({ msg: "authorization require" });
+export const requiredSignin = async (req, res, next) => {
+  const { authorization } = req.headers;
+  if (!authorization) {
+    return res.send({
+      success: false,
+      message: "Bạn chưa đăng nhập!!!",
+    });
   }
-
-  try {
-    // Verify token
-    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Attach user ID to request object
-    req.userId = await userModels.findOne({ _id }).select("_id");
-
-    // Call next middleware
+  const token = authorization.replace("Bearer ", "");
+  jwt.verify(token, process.env.JWT_SECRET, async (err, payload) => {
+    if (err) {
+      return res.send({
+        success: false,
+        message: "Bạn chưa đăng nhập!!!",
+      });
+    }
+    const { _id } = payload;
+    const user = await userModels.findById(_id);
+    req.user = user;
     next();
-  } catch (err) {
-    res.status(401).json({ msg: "Token is not valid" });
+  });
+};
+
+//admin access
+export const isAdmin = async (req, res, next) => {
+  try {
+    const user = await userModels.findById(req.user._id);
+    if (user.role != "admin") {
+      return res.send({
+        success: false,
+        message: "Bạn không có quyền truy cập!!!",
+      });
+    }
+    next();
+  } catch (error) {
+    res.status(500).send({
+      error: error.message,
+    });
   }
-}
+};

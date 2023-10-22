@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { Person } from "./models/peopleModel.js";
 import userRoute from "./routes/userRoute.js";
+import categoryRoute from "./routes/categoryRoute.js";
 import dbConnect from "./dbConnect.js";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errorHandler.js";
@@ -26,6 +27,7 @@ app.use(cors());
 
 // Routes
 app.use("/user", userRoute);
+app.use("/category", categoryRoute);
 
 // GET Request
 app.get("/", (req, res) => {

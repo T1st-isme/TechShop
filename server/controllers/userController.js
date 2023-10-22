@@ -122,23 +122,7 @@ const userSignup = async (req, res) => {
 
 //testing
 const testToken = async (req, res) => {
-  const token = req.header("Authorization");
-  const { email } = req.body;
-
-  try {
-    const user = await userModels.findOne({ email }).select("");
-    res.status(200).send({
-      message: "Đăng nhập thành công!!!",
-      user: {
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-      },
-      token,
-    });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
+  res.send({ success: true, message: "Testing....." });
 };
 
 export { userLogin, userSignup, testToken };

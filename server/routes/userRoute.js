@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import { authMiddleware } from "../middlewares/authMiddleware.js";
+import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
 import {
   userLogin,
   userSignup,
@@ -18,6 +18,6 @@ router.post("/signin", userLogin);
 router.post("/signup", userSignup);
 
 //get user
-router.get("/me", testToken);
+router.get("/test", requiredSignin, isAdmin, testToken);
 
 export default router;
