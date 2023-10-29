@@ -13,6 +13,9 @@ const categorySchema = new Schema(
       type: String,
       lowercase: true,
     },
+    parentId: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

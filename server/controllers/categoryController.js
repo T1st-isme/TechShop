@@ -1,39 +1,60 @@
 // Import the Category model
+import asyncHandler from "express-async-handler";
 import Category from "../models/categoryModel.js";
 import slugify from "slugify";
 
-// Define the controller functions
-const getAllCategories = async (req, res) => {
-  try {
-    const categories = await Category.find();
-    res.status(200).send({
-      success: true,
-      message: "All Categories List",
-      categories,
-    });
-  } catch (error) {
-    res.status(500).send({
-      success: false,
-      error,
-      message: "Lỗi danh mục!!!",
+function categoriesList(categories, parentId = null) {
+  const categoryList = [];
+  let category;
+  if (parentId == null) {
+    category = categories.filter((cat) => cat.parentId == undefined);
+  } else {
+    category = categories.filter((cat) => cat.parentId == parentId);
+  }
+
+  for (let cate of category) {
+    categoryList.push({
+      _id: cate._id,
+      name: cate.name,
+      slug: cate.slug,
+      parentId: cate.parentId,
+      children: categoriesList(categories, cate._id),
     });
   }
-};
+
+  return categoryList;
+}
+
+// Define the controller functions
+const getAllCategories = asyncHandler(async (req, res) => {
+  const categories = await Category.find({}).exec();
+  if (categories) {
+    const categoryList = categoriesList(categories);
+    res.status(200).json({ categoryList });
+  } else {
+    return res.status(400).json({ error: "Không tìm thấy!!!" });
+  }
+});
+
 //Create a new category
 const createCategory = async (req, res) => {
   const { name } = req.body;
+  const cateObj = { name: name, slug: slugify(name) };
   try {
-    if (!name) {
+    if (!cateObj.name) {
       res.status(401).json({ message: "Tên danh mục không được trống!!!" });
     }
-    const existingCategory = await Category.findOne({ name });
+    const existingCategory = await Category.findOne({ name: cateObj.name });
     if (existingCategory) {
       res.status(201).send({
         success: true,
         message: "Tên danh mục đã tồn tại!!!",
       });
     }
-    const newCategory = await Category.create({ name, slug: slugify(name) });
+    if (req.body.parentId) {
+      cateObj.parentId = req.body.parentId;
+    }
+    const newCategory = await Category.create(cateObj);
     res.status(201).json({
       success: true,
       message: "Tạo danh mục thành công!!!",
@@ -52,7 +73,7 @@ const getCategoryByName = async (req, res) => {
     const category = await Category.findOne({ slug: req.params.slug });
     res.status(200).send({
       success: true,
-      message: "Get SIngle Category SUccessfully",
+      message: "Successfully",
       category,
     });
   } catch (error) {

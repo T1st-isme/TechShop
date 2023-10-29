@@ -1,14 +1,7 @@
 import { userModels } from "../models/userModel.js";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
-
-//create token from user id
-const createToken = (_id) => {
-  return jwt.sign({ _id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
-};
+import { createToken, genRefreshToken } from "../middlewares/authMiddleware.js";
 
 //signin user
 const userLogin = async (req, res) => {
@@ -38,18 +31,25 @@ const userLogin = async (req, res) => {
         message: "Mật khẩu không đúng!!!",
       });
     }
-    const token = createToken(user._id);
-
+    // Tách role ra khỏi response
+    const { role, refreshToken, ...userData } = user.toObject();
+    const token = createToken(user._id, user.role);
+    const rToken = genRefreshToken(user._id);
+    await userModels.findByIdAndUpdate(
+      user._id,
+      { refreshToken: rToken },
+      { new: true }
+    );
+    res.cookie("refreshToken", rToken, {
+      httpOnly: true,
+      expires: new Date(Date.now() + 1000 * 86400 * 3),
+    });
     res.status(200).send({
       success: true,
       message: "Đăng nhập thành công!!!",
-      user: {
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: user.email,
-        role: user.role,
-      },
+      user: userData,
       token,
+      refreshToken: rToken,
     });
   } catch (error) {
     res.status(500).send({
@@ -86,20 +86,14 @@ const userSignup = async (req, res) => {
       });
     }
 
-    const user = await userModels.create({
-      firstname,
-      lastname,
-      email,
-      password,
-    });
+    const user = await userModels.create(req.body);
 
     const token = createToken(user._id);
     if (user) {
       const { lastname, email, password } = user;
       res.cookie("token", token, {
-        path: "/",
         httpOnly: true,
-        expires: new Date(Date.now() + 1000 * 86400),
+        expires: new Date(Date.now() + 1 * 86400 * 1000),
       });
       res.status(201).send({
         firstname,
@@ -120,9 +114,37 @@ const userSignup = async (req, res) => {
   }
 };
 
+const userLogout = async (req, res) => {
+  const cookie = req.cookies;
+  try {
+    if (!cookie?.refreshToken) throw new Error("Không có refresh token!!!");
+    // Xóa refresh token ở db
+    await userModels.findOneAndUpdate(
+      { refreshToken: cookie.refreshToken },
+      { refreshToken: "" },
+      { new: true }
+    );
+    // Xóa refresh token ở cookie trình duyệt
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Đăng xuất thành công!!!",
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Lỗi Server!!!",
+      error: error.message,
+    });
+  }
+};
+
 //testing
 const testToken = async (req, res) => {
   res.send({ success: true, message: "Testing....." });
 };
 
-export { userLogin, userSignup, testToken };
+export { userLogin, userSignup, userLogout, testToken };

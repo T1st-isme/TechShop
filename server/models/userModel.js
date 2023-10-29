@@ -38,11 +38,18 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    cart: {
+      type: Array,
+      default: [],
+    },
     role: {
       type: String,
       required: true,
       enum: ["admin", "user"],
       default: "user",
+    },
+    refreshToken: {
+      type: String,
     },
   },
   { timestamps: true }

@@ -41,3 +41,17 @@ export const isAdmin = async (req, res, next) => {
     });
   }
 };
+
+//create token from user id
+export const createToken = (_id, role) => {
+  return jwt.sign({ _id, role }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
+};
+
+//refresh token
+export const genRefreshToken = (_id) => {
+  return jwt.sign({ _id }, process.env.JWT_SECRET, {
+    expiresIn: "3d",
+  });
+};
