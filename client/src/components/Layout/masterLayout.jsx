@@ -2,6 +2,7 @@ import Header from "../Header/Header.jsx";
 import Footer from "../Footer/Footer.jsx";
 import { Toaster } from "react-hot-toast";
 import { Helmet } from "react-helmet";
+import Sidebar from "../Sidebar/Sidebar.jsx";
 
 const masterLayout = (props) => {
   return (
@@ -13,7 +14,7 @@ const masterLayout = (props) => {
         <meta name="author" content={props.author} />
         <title>{props.title}</title>
       </Helmet>
-      <Header />
+      <Sidebar />
       <Toaster />
       <main style={{ minHeight: "70vh" }}>{props.children}</main>
       <Footer />

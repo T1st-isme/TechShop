@@ -1,4 +1,5 @@
 import * as React from "react";
+import './Header.css';
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -17,6 +18,9 @@ import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
+import HomeIcon from '@mui/icons-material/Home';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -81,8 +85,26 @@ export default function PrimarySearchAppBar() {
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
-
+  const[isOpen,setIsOpen] = React.useState(false);
+  const toggle = () => setIsOpen (!isOpen);
   const menuId = "primary-search-account-menu";
+  const menuItem = [
+    {
+        path:"/dashboard",
+        name:"Dashboard",
+        icon:<HomeIcon/>
+    },
+    {
+        path:"/likes",
+        name:"Likes",
+        icon:<FavoriteIcon/>
+    },
+    {
+        path:"/shoppingcart",
+        name:"ShoppingCart",
+        icon:<ShoppingCartIcon/>
+    },
+  ]
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -160,15 +182,7 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
+          <MenuIcon onClick={toggle}/>
           <Typography
             variant="h6"
             noWrap
