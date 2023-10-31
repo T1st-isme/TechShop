@@ -8,7 +8,7 @@ import {
   uploadImage,
 } from "../controllers/productController.js";
 import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
-import uploader from "../config/cloudinary.config.js";
+import uploadCloud from "../config/cloudinary.config.js";
 
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.get("/", getProducts);
 router.get("/:slug", getProductByName);
 
 // CREATE a product
-router.post("/", createProduct);
+router.post("/", uploadCloud, createProduct);
 
 // UPDATE a product
 router.put("/:id", updateProduct);
@@ -28,5 +28,5 @@ router.put("/:id", updateProduct);
 router.delete("/:id", deleteProduct);
 
 //Upload images
-router.post("/upload/:id", uploader.single("image"), uploadImage);
+router.post("/upload/:id", uploadCloud, uploadImage);
 export default router;

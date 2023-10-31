@@ -7,7 +7,7 @@ import productRoute from "./routes/productRoute.js";
 import dbConnect from "./dbConnect.js";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errorHandler.js";
-
+import bodyParser from "body-parser";
 // Express app
 const app = express();
 
@@ -26,7 +26,8 @@ app.use(
     credentials: true,
   })
 );
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
 app.use("/user", userRoute);
 app.use("/category", categoryRoute);

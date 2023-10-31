@@ -1,6 +1,8 @@
 import slugify from "slugify";
 import Product from "../models/productModel.js";
 import asyncHandler from "express-async-handler";
+import uploader from "../config/cloudinary.config.js";
+import { v2 as cloudinary } from "cloudinary";
 
 // @desc    Fetch all products
 // @route   GET /api/products
@@ -107,7 +109,11 @@ const createProduct = asyncHandler(async (req, res) => {
   }
   if (req.body && req.body.name) {
     req.body.slug = slugify(req.body.name);
+    req.body.image = req.file;
   }
+
+  // Upload image to Cloudinary
+
   const newProduct = await Product.create(req.body);
 
   res.status(201).json({
