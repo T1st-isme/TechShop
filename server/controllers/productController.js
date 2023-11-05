@@ -98,6 +98,18 @@ const getProductByName = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Fetch single product
+// @route   GET /api/products/:id
+// @access  Public
+const getProductByID = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  return res.status(200).json({
+    success: product ? true : false,
+    data: product ? product : "Không tìm thấy sản phẩm!!!",
+  });
+});
+
 // @desc    Create a product
 // @route   POST /api/products
 // @access  Private/Admin
@@ -169,4 +181,5 @@ export {
   updateProduct,
   deleteProduct,
   uploadImage,
+  getProductByID,
 };

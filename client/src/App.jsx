@@ -6,6 +6,7 @@ import Register from "./pages/Auth/Register/Register";
 import Login from "./pages/Auth/Login/Login";
 import PageNoteFound from "./pages/PageNoteFound";
 import "react-toastify/dist/ReactToastify.css";
+import ProductDetail from "./pages/ProductDetail.jsx";
 
 function App() {
   return (
@@ -14,7 +15,8 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<HomePage />} /> */}
           <Route path="/" element={<Page1 />} />
-          <Route path="/Pricing" element={<Page2 />} />
+          <Route path="/Products" element={<Page2 />} />
+          <Route path="/Products/:slug" element={<ProductDetail />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/Login" element={<Login />} />
           <Route path="*" element={<PageNoteFound />} />

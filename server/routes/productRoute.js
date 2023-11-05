@@ -6,6 +6,7 @@ import {
   getProducts,
   updateProduct,
   uploadImage,
+  getProductByID,
 } from "../controllers/productController.js";
 import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
 import uploadCloud from "../config/cloudinary.config.js";
@@ -17,6 +18,9 @@ router.get("/", getProducts);
 
 // GET a single product
 router.get("/:slug", getProductByName);
+
+// GET a single product
+// router.get("/:id", getProductByID);
 
 // CREATE a product
 router.post("/", uploadCloud, createProduct);

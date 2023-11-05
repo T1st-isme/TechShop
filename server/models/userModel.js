@@ -38,10 +38,12 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    cart: {
-      type: Array,
-      default: [],
-    },
+    cart: [
+      {
+        prroduct: { type: Schema.Types.ObjectId, ref: "Product" },
+        quantity: { type: Number, default: 1 },
+      },
+    ],
     role: {
       type: String,
       required: true,
