@@ -121,13 +121,14 @@ const createProduct = asyncHandler(async (req, res) => {
   }
   if (req.body && req.body.name) {
     req.body.slug = slugify(req.body.name);
-    req.body.image = req.file;
+    req.body.proImg = req.files.map((file) => {
+      return { img: file.path };
+    });
   }
+  console.log(req.body.proImg);
 
   // Upload image to Cloudinary
-
   const newProduct = await Product.create(req.body);
-
   res.status(201).json({
     success: newProduct ? true : false,
     data: newProduct ? newProduct : "Thêm sản phẩm không thành công!!!",
@@ -140,6 +141,9 @@ const createProduct = asyncHandler(async (req, res) => {
 const updateProduct = asyncHandler(async (req, res) => {
   if (req.body && req.body.name) {
     req.body.slug = slugify(req.body.name);
+    req.body.proImg = req.files.map((file) => {
+      return { img: file.path };
+    });
   }
   const updateProduct = await Product.findByIdAndUpdate(
     req.params.id,

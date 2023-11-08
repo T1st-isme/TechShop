@@ -4,6 +4,7 @@ import cors from "cors";
 import userRoute from "./routes/userRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import productRoute from "./routes/productRoute.js";
+import cartRoute from "./routes/cartRoute.js";
 import dbConnect from "./dbConnect.js";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errorHandler.js";
@@ -32,6 +33,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/user", userRoute);
 app.use("/category", categoryRoute);
 app.use("/product", productRoute);
+app.use("/cart", cartRoute);
 
 app.use(errorHandler);
 

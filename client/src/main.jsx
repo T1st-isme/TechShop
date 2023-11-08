@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/authContext.jsx";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import store from "../redux/store.js";
+import store from "./redux/store";
 
 // import productReducer, {
 //   productFetch,

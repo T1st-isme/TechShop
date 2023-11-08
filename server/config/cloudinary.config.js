@@ -19,6 +19,6 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const uploadCloud = multer({ storage }).single("image");
+const uploadCloud = multer({ storage }).array("proImg");
 
 export default uploadCloud;

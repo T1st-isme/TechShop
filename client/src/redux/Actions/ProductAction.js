@@ -7,7 +7,7 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
 } from "../Constants/ProductConstant";
-import { port } from "../../src/Util";
+import { port } from "../../Util";
 
 const listProduct = () => async (dispatch) => {
   try {

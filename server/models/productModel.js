@@ -18,14 +18,7 @@ const productSchema = new Schema(
       type: String,
       default: "",
     },
-    image: {
-      type: Object,
-    },
-    images: [
-      {
-        type: String,
-      },
-    ],
+    proImg: [{ img: { type: String } }],
     brand: {
       type: String,
       default: "",
