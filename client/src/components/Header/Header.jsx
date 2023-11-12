@@ -289,12 +289,12 @@
 
 import {
   Bars3Icon,
-  MagnifyingGlassIcon,
   ShoppingBagIcon,
   XMarkIcon as XMarkIconOutline,
 } from "@heroicons/react/24/outline";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
+import Search from "../Layout/Search";
 
 const navigation = {
   categories: [
@@ -432,7 +432,21 @@ function classNames(...classes) {
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  // const [keyword, setKeyword] = useState("");
+  // const navigate = useNavigate();
 
+  // useEffect(() => {
+  //   if (keyword) {
+  //     navigate(`/search/${keyword}`);
+  //   } else {
+  //     navigate("/");
+  //   }
+  // }, [navigate, keyword]);
+
+  // const searchHandler = (e) => {
+  //   e.preventDefault();
+  //   setKeyword(e.target.search.value.trim());
+  // };
   return (
     <div
       className=" top-0 z-100 bg-white"
@@ -763,62 +777,86 @@ const Header = () => {
                   ))}
                 </div>
               </Popover.Group>
+              {/* Search */}
+              <div className="ml-6 flex items-center">
+                {/* <form
+                  method="post"
+                  id="search_form-one"
+                  onSubmit={searchHandler}
+                  style={{ width: "25rem" }}
+                >
+                  <div className="flex flex-1 justify-center px-2 lg:ml-6 lg:justify-end">
+                    <div className="w-full max-w-lg lg:max-w-xs">
+                      <label htmlFor="search" className="sr-only">
+                        Search
+                      </label>
+                      <div className="relative">
+                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                          <MagnifyingGlassIcon
+                            className="h-5 w-5 text-gray-400"
+                            aria-hidden="true"
+                          />
+                        </div>
+                        <input
+                          id="search"
+                          name="search"
+                          className="block w-full rounded-md border border-transparent bg-gray-700 py-2 pl-10 pr-3 leading-5 text-gray-300 placeholder-gray-400 focus:border-white focus:bg-white focus:text-gray-900 focus:outline-none focus:ring-white sm:text-sm"
+                          type="search"
+                          placeholder="Tìm kiếm sản phẩm của bạn..."
+                          onChange={(e) => setKeyword(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </form> */}
+                <Search />
+                <div className="ml-auto flex items-center">
+                  <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                    <a
+                      href="/login"
+                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                      Sign in
+                    </a>
+                    <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
+                    <a
+                      href="/signup"
+                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                      Create account
+                    </a>
+                  </div>
 
-              <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <a
-                    href="/login"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Sign in
-                  </a>
-                  <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                  <a
-                    href="/signup"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Create account
-                  </a>
-                </div>
+                  <div className="hidden lg:ml-8 lg:flex">
+                    <a
+                      href="#"
+                      className="flex items-center text-gray-700 hover:text-gray-800"
+                    >
+                      <img
+                        src="https://tailwindui.com/img/flags/flag-canada.svg"
+                        alt=""
+                        className="block h-auto w-5 flex-shrink-0"
+                      />
+                      <span className="ml-3 block text-sm font-medium">
+                        CAD
+                      </span>
+                      <span className="sr-only">, change currency</span>
+                    </a>
+                  </div>
 
-                <div className="hidden lg:ml-8 lg:flex">
-                  <a
-                    href="#"
-                    className="flex items-center text-gray-700 hover:text-gray-800"
-                  >
-                    <img
-                      src="https://tailwindui.com/img/flags/flag-canada.svg"
-                      alt=""
-                      className="block h-auto w-5 flex-shrink-0"
-                    />
-                    <span className="ml-3 block text-sm font-medium">CAD</span>
-                    <span className="sr-only">, change currency</span>
-                  </a>
-                </div>
-
-                {/* Search */}
-                <div className="flex lg:ml-6">
-                  <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Search</span>
-                    <MagnifyingGlassIcon
-                      className="h-6 w-6"
-                      aria-hidden="true"
-                    />
-                  </a>
-                </div>
-
-                {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 flex items-center p-2">
-                    <ShoppingBagIcon
-                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                      aria-hidden="true"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
-                    </span>
-                    <span className="sr-only">items in cart, view bag</span>
-                  </a>
+                  {/* Cart */}
+                  <div className="ml-4 flow-root lg:ml-6">
+                    <a href="#" className="group -m-2 flex items-center p-2">
+                      <ShoppingBagIcon
+                        className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
+                        aria-hidden="true"
+                      />
+                      <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                        0
+                      </span>
+                      <span className="sr-only">items in cart, view bag</span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

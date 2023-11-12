@@ -32,7 +32,7 @@ const productSchema = new Schema(
       ref: "Category",
       required: true,
     },
-    quantity: {
+    stock: {
       type: Number,
       required: true,
       default: 0,

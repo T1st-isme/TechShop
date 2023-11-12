@@ -193,7 +193,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+const ShoppingCart = () => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -600,4 +600,6 @@ export default function Example() {
       </main>
     </div>
   );
-}
+};
+
+export default ShoppingCart;

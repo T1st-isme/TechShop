@@ -5,6 +5,7 @@ import userRoute from "./routes/userRoute.js";
 import categoryRoute from "./routes/categoryRoute.js";
 import productRoute from "./routes/productRoute.js";
 import cartRoute from "./routes/cartRoute.js";
+import orderRoute from "./routes/orderRoute.js";
 import dbConnect from "./dbConnect.js";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errorHandler.js";
@@ -34,11 +35,12 @@ app.use("/user", userRoute);
 app.use("/category", categoryRoute);
 app.use("/product", productRoute);
 app.use("/cart", cartRoute);
+app.use("/order", orderRoute);
 
 app.use(errorHandler);
 
 // Start server
 const PORT = process.env.PORT || 8080;
-app.listen(process.env.PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });

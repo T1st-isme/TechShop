@@ -9,34 +9,57 @@ import {
 } from "../Constants/ProductConstant";
 import { port } from "../../Util";
 
-const listProduct = () => async (dispatch) => {
-  try {
-    dispatch({ type: PRODUCT_LIST_REQUEST });
-    const { data } = await axios.get(port + "/product");
-    dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-  } catch (error) {
-    dispatch({
-      type: PRODUCT_LIST_FAIL,
-      payload:
-        error.response && error.response.data.msg
-          ? error.response.data.msg
-          : error.msg,
-    });
-  }
-};
+const listProduct =
+  (keyword = "", currentPage = 1, price, sort) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: PRODUCT_LIST_REQUEST });
+
+      let link = `/product?page=${currentPage}`;
+      if (keyword) {
+        link = `/product?keyword=${keyword}&page=${currentPage}`;
+      }
+      if (price) {
+        link += `&price=${price}`;
+      }
+      if (sort === "price") {
+        link += "&sort=price";
+      }
+
+      const { data } = await axios.get(port + link);
+
+      dispatch({
+        type: PRODUCT_LIST_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: PRODUCT_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 const detailProduct = (slug) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
+
     const { data } = await axios.get(port + `/product/${slug}`);
-    dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
+
+    dispatch({
+      type: PRODUCT_DETAILS_SUCCESS,
+      payload: data,
+    });
   } catch (error) {
     dispatch({
       type: PRODUCT_DETAILS_FAIL,
       payload:
-        error.response && error.response.data.msg
-          ? error.response.data.msg
-          : error.msg,
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
     });
   }
 };

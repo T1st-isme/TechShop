@@ -94,7 +94,7 @@ export const getCartItems = asyncHandler(async (req, res) => {
         name: item.product.name,
         img: item.product.proImg[0]?.img || "",
         price: item.product.price,
-        qty: item.quantity,
+        quantity: item.quantity,
       };
     }
     return items;

@@ -9,18 +9,12 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { listProduct } from "../redux/Actions/ProductAction";
+import { listProduct } from "../../redux/Actions/ProductAction";
 import MoonLoader from "react-spinners/MoonLoader";
-import { useNavigate } from "react-router-dom";
-import Header from "../components/Header/Header";
+import { useNavigate, useParams } from "react-router-dom";
+import Pagination from "react-js-pagination";
+import { BeakerIcon } from "@heroicons/react/24/solid";
 
-const sortOptions = [
-  { name: "Most Popular", href: "#", current: true },
-  { name: "Best Rating", href: "#", current: false },
-  { name: "Newest", href: "#", current: false },
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
-];
 const subCategories = [
   { name: "Totes", href: "#" },
   { name: "Backpacks", href: "#" },
@@ -66,19 +60,37 @@ const filters = [
   },
 ];
 
-const classNames = (...classes) => {
-  return classes.filter(Boolean).join(" ");
-};
-
 const ProductList = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { keyword } = useParams();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [price, setPrice] = useState(0);
+  const [sort, setSort] = useState("");
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products } = productList;
+  const {
+    loading,
+    error,
+    products,
+    productsCount,
+    resPerPage,
+    filteredProductsCount,
+  } = productList;
+
   useEffect(() => {
-    dispatch(listProduct());
-  }, [dispatch]);
+    dispatch(listProduct(keyword, currentPage, price, sort));
+  }, [dispatch, keyword, currentPage, price, sort]);
+
+  function setCurrentPageNo(pageNumber) {
+    setCurrentPage(pageNumber);
+  }
+
+  let count = productsCount;
+  if (keyword) {
+    count = filteredProductsCount;
+  }
+
   return (
     <div className=" bg-white">
       {/* Mobile filter dialog */}
@@ -86,7 +98,7 @@ const ProductList = () => {
         <Dialog
           as="div"
           className="relative z-40 lg:hidden"
-          onClose={setMobileFiltersOpen}
+          onClose={() => setMobileFiltersOpen(false)}
         >
           <Transition.Child
             as={Fragment}
@@ -229,24 +241,92 @@ const ProductList = () => {
               >
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1">
-                    {sortOptions.map((option) => (
-                      <Menu.Item key={option.name}>
-                        {({ active }) => (
-                          <a
-                            href={option.href}
-                            className={classNames(
-                              option.current
-                                ? "font-medium text-gray-900"
-                                : "text-gray-500",
-                              active ? "bg-gray-100" : "",
-                              "block px-4 py-2 text-sm"
-                            )}
-                          >
-                            {option.name}
-                          </a>
-                        )}
-                      </Menu.Item>
-                    ))}
+                    <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none">
+                      <div className="px-1 py-1 ">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => {
+                                setSort("price");
+                              }}
+                              className={`${
+                                active
+                                  ? "bg-violet-500 text-white"
+                                  : "text-gray-900"
+                              } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                            >
+                              {active ? (
+                                <BeakerIcon
+                                  className="mr-2 h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <BeakerIcon
+                                  className="mr-2 h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              )}
+                              Price low to high
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </div>
+                      <div className="px-1 py-1">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => {
+                                setSort("-price");
+                              }}
+                              className={`${
+                                active
+                                  ? "bg-violet-500 text-white"
+                                  : "text-gray-900"
+                              } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                            >
+                              {active ? (
+                                <BeakerIcon
+                                  className="mr-2 h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <BeakerIcon
+                                  className="mr-2 h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              )}
+                              Price high to low
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </div>
+                      {/* <div className="px-1 py-1">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={`${
+                                active
+                                  ? "bg-violet-500 text-white"
+                                  : "text-gray-900"
+                              } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                            >
+                              {active ? (
+                                <BeakerIcon
+                                  className="mr-2 h-5 w-5 text-violet-400"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <BeakerIcon
+                                  className="mr-2 h-5 w-5 text-violet-400"
+                                  aria-hidden="true"
+                                />
+                              )}
+                              Delete
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </div> */}
+                    </Menu.Items>
                   </div>
                 </Menu.Items>
               </Transition>
@@ -367,50 +447,65 @@ const ProductList = () => {
                     ) : error ? (
                       <h1>{error}</h1>
                     ) : (
-                      <>
-                        {products.map((product) => (
-                          <div
-                            key={product.id}
-                            className="group relative"
-                            onClick={() => {
-                              navigate(`/Products/${product.slug}`);
-                            }}
-                          >
-                            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                              <img
-                                src={product.proImg[0]?.img}
-                                alt={product.imageAlt}
-                                className="h-full w-full object-cover object-center lg:h-150 lg:w-150"
-                              />
-                            </div>
-                            <div className="mt-4 flex justify-between">
-                              <div>
-                                <h3 className="text-sm text-gray-700">
-                                  <a href={product.href}>
-                                    <span
-                                      aria-hidden="true"
-                                      className="absolute inset-0"
-                                    />
-                                    {product.name}
-                                  </a>
-                                </h3>
-                                <p className="mt-1 text-sm text-gray-500">
-                                  {product.color}
-                                </p>
-                              </div>
-                              <p className="text-sm font-medium text-gray-900">
-                                {product.price}
+                      products.map((product) => (
+                        <div
+                          key={product.id}
+                          className="group relative"
+                          onClick={() => {
+                            navigate(`/Products/${product.slug}`);
+                          }}
+                        >
+                          <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                            <img
+                              src={product.proImg[0]?.img}
+                              alt={product.imageAlt}
+                              className="h-full w-full object-cover object-center lg:h-150 lg:w-150"
+                            />
+                          </div>
+                          <div className="mt-4 flex justify-between">
+                            <div>
+                              <h3 className="text-sm text-gray-700">
+                                <a href={product.href}>
+                                  <span
+                                    aria-hidden="true"
+                                    className="absolute inset-0"
+                                  />
+                                  {product.name}
+                                </a>
+                              </h3>
+                              <p className="mt-1 text-sm text-gray-500">
+                                {product.color}
                               </p>
                             </div>
+                            <p className="text-sm font-medium text-gray-900">
+                              {product.price}
+                            </p>
                           </div>
-                        ))}
-                      </>
+                        </div>
+                      ))
                     )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          {resPerPage <= count && (
+            <div className="d-flex justify-content-center mt-5">
+              <Pagination
+                activePage={currentPage}
+                itemsCountPerPage={resPerPage}
+                totalItemsCount={productsCount}
+                onChange={setCurrentPageNo}
+                nextPageText={">>"}
+                prevPageText={currentPage > 1 ? "<<" : null}
+                firstPageText={"First"}
+                lastPageText={"Last"}
+                itemClass="page-item"
+                linkClass="page-link"
+                activeLinkClass="bg-f96822"
+              />
+            </div>
+          )}
         </section>
       </main>
     </div>

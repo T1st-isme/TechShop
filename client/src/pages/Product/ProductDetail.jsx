@@ -4,7 +4,7 @@ import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { detailProduct } from "../redux/Actions/ProductAction";
+import { detailProduct } from "../../redux/Actions/ProductAction";
 import MoonLoader from "react-spinners/MoonLoader";
 
 const product = {

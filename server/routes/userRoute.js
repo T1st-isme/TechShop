@@ -5,7 +5,6 @@ import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
 import {
   userLogin,
   userSignup,
-  testToken,
   userLogout,
 } from "../controllers/userController.js";
 
@@ -20,8 +19,5 @@ router.post("/signup", userSignup);
 
 //logout route
 router.get("/logout", userLogout);
-
-//get user
-router.get("/test", requiredSignin, isAdmin, testToken);
 
 export default router;

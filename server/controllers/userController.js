@@ -17,6 +17,7 @@ const userLogin = async (req, res) => {
     if (!validator.isEmail(email)) {
       return res.send({ message: "Email không hợp lệ!!!" });
     }
+
     const user = await userModels.findOne({ email });
     if (!user) {
       return res.send({
