@@ -7,17 +7,21 @@ import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
 } from "../Constants/ProductConstant";
-import { port } from "../../Util";
+import { port } from "../../Utils/Util";
 
 const listProduct =
-  (keyword = "", currentPage = 1, price, sort) =>
+  (keyword = "", currentPage = 1, price, category, sort) =>
   async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
+      //filter, sort, pagenation
       let link = `/product?page=${currentPage}`;
       if (keyword) {
         link = `/product?keyword=${keyword}&page=${currentPage}`;
+      }
+      if (category) {
+        link += `&category=${category}`;
       }
       if (price) {
         link += `&price=${price}`;

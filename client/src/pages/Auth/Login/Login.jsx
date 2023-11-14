@@ -175,8 +175,35 @@ import {
   MDBIcon,
   MDBInput,
 } from "mdb-react-ui-kit";
+import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
+import { clearErrors, login } from "../../../redux/Actions/UserAction";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignIn = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { isAuthenticated, loading, error } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+  }, [dispatch, isAuthenticated, error, navigate]);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(login(email, password));
+  };
   return (
     <MDBContainer className="my-5" style={{ maxWidth: "1357px" }}>
       <MDBCard>
@@ -213,6 +240,10 @@ const SignIn = () => {
                 id="formControlLg"
                 type="email"
                 size="lg"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoFocus
               />
               <MDBInput
                 wrapperClass="mb-4"
@@ -220,9 +251,20 @@ const SignIn = () => {
                 id="formControlLg"
                 type="password"
                 size="lg"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={6}
+                autoFocus
               />
 
-              <MDBBtn className="mb-4 px-5" color="dark" size="lg">
+              <MDBBtn
+                className="mb-4 px-5"
+                color="dark"
+                size="lg"
+                type="submit"
+                onClick={submitHandler}
+              >
                 Đăng nhập
               </MDBBtn>
               <a className="small text-muted" href="#!">

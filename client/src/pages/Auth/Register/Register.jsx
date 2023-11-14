@@ -197,8 +197,38 @@ import {
   MDBCol,
   MDBCheckbox,
 } from "mdb-react-ui-kit";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, signup } from "../../../redux/Actions/UserAction";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { error, isAuthenticated } = useSelector((state) => state.auth);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(signup({ firstname, lastname, email, password }));
+  };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [dispatch, isAuthenticated, error, navigate]);
+
   return (
     <MDBContainer fluid className="my-5">
       <MDBRow className="g-0 align-items-center">
@@ -218,6 +248,8 @@ const SignUp = () => {
                   <MDBInput
                     wrapperClass="mb-4"
                     label="First name"
+                    value={firstname}
+                    onChange={(e) => setFirstName(e.target.value)}
                     id="form1"
                     type="text"
                   />
@@ -227,6 +259,8 @@ const SignUp = () => {
                   <MDBInput
                     wrapperClass="mb-4"
                     label="Last name"
+                    value={lastname}
+                    onChange={(e) => setLastName(e.target.value)}
                     id="form2"
                     type="text"
                   />
@@ -236,12 +270,16 @@ const SignUp = () => {
               <MDBInput
                 wrapperClass="mb-4"
                 label="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 id="form3"
                 type="email"
               />
               <MDBInput
                 wrapperClass="mb-4"
                 label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 id="form4"
                 type="password"
               />
@@ -255,8 +293,8 @@ const SignUp = () => {
                 />
               </div>
 
-              <MDBBtn className="w-100 mb-4" size="md">
-                sign up
+              <MDBBtn onClick={handleSubmit} className="w-100 mb-4" size="md">
+                Đăng ký
               </MDBBtn>
 
               <div className="text-center">

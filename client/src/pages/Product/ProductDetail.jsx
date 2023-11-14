@@ -6,7 +6,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { detailProduct } from "../../redux/Actions/ProductAction";
 import MoonLoader from "react-spinners/MoonLoader";
-
+import { addToCart } from "../../redux/Actions/CartAction";
+import { useNavigate } from "react-router-dom";
 const product = {
   name: "Zip Tote Basket",
   price: "$140",
@@ -126,6 +127,7 @@ const ProductDetail = () => {
   const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const { slug } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, products } = productDetails;
 
@@ -206,7 +208,8 @@ const ProductDetail = () => {
                   <div className="mt-3">
                     <h2 className="sr-only">Product information</h2>
                     <p className="text-3xl tracking-tight text-gray-900">
-                      {products.price}
+                      {products.price}{" "}
+                      <span className="font-medium text-gray-500">VNĐ</span>
                     </p>
                   </div>
 
@@ -287,12 +290,17 @@ const ProductDetail = () => {
                     </div>
 
                     <div className="mt-10 flex">
-                      <button
-                        type="submit"
+                      <div
                         className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                        onClick={() => {
+                          const { _id, name, price } = products;
+                          const img = products.proImg[0]?.img;
+                          dispatch(addToCart({ _id, name, price, img }));
+                          navigate("/Cart");
+                        }}
                       >
-                        Add to bag
-                      </button>
+                        Add to cart
+                      </div>
 
                       <button
                         type="button"

@@ -1,28 +1,20 @@
 import jwt from "jsonwebtoken";
 import { userModels } from "../models/userModel.js";
+import catchAsyncError from "./catchAsyncError.js";
+import ErrorHandler from "../Utils/ErrorHandler.js";
 
-export const requiredSignin = async (req, res, next) => {
-  const { authorization } = req.headers;
-  if (!authorization) {
-    return res.send({
-      success: false,
-      message: "Bạn chưa đăng nhập!!!",
-    });
+export const requiredSignin = catchAsyncError(async (req, res, next) => {
+  const { token } = req.cookies;
+
+  if (!token) {
+    return next(new ErrorHandler("Login first to access this resource.", 401));
   }
-  const token = authorization.replace("Bearer ", "");
-  jwt.verify(token, process.env.JWT_SECRET, async (err, payload) => {
-    if (err) {
-      return res.send({
-        success: false,
-        message: "Bạn chưa đăng nhập!!!",
-      });
-    }
-    const { _id } = payload;
-    const user = await userModels.findById(_id);
-    req.user = user;
-    next();
-  });
-};
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  req.user = await userModels.findById(decoded.id);
+
+  next();
+});
 
 //admin access
 export const isAdmin = async (req, res, next) => {
@@ -40,18 +32,4 @@ export const isAdmin = async (req, res, next) => {
       error: error.message,
     });
   }
-};
-
-//create token from user id
-export const createToken = (_id, role) => {
-  return jwt.sign({ _id, role }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
-};
-
-//refresh token
-export const genRefreshToken = (_id) => {
-  return jwt.sign({ _id }, process.env.JWT_SECRET, {
-    expiresIn: "3d",
-  });
 };

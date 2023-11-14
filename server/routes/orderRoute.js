@@ -14,11 +14,14 @@ import {
 router.post("/add-order", requiredSignin, addOrder);
 
 //get order
-router.get("/admin/get-orders", requiredSignin, getOrders);
 
 router.get("/:id", requiredSignin, getOrder);
 
 router.get("/me/order", requiredSignin, myOrder);
+
+//admin route
+
+router.get("/admin/get-orders", requiredSignin, getOrders);
 
 router
   .route("/admin/:id")

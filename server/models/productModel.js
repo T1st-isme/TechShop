@@ -14,10 +14,16 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    richDescription: {
-      type: String,
-      default: "",
-    },
+    richDescription: [
+      {
+        CPU: { type: String },
+        RAM: { type: String },
+        GPU: { type: String },
+        OS: { type: String },
+        Display: { type: String },
+        SSD: { type: String },
+      },
+    ],
     proImg: [{ img: { type: String } }],
     brand: {
       type: String,

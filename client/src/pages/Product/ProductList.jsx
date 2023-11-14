@@ -98,7 +98,7 @@ const ProductList = () => {
         <Dialog
           as="div"
           className="relative z-40 lg:hidden"
-          onClose={() => setMobileFiltersOpen(false)}
+          onClose={setMobileFiltersOpen}
         >
           <Transition.Child
             as={Fragment}
@@ -213,7 +213,7 @@ const ProductList = () => {
       </Transition.Root>
 
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
+        <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-6">
           <h1 className="text-4xl font-bold tracking-tight text-gray-900">
             New Arrivals
           </h1>
