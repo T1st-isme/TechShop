@@ -15,7 +15,7 @@ router.post("/add-order", requiredSignin, addOrder);
 
 //get order
 
-router.get("/:id", requiredSignin, getOrder);
+router.get("/get-order/:id", requiredSignin, getOrder);
 
 router.get("/me/order", requiredSignin, myOrder);
 

@@ -6,7 +6,6 @@ import {
   REMOVE_CART_ITEM_REQUEST,
   REMOVE_CART_ITEM_SUCCESS,
 } from "../Constants/CartConstant";
-import store from "../store";
 import axios from "axios";
 
 export const getCartItems = () => {
@@ -72,7 +71,14 @@ export const removeCartItem = (payload) => {
   return async (dispatch) => {
     try {
       dispatch({ type: REMOVE_CART_ITEM_REQUEST });
-      const res = await axios.post(`${port}/cart/removeItem`, { payload });
+      const res = await axios.post(
+        `${port}/cart/removeCartItem`,
+        { payload },
+        {
+          withCredentials: true,
+          credentials: "include",
+        }
+      );
       if (res.status === 202) {
         dispatch({ type: REMOVE_CART_ITEM_SUCCESS });
         dispatch(getCartItems());

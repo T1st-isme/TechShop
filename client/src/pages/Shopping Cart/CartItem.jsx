@@ -1,7 +1,13 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import Button from "@mui/material/Button";
-import { MDBInput } from "mdb-react-ui-kit";
+import { MDBInput, MDBInputGroup } from "mdb-react-ui-kit";
+import {
+  MinusCircleIcon as MinusIcon,
+  PlusCircleIcon as PlusIcon,
+  TrashIcon,
+} from "@heroicons/react/24/solid";
+import { TextField } from "@mui/material";
 
 const CartItem = (props) => {
   const [quantity, setQuantity] = useState(props.cartItem.quantity);
@@ -55,18 +61,17 @@ const CartItem = (props) => {
                 </p>
               </div>
               <div className="flex">
-                <Button
-                  style={{ fontSize: "18px", fontWeight: "bold" }}
+                <MinusIcon
+                  style={{ height: "120px", width: "120px" }}
+                  color="blue"
                   variant="contained"
                   className=" hover:text-gray-400"
                   onClick={decreaseQty}
-                >
-                  -
-                </Button>
+                />
 
-                <div className="w-13">
+                <div className="relative w-auto" style={{ top: "40px" }}>
                   <MDBInput
-                    readonly
+                    readOnly
                     type="number"
                     name="quantity"
                     value={quantity}
@@ -74,25 +79,30 @@ const CartItem = (props) => {
                   />
                 </div>
 
-                <Button
-                  style={{ fontSize: "18px", fontWeight: "bold" }}
+                <PlusIcon
+                  style={{ height: "120px", width: "120px" }}
+                  color="blue"
                   variant="contained"
                   className=" hover:text-gray-400"
                   onClick={increaseQty}
-                >
-                  +
-                </Button>
+                />
 
-                <div className="absolute top- left-10">
-                  <Button
-                    style={{ fontSize: "18px", fontWeight: "bold" }}
+                <div className="absolute top-36 left-0">
+                  <TrashIcon
+                    style={{ height: "50px", width: "50px" }}
+                    color="red"
                     variant="contained"
                     className=" hover:text-gray-400"
-                    onClick={() => props.removeFromCart(_id)}
-                  >
-                    Remove
-                  </Button>
+                    onClick={() => props.onRemoveCartItem(_id)}
+                  />
                 </div>
+              </div>
+              {/* Tổng tiền 1 sp */}
+              <div
+                style={{ fontSize: "22px" }}
+                className="relative left-64 top-10 text-right text-sm font-medium text-gray-900"
+              >
+                {(price * quantity).toFixed(0)}.000đ
               </div>
             </div>
           </div>

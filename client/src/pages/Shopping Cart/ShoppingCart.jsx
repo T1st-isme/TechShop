@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dialog, Tab, Transition } from "@headlessui/react";
 import { XMarkIcon as XMarkIconOutline } from "@heroicons/react/24/outline";
 import { QuestionMarkCircleIcon } from "@heroicons/react/20/solid";
-import { addToCart, getCartItems } from "../../redux/Actions/CartAction";
+import { addToCart, removeCartItem } from "../../redux/Actions/CartAction";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
 
@@ -173,9 +173,9 @@ const ShoppingCart = () => {
   //   }
   // }, [dispatch, auth.isAuthenticated]);
 
-  // const removeCartItemHandler = (id) => {
-  //   dispatch(removeCartItem(id));
-  // };
+  const removeCartItemHandler = (_id) => {
+    dispatch(removeCartItem({ productId: _id }));
+  };
 
   const increaseQty = (_id, quantity) => {
     console.log({ _id, quantity });
@@ -387,6 +387,7 @@ const ShoppingCart = () => {
                     cartItem={cartItems[key]}
                     increaseQty={increaseQty}
                     decreaseQty={decreaseQty}
+                    onRemoveCartItem={removeCartItemHandler}
                   />
                 ))}
               </section>
