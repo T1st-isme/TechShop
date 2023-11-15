@@ -7,14 +7,14 @@ const Search = () => {
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {
-    if (keyword) {
+    if (keyword.trim()) {
       navigate(`/search/${keyword}`);
     }
-  }, [navigate, keyword]);
+  }, [keyword]);
 
   const searchHandler = (e) => {
     e.preventDefault();
-    setKeyword(e.target.search.value.trim());
+    setKeyword(e.target.value.trim());
   };
 
   return (

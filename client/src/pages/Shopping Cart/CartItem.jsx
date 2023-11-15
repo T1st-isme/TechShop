@@ -82,6 +82,17 @@ const CartItem = (props) => {
                 >
                   +
                 </Button>
+
+                <div className="absolute top- left-10">
+                  <Button
+                    style={{ fontSize: "18px", fontWeight: "bold" }}
+                    variant="contained"
+                    className=" hover:text-gray-400"
+                    onClick={() => props.removeFromCart(_id)}
+                  >
+                    Remove
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

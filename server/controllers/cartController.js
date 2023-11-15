@@ -122,6 +122,6 @@ export const removeCartItems = asyncHandler(async (req, res) => {
   if (result) {
     res.status(202).json({ result });
   } else {
-    res.status(400).json({ error: "Failed to remove cart items" });
+    res.status(400).json({ error: "Xóa thất bại!!" });
   }
 });

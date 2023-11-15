@@ -18,6 +18,7 @@ import {
 
 import { RESET_CART } from "../Constants/CartConstant";
 import { port } from "../../Utils/Util";
+import { getCartItems } from "./CartAction";
 
 // new update signup action
 export const signup = (user) => {
@@ -74,6 +75,7 @@ export const login = (email, password) => {
           user,
         },
       });
+      dispatch(getCartItems());
     } else if (res.status === 400) {
       dispatch({
         type: LOGIN_FAIL,
@@ -99,6 +101,7 @@ export const isUserLoggedIn = () => {
             user: data.user,
           },
         });
+        dispatch(getCartItems());
       } catch (error) {
         console.log(error);
         dispatch({

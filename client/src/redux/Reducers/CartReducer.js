@@ -6,7 +6,7 @@ import {
 } from "../Constants/CartConstant";
 
 const initState = {
-  cartItems: {},
+  cartItems: [],
   updatingCart: false,
   error: null,
 };

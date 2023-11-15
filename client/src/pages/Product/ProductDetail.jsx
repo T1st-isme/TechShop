@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Disclosure, RadioGroup, Tab } from "@headlessui/react";
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/20/solid";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { detailProduct } from "../../redux/Actions/ProductAction";
 import MoonLoader from "react-spinners/MoonLoader";
 import { addToCart } from "../../redux/Actions/CartAction";
-import { useNavigate } from "react-router-dom";
 const product = {
   name: "Zip Tote Basket",
   price: "$140",
@@ -20,19 +19,19 @@ const product = {
       alt: "Angled front view with bag zipped and handles upright.",
     },
     {
-      id: 1,
+      id: 2,
       name: "Angled view",
       src: "https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg",
       alt: "Angled front view with bag zipped and handles upright.",
     },
     {
-      id: 1,
+      id: 3,
       name: "Angled view",
       src: "https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg",
       alt: "Angled front view with bag zipped and handles upright.",
     },
     {
-      id: 1,
+      id: 4,
       name: "Angled view",
       src: "https://tailwindui.com/img/ecommerce-images/product-page-03-product-01.jpg",
       alt: "Angled front view with bag zipped and handles upright.",
@@ -84,7 +83,7 @@ const relatedProducts = [
     price: "$140",
   },
   {
-    id: 1,
+    id: 2,
     name: "Zip Tote Basket",
     color: "White and black",
     href: "#",
@@ -95,7 +94,7 @@ const relatedProducts = [
     price: "$140",
   },
   {
-    id: 1,
+    id: 3,
     name: "Zip Tote Basket",
     color: "White and black",
     href: "#",
@@ -106,7 +105,7 @@ const relatedProducts = [
     price: "$140",
   },
   {
-    id: 1,
+    id: 4,
     name: "Zip Tote Basket",
     color: "White and black",
     href: "#",
@@ -124,7 +123,6 @@ function classNames(...classes) {
 }
 
 const ProductDetail = () => {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const { slug } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -249,11 +247,7 @@ const ProductDetail = () => {
                     <div>
                       <h3 className="text-sm text-gray-600">Color</h3>
 
-                      <RadioGroup
-                        value={selectedColor}
-                        onChange={setSelectedColor}
-                        className="mt-2"
-                      >
+                      <RadioGroup value="" className="mt-2">
                         <RadioGroup.Label className="sr-only">
                           {" "}
                           Choose a color{" "}

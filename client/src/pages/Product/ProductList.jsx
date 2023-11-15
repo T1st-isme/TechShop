@@ -68,7 +68,9 @@ const ProductList = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState(0);
   const [sort, setSort] = useState("");
+  const [category, setCategory] = useState("");
   const productList = useSelector((state) => state.productList);
+  const { categoryList } = useSelector((state) => state.category);
   const {
     loading,
     error,
@@ -79,12 +81,16 @@ const ProductList = () => {
   } = productList;
 
   useEffect(() => {
-    dispatch(listProduct(keyword, currentPage, price, sort));
-  }, [dispatch, keyword, currentPage, price, sort]);
+    dispatch(listProduct(keyword, currentPage, price, category, sort));
+  }, [dispatch, keyword, currentPage, price, category, sort]);
 
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
   }
+
+  const handleClick = (productSlug) => {
+    navigate(`/Products/${productSlug}`);
+  };
 
   let count = productsCount;
   if (keyword) {
@@ -139,7 +145,7 @@ const ProductList = () => {
                 <form className="mt-4 border-t border-gray-200">
                   <h3 className="sr-only">Categories</h3>
                   <ul>
-                    {subCategories.map((category) => (
+                    {categoryList.map((category) => (
                       <li key={category.name}>
                         <a href={category.href} className="block px-2 py-3">
                           {category.name}
@@ -449,11 +455,9 @@ const ProductList = () => {
                     ) : (
                       products.map((product) => (
                         <div
-                          key={product.id}
                           className="group relative"
-                          onClick={() => {
-                            navigate(`/Products/${product.slug}`);
-                          }}
+                          onClick={() => handleClick(product.slug)}
+                          key={product.id}
                         >
                           <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                             <img

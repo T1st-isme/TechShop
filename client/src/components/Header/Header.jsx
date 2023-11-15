@@ -307,6 +307,7 @@ function classNames(...classes) {
 const Header = () => {
   const [open, setOpen] = useState(false);
   const auth = useSelector((state) => state.auth);
+  const cart = useSelector((state) => state.cart);
   const { categoryList } = useSelector((state) => state.category);
   const navigate = useNavigate();
 
@@ -319,6 +320,11 @@ const Header = () => {
     dispatch(logout());
     alert.success("Logged out successfully.");
   };
+
+  let totalItemsInCart = 0;
+  if (cart.cartItems) {
+    totalItemsInCart = Object.values(cart.cartItems).length;
+  }
 
   return (
     <div
@@ -651,7 +657,7 @@ const Header = () => {
                         aria-hidden="true"
                       />
                       <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                        0
+                        {totalItemsInCart}
                       </span>
                       <span className="sr-only">items in cart, view bag</span>
                     </a>
