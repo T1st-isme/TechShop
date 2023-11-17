@@ -94,7 +94,10 @@ const getProducts = asyncHandler(async (req, res) => {
   const startIndex = (page - 1) * resPerPage;
   const endIndex = page * resPerPage;
 
-  const apiFeatures = new APIFeatures(Product.find(), req.query)
+  const apiFeatures = new APIFeatures(
+    Product.find().populate("category"),
+    req.query
+  )
     .search()
     .filter()
     .sort(sort);
@@ -116,6 +119,14 @@ const getProducts = asyncHandler(async (req, res) => {
     totalProducts: productsCount,
     filteredProductsCount,
     products,
+  });
+});
+
+const AdGetProducts = asyncHandler(async (req, res) => {
+  const product = await Product.find({}).populate("category");
+  return res.status(200).json({
+    success: product ? true : false,
+    data: product ? product : "Không tìm thấy sản phẩm!!!",
   });
 });
 
@@ -222,4 +233,5 @@ export {
   deleteProduct,
   uploadImage,
   getProductByID,
+  AdGetProducts,
 };

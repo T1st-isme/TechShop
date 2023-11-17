@@ -7,6 +7,7 @@ import {
   updateProduct,
   uploadImage,
   getProductByID,
+  AdGetProducts,
 } from "../controllers/productController.js";
 import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
 import uploadCloud from "../config/cloudinary.config.js";
@@ -15,6 +16,8 @@ const router = express.Router();
 
 // GET all products
 router.get("/", getProducts);
+
+router.get("/admin", AdGetProducts);
 
 // GET a single product
 router.get("/:slug", getProductByName);

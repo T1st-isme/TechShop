@@ -95,19 +95,19 @@ function App() {
         <Route path="/Signup" element={<Register />} />
         <Route path="/Login" element={<Login />} />
         <Route path="*" element={<PageNotFound />} />
-        {auth.isAuthenticated ? (
-          <>
-            <Route path="/check-out" element={<CheckOut />} />
-            <Route path="/Cart" element={<Cart />} />
-            <Route path="/Profile" element={<Profile />} />
-          </>
+        {/* {auth.isAuthenticated ? (
+          <> */}
+        <Route path="/check-out" element={<CheckOut />} />
+        <Route path="/Cart" element={<Cart />} />
+        <Route path="/Profile" element={<Profile />} />
+        {/* </>
         ) : (
           <>
             <Route path="/check-out" element={<Login />} />
             <Route path="/Cart" element={<Login />} />
             <Route path="/Profile" element={<Login />} />
           </>
-        )}
+        )} */}
       </Routes>
     </Layout>
   );

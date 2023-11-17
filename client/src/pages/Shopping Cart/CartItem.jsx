@@ -1,13 +1,11 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import Button from "@mui/material/Button";
-import { MDBInput, MDBInputGroup } from "mdb-react-ui-kit";
+import { MDBInput } from "mdb-react-ui-kit";
 import {
   MinusCircleIcon as MinusIcon,
   PlusCircleIcon as PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
-import { TextField } from "@mui/material";
 
 const CartItem = (props) => {
   const [quantity, setQuantity] = useState(props.cartItem.quantity);
@@ -57,52 +55,54 @@ const CartItem = (props) => {
                   style={{ fontSize: "18px" }}
                   className="mt-1 text-sm font-medium text-gray-900"
                 >
-                  ${price}
+                  {price && price.$numberDecimal}
                 </p>
               </div>
-              <div className="flex">
-                <MinusIcon
-                  style={{ height: "120px", width: "120px" }}
-                  color="blue"
-                  variant="contained"
-                  className=" hover:text-gray-400"
-                  onClick={decreaseQty}
-                />
-
-                <div className="relative w-auto" style={{ top: "40px" }}>
-                  <MDBInput
-                    readOnly
-                    type="number"
-                    name="quantity"
-                    value={quantity}
-                    className="border border-gray-300 p-2  text-center font-semibold w-13"
-                  />
-                </div>
-
-                <PlusIcon
-                  style={{ height: "120px", width: "120px" }}
-                  color="blue"
-                  variant="contained"
-                  className=" hover:text-gray-400"
-                  onClick={increaseQty}
-                />
-
-                <div className="absolute top-36 left-0">
-                  <TrashIcon
-                    style={{ height: "50px", width: "50px" }}
-                    color="red"
+              {props.showButtons && (
+                <div className="flex">
+                  <MinusIcon
+                    style={{ height: "120px", width: "120px" }}
+                    color="blue"
                     variant="contained"
                     className=" hover:text-gray-400"
-                    onClick={() => props.onRemoveCartItem(_id)}
+                    onClick={decreaseQty}
                   />
+
+                  <div className="relative w-auto" style={{ top: "40px" }}>
+                    <MDBInput
+                      readOnly
+                      type="number"
+                      name="quantity"
+                      value={quantity}
+                      className="border border-gray-300 p-2  text-center font-semibold w-13"
+                    />
+                  </div>
+
+                  <PlusIcon
+                    style={{ height: "120px", width: "120px" }}
+                    color="blue"
+                    variant="contained"
+                    className=" hover:text-gray-400"
+                    onClick={increaseQty}
+                  />
+
+                  <div className="absolute top-36 left-0">
+                    <TrashIcon
+                      style={{ height: "50px", width: "50px" }}
+                      color="red"
+                      variant="contained"
+                      className=" hover:text-gray-400"
+                      onClick={() => props.onRemoveCartItem(_id)}
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
               {/* Tổng tiền 1 sp */}
               <div
                 style={{ fontSize: "22px" }}
                 className="relative left-64 top-10 text-right text-sm font-medium text-gray-900"
               >
-                {(price * quantity).toFixed(0)}.000đ
+                {(price.$numberDecimal * quantity).toFixed(0)}.000đ
               </div>
             </div>
           </div>

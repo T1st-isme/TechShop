@@ -384,6 +384,7 @@ const ShoppingCart = () => {
                 {Object.keys(cartItems).map((key, index) => (
                   <CartItem
                     key={index}
+                    showButtons={true}
                     cartItem={cartItems[key]}
                     increaseQty={increaseQty}
                     decreaseQty={decreaseQty}

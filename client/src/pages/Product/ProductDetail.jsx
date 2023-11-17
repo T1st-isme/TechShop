@@ -1,12 +1,14 @@
 import { useEffect } from "react";
-import { Disclosure, RadioGroup, Tab } from "@headlessui/react";
+import { Disclosure, Tab } from "@headlessui/react";
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/20/solid";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { detailProduct } from "../../redux/Actions/ProductAction";
 import MoonLoader from "react-spinners/MoonLoader";
+import { MDBBtn } from "mdb-react-ui-kit";
 import { addToCart } from "../../redux/Actions/CartAction";
+import toast from "react-hot-toast";
 const product = {
   name: "Zip Tote Basket",
   price: "$140",
@@ -125,7 +127,7 @@ function classNames(...classes) {
 const ProductDetail = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, products } = productDetails;
 
@@ -206,7 +208,7 @@ const ProductDetail = () => {
                   <div className="mt-3">
                     <h2 className="sr-only">Product information</h2>
                     <p className="text-3xl tracking-tight text-gray-900">
-                      {products.price}{" "}
+                      {products.price && products.price.$numberDecimal}
                       <span className="font-medium text-gray-500">VNĐ</span>
                     </p>
                   </div>
@@ -233,8 +235,17 @@ const ProductDetail = () => {
                     </div>
                   </div>
 
-                  <div className="mt-6">
+                  <div className="mt-6 gap-2">
                     <h3 className="sr-only">Description</h3>
+                    <div
+                      className="space-y-6 text-base text-black font-medium"
+                      style={{ fontSize: "18px" }}
+                    >
+                      <div>✔ Bảo hành chính hãng 12 tháng. </div>
+                      <div>✔ Hỗ trợ đổi mới trong 7 ngày.</div>
+                      <div> ✔ Windows bản quyền tích hợp. </div>
+                      <div> ✔ Miễn phí giao hàng toàn quốc.</div>
+                    </div>
 
                     <div
                       className="space-y-6 text-base text-gray-700"
@@ -243,58 +254,25 @@ const ProductDetail = () => {
                   </div>
 
                   <form className="mt-6">
-                    {/* Colors */}
-                    <div>
-                      <h3 className="text-sm text-gray-600">Color</h3>
-
-                      <RadioGroup value="" className="mt-2">
-                        <RadioGroup.Label className="sr-only">
-                          {" "}
-                          Choose a color{" "}
-                        </RadioGroup.Label>
-                        <div className="flex items-center space-x-3">
-                          {product.colors.map((color) => (
-                            <RadioGroup.Option
-                              key={color.name}
-                              value={color}
-                              className={({ active, checked }) =>
-                                classNames(
-                                  color.selectedColor,
-                                  active && checked ? "ring ring-offset-1" : "",
-                                  !active && checked ? "ring-2" : "",
-                                  "-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none"
-                                )
-                              }
-                            >
-                              <RadioGroup.Label as="span" className="sr-only">
-                                {" "}
-                                {color.name}{" "}
-                              </RadioGroup.Label>
-                              <span
-                                aria-hidden="true"
-                                className={classNames(
-                                  color.bgColor,
-                                  "h-8 w-8 border border-black border-opacity-10 rounded-full"
-                                )}
-                              />
-                            </RadioGroup.Option>
-                          ))}
-                        </div>
-                      </RadioGroup>
-                    </div>
-
                     <div className="mt-10 flex">
-                      <div
+                      <MDBBtn
+                        type="button"
                         className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
                         onClick={() => {
                           const { _id, name, price } = products;
                           const img = products.proImg[0]?.img;
-                          dispatch(addToCart({ _id, name, price, img }));
-                          navigate("/Cart");
+                          const rs = dispatch(
+                            addToCart({ _id, name, price, img })
+                          );
+                          if (rs) {
+                            toast.success("Đã thêm vào giỏ hàng");
+                          } else {
+                            toast.error("Lỗi!!!");
+                          }
                         }}
                       >
-                        Add to cart
-                      </div>
+                        Mua
+                      </MDBBtn>
 
                       <button
                         type="button"
@@ -329,7 +307,7 @@ const ProductDetail = () => {
                                       "text-sm font-medium"
                                     )}
                                   >
-                                    {detail.name}
+                                    Cấu hình
                                   </span>
                                   <span className="ml-6 flex items-center">
                                     {open ? (
@@ -351,9 +329,24 @@ const ProductDetail = () => {
                                 className="prose prose-sm pb-6"
                               >
                                 <ul role="list">
-                                  {detail.items.map((item) => (
-                                    <li key={item}>{item}</li>
-                                  ))}
+                                  <span className="bold">CPU:</span>{" "}
+                                  {products.richDescription?.cpu}
+                                </ul>
+                                <ul role="list">
+                                  <span className="bold">RAM: </span>{" "}
+                                  {products.richDescription?.ram}
+                                </ul>
+                                <ul role="list">
+                                  <span className="bold">VGA:</span>{" "}
+                                  {products.richDescription?.vga}
+                                </ul>
+                                <ul role="list">
+                                  <span className="bold"> Ổ cứng: </span>
+                                  {products.richDescription?.ssd}
+                                </ul>
+                                <ul role="list">
+                                  <span className="bold">Màn hình:</span>
+                                  {products.richDescription?.display}
                                 </ul>
                               </Disclosure.Panel>
                             </>

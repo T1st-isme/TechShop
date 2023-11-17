@@ -13,30 +13,29 @@ const productSchema = new Schema(
     description: {
       type: String,
       required: true,
+      trim: true,
+      maxlength: 2000,
     },
-    richDescription: [
-      {
-        CPU: { type: String },
-        RAM: { type: String },
-        GPU: { type: String },
-        OS: { type: String },
-        Display: { type: String },
-        SSD: { type: String },
-      },
-    ],
+    richDescription: {
+      cpu: { type: String },
+      RAM: { type: String },
+      GPU: { type: String },
+      OS: { type: String },
+      Display: { type: String },
+      SSD: { type: String },
+    },
     proImg: [{ img: { type: String } }],
     brand: {
       type: String,
       default: "",
     },
     price: {
-      type: Number,
+      type: Schema.Types.Decimal128,
       default: 0,
     },
     category: {
       type: Schema.Types.ObjectId,
       ref: "Category",
-      required: true,
     },
     stock: {
       type: Number,

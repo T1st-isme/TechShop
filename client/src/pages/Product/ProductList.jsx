@@ -145,13 +145,17 @@ const ProductList = () => {
                 <form className="mt-4 border-t border-gray-200">
                   <h3 className="sr-only">Categories</h3>
                   <ul>
-                    {categoryList.map((category) => (
-                      <li key={category.name}>
-                        <a href={category.href} className="block px-2 py-3">
+                    <select
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value)}
+                    >
+                      <option value="">All</option>
+                      {categoryList.map((category) => (
+                        <option key={category._id} value={category.name}>
                           {category.name}
-                        </a>
-                      </li>
-                    ))}
+                        </option>
+                      ))}
+                    </select>
                   </ul>
 
                   {filters.map((section) => (
@@ -369,11 +373,17 @@ const ProductList = () => {
                 role="list"
                 className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900"
               >
-                {subCategories.map((category) => (
-                  <li key={category.name}>
-                    <a href={category.href}>{category.name}</a>
-                  </li>
-                ))}
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                >
+                  <option value="">All</option>
+                  {categoryList.map((category) => (
+                    <option key={category._id} value={category._id}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
               </ul>
 
               {filters.map((section) => (
@@ -406,24 +416,28 @@ const ProductList = () => {
                       </h3>
                       <Disclosure.Panel className="pt-6">
                         <div className="space-y-4">
-                          {section.options.map((option, optionIdx) => (
-                            <div
-                              key={option.value}
-                              className="flex items-center"
-                            >
+                          {categoryList.map((option, optionIdx) => (
+                            <div key={option._id} className="flex items-center">
                               <input
-                                id={`filter-${section.id}-${optionIdx}`}
-                                name={`${section.id}[]`}
-                                defaultValue={option.value}
+                                id={`filter-${categoryList._id}-${optionIdx}`}
+                                name={`${categoryList._id}[]`}
+                                defaultValue={""}
                                 type="checkbox"
                                 defaultChecked={option.checked}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setCategory(option._id);
+                                  } else {
+                                    setCategory("");
+                                  }
+                                }}
                                 className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                               />
                               <label
-                                htmlFor={`filter-${section.id}-${optionIdx}`}
-                                className="ml-3 text-sm text-gray-600"
+                                htmlFor={`filter-${categoryList._id}-${optionIdx}`}
+                                className="ml-3 text-sm text-gray-700"
                               >
-                                {option.label}
+                                {option.name}
                               </label>
                             </div>
                           ))}
@@ -482,7 +496,7 @@ const ProductList = () => {
                               </p>
                             </div>
                             <p className="text-sm font-medium text-gray-900">
-                              {product.price}
+                              {product.price && product.price.$numberDecimal}
                             </p>
                           </div>
                         </div>

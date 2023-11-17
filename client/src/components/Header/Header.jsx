@@ -473,7 +473,7 @@ const Header = () => {
                       href="#"
                       className="-m-2 block p-2 font-medium text-gray-900"
                     >
-                      Sign in
+                      Đăng nhập
                     </a>
                   </div>
                   <div className="flow-root">
@@ -481,7 +481,7 @@ const Header = () => {
                       href="#"
                       className="-m-2 block p-2 font-medium text-gray-900"
                     >
-                      Create account
+                      Đăng ký
                     </a>
                   </div>
                 </div>
@@ -633,7 +633,7 @@ const Header = () => {
                         href="/login"
                         className="text-sm font-medium text-gray-700 hover:text-gray-800"
                       >
-                        Sign in
+                        Đăng nhập
                       </a>
                       <span
                         className="h-6 w-px bg-gray-200"
@@ -643,7 +643,7 @@ const Header = () => {
                         href="/signup"
                         className="text-sm font-medium text-gray-700 hover:text-gray-800"
                       >
-                        Create account
+                        Đăng ký
                       </a>
                     </div>
                   )}
@@ -656,9 +656,23 @@ const Header = () => {
                         className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                         aria-hidden="true"
                       />
-                      <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                        {totalItemsInCart}
-                      </span>
+
+                      <div
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          backgroundColor: "red",
+                          color: "white",
+                          borderRadius: "50%",
+                          width: "25px",
+                          height: "25px",
+                        }}
+                      >
+                        <span className="text-sm font-medium group-hover:text-gray-800">
+                          {totalItemsInCart}
+                        </span>
+                      </div>
                       <span className="sr-only">items in cart, view bag</span>
                     </a>
                   </div>

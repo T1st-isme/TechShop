@@ -12,6 +12,7 @@ import {
   delCategoryReducer,
   newCategoryReducer,
 } from "./Reducers/CategoryReducer";
+import { newOrderReducer } from "./Reducers/OrderReducer";
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   newCategory: newCategoryReducer,
   category: categoryReducer,
   delCategory: delCategoryReducer,
+  newOrder: newOrderReducer,
 });
 
 const initialState = {};

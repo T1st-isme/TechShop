@@ -1,21 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState, ButtonHTMLAttributes as Button } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon, TrashIcon } from "@heroicons/react/20/solid";
-
-const products = [
-  {
-    id: 1,
-    title: "Basic Tee",
-    href: "#",
-    price: "$32.00",
-    color: "Black",
-    size: "Large",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/checkout-page-02-product-01.jpg",
-    imageAlt: "Front of men's Basic Tee in black.",
-  },
-  // More products...
-];
+import { useDispatch, useSelector } from "react-redux";
+import { removeCartItem } from "../../redux/Actions/CartAction";
+import { createOrder } from "../../redux/Actions/OrderAction";
+import { useNavigate } from "react-router-dom";
+import { MDBBtn } from "mdb-react-ui-kit";
 const deliveryMethods = [
   {
     id: 1,
@@ -39,6 +29,38 @@ const CheckOut = () => {
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
     deliveryMethods[0]
   );
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const cart = useSelector((state) => state.cart);
+  const [cartItems, setCartItems] = useState(cart.cartItems);
+
+  const orderState = useSelector((state) => state.newOrder);
+  const { loading, order, error } = orderState;
+
+  const totalPrice = Object.values(cartItems).reduce(
+    (total, item) => total + item.price.$numberDecimal * item.quantity,
+    0
+  );
+  const removeCartItemHandler = (_id) => {
+    dispatch(removeCartItem({ productId: _id }));
+  };
+
+  const cartItemsArray = Object.values(cartItems);
+
+  const submitOrder = async () => {
+    const reformattedCartItems = cartItemsArray.map((item) => ({
+      productId: item._id,
+      payablePrice: Number(item.price.$numberDecimal),
+      purchasedQty: item.quantity,
+    }));
+    await dispatch(createOrder(reformattedCartItems, totalPrice)).unwrap();
+  };
+
+  useEffect(() => {
+    setCartItems(cart.cartItems);
+  }, [cart.cartItems]);
 
   return (
     <div className="bg-gray-50">
@@ -377,13 +399,13 @@ const CheckOut = () => {
             <div className="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm">
               <h3 className="sr-only">Items in your cart</h3>
               <ul role="list" className="divide-y divide-gray-200">
-                {products.map((product) => (
-                  <li key={product.id} className="flex py-6 px-4 sm:px-6">
+                {Object.keys(cartItems).map((key) => (
+                  <li key={key} className="flex py-6 px-4 sm:px-6">
                     <div className="flex-shrink-0">
                       <img
-                        src={product.imageSrc}
-                        alt={product.imageAlt}
-                        className="w-20 rounded-md"
+                        src={cartItems[key].img}
+                        alt={cartItems[key].imageAlt}
+                        className="h-24 w-24 rounded-md object-cover object-center"
                       />
                     </div>
 
@@ -392,24 +414,19 @@ const CheckOut = () => {
                         <div className="min-w-0 flex-1">
                           <h4 className="text-sm">
                             <a
-                              href={product.href}
+                              href={cartItems.href}
                               className="font-medium text-gray-700 hover:text-gray-800"
                             >
-                              {product.title}
+                              {cartItems[key].name}
                             </a>
                           </h4>
-                          <p className="mt-1 text-sm text-gray-500">
-                            {product.color}
-                          </p>
-                          <p className="mt-1 text-sm text-gray-500">
-                            {product.size}
-                          </p>
                         </div>
 
                         <div className="ml-4 flow-root flex-shrink-0">
                           <button
                             type="button"
                             className="-m-2.5 flex items-center justify-center bg-white p-2.5 text-gray-400 hover:text-gray-500"
+                            onClick={() => removeCartItemHandler(key)}
                           >
                             <span className="sr-only">Remove</span>
                             <TrashIcon className="h-5 w-5" aria-hidden="true" />
@@ -419,27 +436,20 @@ const CheckOut = () => {
 
                       <div className="flex flex-1 items-end justify-between pt-2">
                         <p className="mt-1 text-sm font-medium text-gray-900">
-                          {product.price}
+                          {cartItems[key].price.$numberDecimal}.000đ
                         </p>
 
                         <div className="ml-4">
                           <label htmlFor="quantity" className="sr-only">
                             Quantity
                           </label>
-                          <select
+                          <p
                             id="quantity"
                             name="quantity"
-                            className="rounded-md border border-gray-300 text-left text-base font-medium text-gray-700 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+                            className="text-sm font-medium text-gray-900"
                           >
-                            <option value={1}>1</option>
-                            <option value={2}>2</option>
-                            <option value={3}>3</option>
-                            <option value={4}>4</option>
-                            <option value={5}>5</option>
-                            <option value={6}>6</option>
-                            <option value={7}>7</option>
-                            <option value={8}>8</option>
-                          </select>
+                            Số lượng: {cartItems[key].quantity}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -449,7 +459,9 @@ const CheckOut = () => {
               <dl className="space-y-6 border-t border-gray-200 py-6 px-4 sm:px-6">
                 <div className="flex items-center justify-between">
                   <dt className="text-sm">Subtotal</dt>
-                  <dd className="text-sm font-medium text-gray-900">$64.00</dd>
+                  <dd className="text-sm font-medium text-gray-900">
+                    {totalPrice.toFixed(3)}đ
+                  </dd>
                 </div>
                 <div className="flex items-center justify-between">
                   <dt className="text-sm">Shipping</dt>
@@ -462,18 +474,22 @@ const CheckOut = () => {
                 <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                   <dt className="text-base font-medium">Total</dt>
                   <dd className="text-base font-medium text-gray-900">
-                    $75.52
+                    {totalPrice.toFixed(3)}đ
                   </dd>
                 </div>
               </dl>
 
               <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
-                <button
-                  type="submit"
+                <MDBBtn
                   className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+                  onClick={() => {
+                    submitOrder()
+                      ? navigate("/order-success")
+                      : console.log("Chưa đặt");
+                  }}
                 >
-                  Confirm order
-                </button>
+                  Xác nhận đặt hàng
+                </MDBBtn>
               </div>
             </div>
           </div>

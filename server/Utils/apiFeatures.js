@@ -1,3 +1,4 @@
+import Category from "../models/categoryModel.js";
 class APIFeatures {
   constructor(query, queryStr) {
     this.query = query;
@@ -22,7 +23,7 @@ class APIFeatures {
     const queryCopy = { ...this.queryStr };
 
     // Removing fields from the query
-    const removeFields = ["keyword", "limit", "page"];
+    const removeFields = ["sort", "page"];
     removeFields.forEach((el) => delete queryCopy[el]);
 
     // Advance filter for price, ratings etc

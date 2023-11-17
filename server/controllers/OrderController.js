@@ -62,7 +62,8 @@ const myOrder = asyncHandler(async (req, res) => {
 const addOrder = asyncHandler(async (req, res) => {
   req.body.user = req.user._id;
 
-  const cartItems = req.body.items;
+  console.log(req.body.items);
+  const cartItems = JSON.parse(JSON.stringify(req.body.items));
   const productIds = cartItems.map((item) => item.productId);
 
   const products = await Product.find({ _id: { $in: productIds } }).exec();
@@ -72,8 +73,8 @@ const addOrder = asyncHandler(async (req, res) => {
     const product = products.find(
       (p) => p._id.toString() === item.productId?.toString()
     );
-    console.log(product.stock, item.purchasedQty);
     if (!product || product.stock < item.purchasedQty) {
+      console.log(product?.stock, item.purchasedQty);
       hasEnoughStock = false;
     }
   });
