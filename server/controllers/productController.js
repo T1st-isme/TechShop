@@ -187,13 +187,13 @@ const createProduct = asyncHandler(async (req, res) => {
 const updateProduct = asyncHandler(async (req, res) => {
   if (req.body && req.body.name) {
     req.body.slug = slugify(req.body.name);
-    req.body.proImg = req.files.map((file) => {
-      return { img: file.path };
-    });
+    // req.body.proImg = req.files.map((file) => {
+    //   return { img: file.path };
+    // });
   }
   console.log(req.body.proImg);
-  const updateProduct = await Product.findByIdAndUpdate(
-    req.params.id,
+  const updateProduct = await Product.findOneAndUpdate(
+    { slug: req.params.slug },
     req.body,
     { new: true }
   );

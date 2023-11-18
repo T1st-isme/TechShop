@@ -566,6 +566,7 @@ const Header = () => {
                           <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                             <span className="sr-only">Open user menu</span>
                             <div className="text-sm font-medium text-gray-700">
+                              {auth.user.user.firstname}{" "}
                               {auth.user.user.lastname}
                             </div>
                           </Menu.Button>
@@ -589,7 +590,7 @@ const Header = () => {
                                     "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                 >
-                                  Your Profile
+                                  Cá nhân
                                 </a>
                               )}
                             </Menu.Item>
@@ -616,7 +617,7 @@ const Header = () => {
                                     "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                 >
-                                  Sign out
+                                  Đăng xuất
                                 </Link>
                               )}
                             </Menu.Item>
@@ -650,9 +651,15 @@ const Header = () => {
 
                   {/* Cart */}
                   <div className="ml-4 flow-root lg:ml-6">
-                    <a href="#" className="group -m-2 flex items-center p-2">
+                    <div
+                      type="button"
+                      className="group -m-2 flex items-center p-2"
+                      onClick={() => {
+                        navigate("/Cart");
+                      }}
+                      tabIndex="0"
+                    >
                       <ShoppingBagIcon
-                        onClick={() => navigate("/Cart")}
                         className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                         aria-hidden="true"
                       />
@@ -674,7 +681,7 @@ const Header = () => {
                         </span>
                       </div>
                       <span className="sr-only">items in cart, view bag</span>
-                    </a>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -70,6 +70,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateCart } from "./redux/Actions/CartAction.js";
 import { isUserLoggedIn } from "./redux/Actions/UserAction.js";
 import Profile from "./pages/Auth/UserProfile/Profile.jsx";
+import OrderSuccessful from "./pages/CheckOut/OrderSuccessfull.jsx";
+import UpdateProduct from "./pages/Admin/Product/UpdateProduct.jsx";
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -100,6 +102,8 @@ function App() {
         <Route path="/check-out" element={<CheckOut />} />
         <Route path="/Cart" element={<Cart />} />
         <Route path="/Profile" element={<Profile />} />
+        <Route path="/order-success" element={<OrderSuccessful />} />
+        <Route path="/admin/update-product/:slug" element={<UpdateProduct />} />
         {/* </>
         ) : (
           <>

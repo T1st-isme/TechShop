@@ -6,6 +6,7 @@ import categoryRoute from "./routes/categoryRoute.js";
 import productRoute from "./routes/productRoute.js";
 import cartRoute from "./routes/cartRoute.js";
 import orderRoute from "./routes/orderRoute.js";
+import paymentRouter from "./routes/paymentRoute.js";
 import dbConnect from "./dbConnect.js";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errHandler.js";
@@ -41,8 +42,15 @@ app.use("/category", categoryRoute);
 app.use("/product", productRoute);
 app.use("/cart", cartRoute);
 app.use("/order", orderRoute);
+app.use("", paymentRouter);
 
 app.use(errorHandler);
+
+app.set("view engine", "pug");
+
+app.get("/", function (req, res) {
+  res.sendFile(__dirname + "/index.html");
+});
 
 // Start server
 const PORT = process.env.PORT || 8080;

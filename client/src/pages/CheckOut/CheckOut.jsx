@@ -2,10 +2,12 @@ import { useEffect, useState, ButtonHTMLAttributes as Button } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { removeCartItem } from "../../redux/Actions/CartAction";
+import { getCartItems, removeCartItem } from "../../redux/Actions/CartAction";
 import { createOrder } from "../../redux/Actions/OrderAction";
 import { useNavigate } from "react-router-dom";
 import { MDBBtn } from "mdb-react-ui-kit";
+import toast from "react-hot-toast";
+
 const deliveryMethods = [
   {
     id: 1,
@@ -49,13 +51,19 @@ const CheckOut = () => {
 
   const cartItemsArray = Object.values(cartItems);
 
-  const submitOrder = async () => {
+  const submitOrder = () => {
     const reformattedCartItems = cartItemsArray.map((item) => ({
       productId: item._id,
       payablePrice: Number(item.price.$numberDecimal),
       purchasedQty: item.quantity,
     }));
-    await dispatch(createOrder(reformattedCartItems, totalPrice)).unwrap();
+    const rs = dispatch(createOrder(reformattedCartItems, totalPrice));
+    if (rs) {
+      toast.success("Đặt hàng thành công");
+      navigate("/order-success");
+    } else {
+      toast.error("Đặt hàng thất bại");
+    }
   };
 
   useEffect(() => {
@@ -481,12 +489,9 @@ const CheckOut = () => {
 
               <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                 <MDBBtn
+                  type="button"
                   className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                  onClick={() => {
-                    submitOrder()
-                      ? navigate("/order-success")
-                      : console.log("Chưa đặt");
-                  }}
+                  onClick={submitOrder}
                 >
                   Xác nhận đặt hàng
                 </MDBBtn>
@@ -495,6 +500,99 @@ const CheckOut = () => {
           </div>
         </form>
       </div>
+      <form
+        id="createOrder"
+        action="http://localhost:8080/order/create_payment_url"
+        method="POST"
+      >
+        <div className="form-group">
+          <input
+            className="form-control"
+            id="amount"
+            name="orderId"
+            value={Math.random().toString(36).substring(2)}
+            type="hidden"
+          />
+        </div>
+        <div className="form-group">
+          <label>Số tiền</label>
+          <input
+            className="form-control"
+            id="amount"
+            name="amount"
+            placeholder="Số tiền"
+            value={totalPrice.toFixed(0)}
+            readOnly
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Chọn Phương thức thanh toán:</label>
+          <div className="controls">
+            <label className="radio-inline">
+              <input
+                type="radio"
+                name="bankCode"
+                id="defaultPaymentMethod"
+                value=""
+                defaultChecked
+              />{" "}
+              Cổng thanh toán VNPAYQR
+            </label>
+            <label className="radio-inline">
+              <input
+                type="radio"
+                name="bankCode"
+                id="vnpayqrPaymentMethod"
+                value="VNPAYQR"
+              />{" "}
+              Thanh toán qua ứng dụng hỗ trợ VNPAYQR
+            </label>
+            <label className="radio-inline">
+              <input
+                type="radio"
+                name="bankCode"
+                id="vnbankPaymentMethod"
+                value="VNBANK"
+              />{" "}
+              Thanh toán qua ATM-Tài khoản ngân hàng nội địa
+            </label>
+            <label className="radio-inline">
+              <input
+                type="radio"
+                name="bankCode"
+                id="intcardPaymentMethod"
+                value="INTCARD"
+              />{" "}
+              Thanh toán qua thẻ quốc tế
+            </label>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Ngôn ngữ</label>
+          <div className="controls">
+            <label className="radio-inline">
+              <input
+                type="radio"
+                name="language"
+                id="vnLanguage"
+                value="vn"
+                defaultChecked
+              />{" "}
+              Tiếng việt
+            </label>
+            <label className="radio-inline">
+              <input type="radio" name="language" id="enLanguage" value="en" />{" "}
+              Tiếng anh
+            </label>
+          </div>
+        </div>
+
+        <button className="btn btn-default" id="btnPopup" type="submit">
+          Thanh toán
+        </button>
+      </form>
     </div>
   );
 };

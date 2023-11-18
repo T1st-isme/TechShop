@@ -1,11 +1,9 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import { MDBInput } from "mdb-react-ui-kit";
-import {
-  MinusCircleIcon as MinusIcon,
-  PlusCircleIcon as PlusIcon,
-  TrashIcon,
-} from "@heroicons/react/24/solid";
+import AddBoxIcon from "@mui/icons-material/AddBox";
+import IndeterminateCheckBoxIcon from "@mui/icons-material/IndeterminateCheckBox";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { TextField } from "@mui/material";
 
 const CartItem = (props) => {
   const [quantity, setQuantity] = useState(props.cartItem.quantity);
@@ -21,7 +19,7 @@ const CartItem = (props) => {
     setQuantity(quantity - 1);
     props.decreaseQty(_id, quantity - 1);
   };
-
+  const priceNumber = Number(price.$numberDecimal);
   return (
     <div>
       <ul
@@ -55,41 +53,67 @@ const CartItem = (props) => {
                   style={{ fontSize: "18px" }}
                   className="mt-1 text-sm font-medium text-gray-900"
                 >
-                  {price && price.$numberDecimal}
+                  {priceNumber.toFixed(3)}đ
                 </p>
               </div>
               {props.showButtons && (
                 <div className="flex">
-                  <MinusIcon
-                    style={{ height: "120px", width: "120px" }}
+                  <IndeterminateCheckBoxIcon
+                    sx={{
+                      height: "60px",
+                      width: "60px",
+                      marginTop: "30px",
+                      marginLeft: "25px",
+                      color: "#4138c2",
+                    }}
                     color="blue"
                     variant="contained"
-                    className=" hover:text-gray-400"
+                    className=" hover:text-gray-400 rounded-none h-5 w5"
+                    aria-hidden="true"
                     onClick={decreaseQty}
                   />
 
-                  <div className="relative w-auto" style={{ top: "40px" }}>
-                    <MDBInput
-                      readOnly
-                      type="number"
+                  <div
+                    className="relative w-14 text-center "
+                    style={{ top: "38px" }}
+                  >
+                    <TextField
+                      InputProps={{
+                        disableUnderline: true,
+                      }}
+                      inputProps={{
+                        style: {
+                          height: "10px",
+                          textAlign: "center",
+                          fontSize: "18px",
+                          fontWeight: "500",
+                        },
+                      }}
+                      hiddenLabel
+                      id="filled-hidden-label-normal"
+                      variant="filled"
                       name="quantity"
                       value={quantity}
-                      className="border border-gray-300 p-2  text-center font-semibold w-13"
+                      className="border border-gray-300 rounded-lg text-center font-semibold"
                     />
                   </div>
 
-                  <PlusIcon
-                    style={{ height: "120px", width: "120px" }}
-                    color="blue"
+                  <AddBoxIcon
+                    sx={{
+                      height: "60px",
+                      width: "60px",
+                      marginTop: "30px",
+                      marginRight: "25px",
+                      color: "#4138c2",
+                    }}
                     variant="contained"
                     className=" hover:text-gray-400"
                     onClick={increaseQty}
                   />
 
                   <div className="absolute top-36 left-0">
-                    <TrashIcon
-                      style={{ height: "50px", width: "50px" }}
-                      color="red"
+                    <DeleteIcon
+                      sx={{ height: "40px", width: "40px", color: "red" }}
                       variant="contained"
                       className=" hover:text-gray-400"
                       onClick={() => props.onRemoveCartItem(_id)}
@@ -102,7 +126,7 @@ const CartItem = (props) => {
                 style={{ fontSize: "22px" }}
                 className="relative left-64 top-10 text-right text-sm font-medium text-gray-900"
               >
-                {(price.$numberDecimal * quantity).toFixed(0)}.000đ
+                {(priceNumber * quantity).toFixed(3)}đ
               </div>
             </div>
           </div>
@@ -116,7 +140,7 @@ CartItem.propTypes = {
   cartItem: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
+    price: PropTypes.shape({ $numberDecimal: PropTypes.string }).isRequired,
     img: PropTypes.string.isRequired,
     quantity: PropTypes.number.isRequired,
   }).isRequired,

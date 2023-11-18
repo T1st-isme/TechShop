@@ -6,6 +6,9 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_SUCCESS,
 } from "../Constants/ProductConstant";
 import { port } from "../../Utils/Util";
 
@@ -68,4 +71,27 @@ const detailProduct = (slug) => async (dispatch) => {
   }
 };
 
-export { listProduct, detailProduct };
+const updateProduct = (slug, product) => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_UPDATE_REQUEST });
+
+    const { data } = await axios.put(port + `/product/${slug}`, product, {
+      withCredentials: true,
+      credentials: "include",
+    });
+    dispatch({
+      type: PRODUCT_UPDATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export { listProduct, detailProduct, updateProduct };

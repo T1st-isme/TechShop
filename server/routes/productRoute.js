@@ -29,7 +29,7 @@ router.get("/:slug", getProductByName);
 router.post("/", uploadCloud, createProduct);
 
 // UPDATE a product
-router.put("/:id", uploadCloud, updateProduct);
+router.put("/:slug", uploadCloud, updateProduct);
 
 // DELETE a product
 router.delete("/:id", deleteProduct);

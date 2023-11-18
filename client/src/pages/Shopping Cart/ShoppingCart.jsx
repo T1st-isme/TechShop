@@ -2,10 +2,19 @@ import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dialog, Tab, Transition } from "@headlessui/react";
 import { XMarkIcon as XMarkIconOutline } from "@heroicons/react/24/outline";
-import { QuestionMarkCircleIcon } from "@heroicons/react/20/solid";
-import { addToCart, removeCartItem } from "../../redux/Actions/CartAction";
+import {
+  QuestionMarkCircleIcon,
+  ShoppingCartIcon,
+} from "@heroicons/react/20/solid";
+import {
+  addToCart,
+  getCartItems,
+  removeCartItem,
+} from "../../redux/Actions/CartAction";
 import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
+import EmptyCart from "./EmptyCart";
+import toast from "react-hot-toast";
 
 const navigation = {
   categories: [
@@ -160,21 +169,30 @@ const ShoppingCart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cart = useSelector((state) => state.cart);
-  // const auth = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.auth);
   const [cartItems, setCartItems] = useState(cart.cartItems);
 
   useEffect(() => {
     setCartItems(cart.cartItems);
   }, [cart.cartItems]);
 
-  // useEffect(() => {
-  //   if (auth.isAuthenticated) {
-  //     dispatch(getCartItems());
-  //   }
-  // }, [dispatch, auth.isAuthenticated]);
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      dispatch(getCartItems());
+    }
+  }, [dispatch, auth.isAuthenticated]);
 
   const removeCartItemHandler = (_id) => {
-    dispatch(removeCartItem({ productId: _id }));
+    const rs = dispatch(removeCartItem({ productId: _id }));
+    if (rs) {
+      toast.success("Đã xóa!");
+      dispatch(getCartItems());
+    } else {
+      toast.error("Có lỗi xảy ra, vui lòng thử lại sau ");
+    }
+    if (rs.cartItems.length === 0) {
+      return <EmptyCart />;
+    }
   };
 
   const increaseQty = (_id, quantity) => {
@@ -188,6 +206,14 @@ const ShoppingCart = () => {
     const { name, price, img } = cartItems[_id];
     dispatch(addToCart({ _id, name, price, img }, -1));
   };
+
+  const total = Object.keys(cartItems).reduce((acc, curr) => {
+    return (
+      console.log("curr:" + curr, "acc:" + acc),
+      acc +
+        Number(cartItems[curr].price.$numberDecimal) * cartItems[curr].quantity
+    );
+  }, 0);
 
   return (
     <div className="bg-white">
@@ -367,14 +393,17 @@ const ShoppingCart = () => {
       </Transition.Root>
 
       <main className="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          Shopping Cart
-        </h1>
-
-        {cartItems.length === 0 ? (
-          <h1>Cart is Empty</h1>
+        {Object.keys(cartItems).length === 0 ? (
+          <EmptyCart />
         ) : (
           <>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl flex">
+              <ShoppingCartIcon
+                className="mr-2 h-10 w-10 flex-shrink-0"
+                aria-hidden="true"
+              />
+              Giỏ hàng
+            </h1>
             <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
               <section aria-labelledby="cart-heading" className="lg:col-span-7">
                 <h2 id="cart-heading" className="sr-only">
@@ -453,7 +482,7 @@ const ShoppingCart = () => {
                       Order total
                     </dt>
                     <dd className="text-base font-medium text-gray-900">
-                      $112.32
+                      {total}đ
                     </dd>
                   </div>
                 </dl>
@@ -464,7 +493,7 @@ const ShoppingCart = () => {
                     className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
                     onClick={() => navigate("/check-out")}
                   >
-                    Checkout
+                    Tiếp tục
                   </button>
                 </div>
               </section>
