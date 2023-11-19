@@ -469,40 +469,56 @@ const ProductList = () => {
                     ) : error ? (
                       <h1>{error}</h1>
                     ) : (
-                      products.map((product) => (
-                        <div
-                          className="group relative"
-                          onClick={() => handleClick(product.slug)}
-                          key={product.id}
-                        >
-                          <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                            <img
-                              src={product.proImg[0]?.img}
-                              alt={product.imageAlt}
-                              className="h-full w-full object-cover object-center lg:h-150 lg:w-150"
-                            />
-                          </div>
-                          <div className="mt-4 flex justify-between">
-                            <div>
-                              <h3 className="text-sm text-gray-700">
-                                <a href={product.href}>
-                                  <span
-                                    aria-hidden="true"
-                                    className="absolute inset-0"
-                                  />
-                                  {product.name}
-                                </a>
-                              </h3>
-                              <p className="mt-1 text-sm text-gray-500">
-                                {product.color}
+                      products.map((product) => {
+                        const priceNumber = parseFloat(
+                          product.price.$numberDecimal
+                        );
+                        const value = priceNumber * 1000000;
+                        const formattedValue = value.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        });
+                        return (
+                          <div
+                            className="group relative"
+                            onClick={() => handleClick(product.slug)}
+                            key={product.id}
+                          >
+                            <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-52">
+                              <img
+                                src={product.proImg[0]?.img}
+                                alt={product.imageAlt}
+                                className="h-full w-full object-cover object-center lg:h-150 lg:w-150"
+                              />
+                            </div>
+                            <div className="mt-4 justify-between">
+                              <div>
+                                <h3 className="text-sm text-gray-700">
+                                  <a href={product.href}>
+                                    <span
+                                      aria-hidden="true"
+                                      className="absolute inset-0"
+                                    />
+                                    {product.name}
+                                  </a>
+                                </h3>
+                                <p className="mt-1 text-sm text-gray-500">
+                                  {product.color}
+                                </p>
+                              </div>
+                              <p className="text-sm font-medium text-gray-900">
+                                {/* {product.price && product.price.$numberDecimal
+                                ? parseFloat(
+                                    product.price.$numberDecimal
+                                  ).toFixed(3)
+                                : ""}
+                              .000đ */}
+                                {formattedValue}
                               </p>
                             </div>
-                            <p className="text-sm font-medium text-gray-900">
-                              {product.price && product.price.$numberDecimal}
-                            </p>
                           </div>
-                        </div>
-                      ))
+                        );
+                      })
                     )}
                   </div>
                 </div>

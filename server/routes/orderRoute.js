@@ -144,7 +144,7 @@ router.get("/vnpay_return", async function (req, res, next) {
           items: cart.cartItems.map((item) => ({
             productId: item.product,
             purchasedQty: item.quantity,
-            payablePrice: item.price * item.quantity,
+            payablePrice: item.price,
           })),
           user: user._id,
           paymentType: "VNPAY PAYMENT",

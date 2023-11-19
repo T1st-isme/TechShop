@@ -206,14 +206,18 @@ const ShoppingCart = () => {
     const { name, price, img } = cartItems[_id];
     dispatch(addToCart({ _id, name, price, img }, -1));
   };
-
   const total = Object.keys(cartItems).reduce((acc, curr) => {
     return (
       console.log("curr:" + curr, "acc:" + acc),
-      acc +
-        Number(cartItems[curr].price.$numberDecimal) * cartItems[curr].quantity
+      acc + cartItems[curr].price.$numberDecimal * cartItems[curr].quantity
     );
   }, 0);
+
+  const value = total * 1000000;
+  const formattedValue = value.toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
 
   return (
     <div className="bg-white">
@@ -438,7 +442,7 @@ const ShoppingCart = () => {
                   <div className="flex items-center justify-between">
                     <dt className="text-sm text-gray-600">Subtotal</dt>
                     <dd className="text-sm font-medium text-gray-900">
-                      $99.00
+                      {formattedValue}
                     </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4">
@@ -457,32 +461,16 @@ const ShoppingCart = () => {
                         />
                       </a>
                     </dt>
-                    <dd className="text-sm font-medium text-gray-900">$5.00</dd>
-                  </div>
-                  <div className="flex items-center justify-between border-t border-gray-200 pt-4">
-                    <dt className="flex text-sm text-gray-600">
-                      <span>Tax estimate</span>
-                      <a
-                        href="#"
-                        className="ml-2 flex-shrink-0 text-gray-400 hover:text-gray-500"
-                      >
-                        <span className="sr-only">
-                          Learn more about how tax is calculated
-                        </span>
-                        <QuestionMarkCircleIcon
-                          className="h-5 w-5"
-                          aria-hidden="true"
-                        />
-                      </a>
-                    </dt>
-                    <dd className="text-sm font-medium text-gray-900">$8.32</dd>
+                    <dd className="text-sm font-medium text-gray-900">
+                      15.000đ
+                    </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-4">
                     <dt className="text-base font-medium text-gray-900">
                       Order total
                     </dt>
                     <dd className="text-base font-medium text-gray-900">
-                      {total}đ
+                      {formattedValue}
                     </dd>
                   </div>
                 </dl>
@@ -505,7 +493,7 @@ const ShoppingCart = () => {
                 id="related-heading"
                 className="text-lg font-medium text-gray-900"
               >
-                You may also like&hellip;
+                Sản phẩm bạn có thể thích &hellip;
               </h2>
 
               <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">

@@ -19,8 +19,7 @@ const deliveryMethods = [
 ];
 const paymentMethods = [
   { id: "credit-card", title: "Credit card" },
-  { id: "paypal", title: "PayPal" },
-  { id: "etransfer", title: "eTransfer" },
+  { id: "VNPAY", title: "VNPAY" },
 ];
 
 function classNames(...classes) {
@@ -37,6 +36,7 @@ const CheckOut = () => {
 
   const cart = useSelector((state) => state.cart);
   const [cartItems, setCartItems] = useState(cart.cartItems);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
 
   const orderState = useSelector((state) => state.newOrder);
   const { loading, order, error } = orderState;
@@ -45,6 +45,13 @@ const CheckOut = () => {
     (total, item) => total + item.price.$numberDecimal * item.quantity,
     0
   );
+
+  const value = totalPrice * 1000000;
+  const formattedValue = value.toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+
   const removeCartItemHandler = (_id) => {
     dispatch(removeCartItem({ productId: _id }));
   };
@@ -75,7 +82,15 @@ const CheckOut = () => {
       <div className="mx-auto max-w-2xl px-4 pt-16 pb-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="sr-only">Checkout</h2>
 
-        <form className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
+        <form
+          className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16"
+          action={
+            selectedPaymentMethod === "VNPAY"
+              ? "http://localhost:8080/order/create_payment_url"
+              : ""
+          }
+          method={selectedPaymentMethod === "VNPAY" ? "POST" : ""}
+        >
           <div>
             <div>
               <h2 className="text-lg font-medium text-gray-900">
@@ -296,107 +311,231 @@ const CheckOut = () => {
                 <div className="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-10">
                   {paymentMethods.map((paymentMethod, paymentMethodIdx) => (
                     <div key={paymentMethod.id} className="flex items-center">
-                      {paymentMethodIdx === 0 ? (
-                        <input
-                          id={paymentMethod.id}
-                          name="payment-type"
-                          type="radio"
-                          defaultChecked
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                      ) : (
-                        <input
-                          id={paymentMethod.id}
-                          name="payment-type"
-                          type="radio"
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                      )}
-
-                      <label
-                        htmlFor={paymentMethod.id}
-                        className="ml-3 block text-sm font-medium text-gray-700"
-                      >
+                      <input
+                        id={paymentMethod.id}
+                        name="payment-type"
+                        type="radio"
+                        defaultChecked={paymentMethodIdx === 0}
+                        className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                        onChange={() =>
+                          setSelectedPaymentMethod(paymentMethod.id)
+                        }
+                      />
+                      <label htmlFor={paymentMethod.id}>
                         {paymentMethod.title}
                       </label>
                     </div>
                   ))}
                 </div>
               </fieldset>
+              {selectedPaymentMethod === "credit-card" && (
+                <div className="mt-6 grid grid-cols-4 gap-y-6 gap-x-4">
+                  <div className="col-span-4">
+                    <label
+                      htmlFor="card-number"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Card number
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        type="text"
+                        id="card-number"
+                        name="card-number"
+                        autoComplete="cc-number"
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
 
-              <div className="mt-6 grid grid-cols-4 gap-y-6 gap-x-4">
-                <div className="col-span-4">
-                  <label
-                    htmlFor="card-number"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Card number
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      type="text"
-                      id="card-number"
-                      name="card-number"
-                      autoComplete="cc-number"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
+                  <div className="col-span-4">
+                    <label
+                      htmlFor="name-on-card"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Name on card
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        type="text"
+                        id="name-on-card"
+                        name="name-on-card"
+                        autoComplete="cc-name"
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="col-span-3">
+                    <label
+                      htmlFor="expiration-date"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Expiration date (MM/YY)
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        type="text"
+                        name="expiration-date"
+                        id="expiration-date"
+                        autoComplete="cc-exp"
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="cvc"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      CVC
+                    </label>
+                    <div className="mt-1">
+                      <input
+                        type="text"
+                        name="cvc"
+                        id="cvc"
+                        autoComplete="csc"
+                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      />
+                    </div>
                   </div>
                 </div>
-
-                <div className="col-span-4">
-                  <label
-                    htmlFor="name-on-card"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Name on card
-                  </label>
-                  <div className="mt-1">
+              )}
+              {/* VNPAY form */}
+              {selectedPaymentMethod === "VNPAY" && (
+                // <form
+                //   className="pt-3"
+                //   id="createOrder"
+                //   action="http://localhost:8080/order/create_payment_url"
+                //   method="POST"
+                //
+                <>
+                  <div className="form-group">
                     <input
-                      type="text"
-                      id="name-on-card"
-                      name="name-on-card"
-                      autoComplete="cc-name"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      className="form-control"
+                      id="amount"
+                      name="orderId"
+                      value={Math.random().toString(36).substring(2)}
+                      type="hidden"
                     />
                   </div>
-                </div>
-
-                <div className="col-span-3">
-                  <label
-                    htmlFor="expiration-date"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Expiration date (MM/YY)
-                  </label>
                   <div className="mt-1">
+                    <label
+                      className="block text-sm font-medium text-gray-700"
+                      style={{
+                        color: "black",
+                        fontWeight: "bold",
+                        fontSize: "17px",
+                      }}
+                    >
+                      Số tiền
+                    </label>
                     <input
-                      type="text"
-                      name="expiration-date"
-                      id="expiration-date"
-                      autoComplete="cc-exp"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      style={{ color: "black", fontWeight: "400" }}
+                      id="amount"
+                      name="amount"
+                      placeholder="Số tiền"
+                      className="block w-52 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                      value={parseInt(formattedValue.replace(/[^\d]/g, ""), 10)}
+                      readOnly
                     />
                   </div>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="cvc"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    CVC
-                  </label>
-                  <div className="mt-1">
-                    <input
-                      type="text"
-                      name="cvc"
-                      id="cvc"
-                      autoComplete="csc"
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                    />
+                  <div className="form-group">
+                    <label
+                      className="block text-sm font-medium text-gray-700"
+                      style={{
+                        color: "black",
+                        fontWeight: "bold",
+                        marginTop: "10px",
+                        fontSize: "17px",
+                      }}
+                    >
+                      Chọn Phương thức thanh toán:
+                    </label>
+                    <div className="controls grid">
+                      <label className="radio-inline">
+                        <input
+                          type="radio"
+                          name="bankCode"
+                          id="defaultPaymentMethod"
+                          value=""
+                          defaultChecked
+                        />{" "}
+                        Cổng thanh toán VNPAYQR
+                      </label>
+                      <label className="radio-inline">
+                        <input
+                          type="radio"
+                          name="bankCode"
+                          id="vnpayqrPaymentMethod"
+                          value="VNPAYQR"
+                        />{" "}
+                        Thanh toán qua ứng dụng hỗ trợ VNPAYQR
+                      </label>
+                      <label className="radio-inline">
+                        <input
+                          type="radio"
+                          name="bankCode"
+                          id="vnbankPaymentMethod"
+                          value="VNBANK"
+                        />{" "}
+                        Thanh toán qua ATM-Tài khoản ngân hàng nội địa
+                      </label>
+                      <label className="radio-inline">
+                        <input
+                          type="radio"
+                          name="bankCode"
+                          id="intcardPaymentMethod"
+                          value="INTCARD"
+                        />{" "}
+                        Thanh toán qua thẻ quốc tế
+                      </label>
+                    </div>
                   </div>
-                </div>
-              </div>
+
+                  <div className="form-group hidden">
+                    <label>Ngôn ngữ</label>
+                    <div className="controls">
+                      <label className="radio-inline">
+                        <input
+                          type="radio"
+                          name="language"
+                          id="vnLanguage"
+                          value="vn"
+                          defaultChecked
+                        />{" "}
+                        Tiếng việt
+                      </label>
+                      <label className="radio-inline">
+                        <input
+                          type="radio"
+                          name="language"
+                          id="enLanguage"
+                          value="en"
+                        />{" "}
+                        Tiếng anh
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* <MDBBtn
+                    color="primary"
+                    style={{
+                      marginTop: "15px",
+                      color: "white",
+                      backgroundColor: "#4138c2",
+                    }}
+                    className="btn btn-default"
+                    id="btnPopup"
+                    type="submit"
+                  >
+                    Thanh toán
+                  </MDBBtn> */}
+                  {/* </form> */}
+                </>
+              )}
             </div>
           </div>
 
@@ -444,7 +583,7 @@ const CheckOut = () => {
 
                       <div className="flex flex-1 items-end justify-between pt-2">
                         <p className="mt-1 text-sm font-medium text-gray-900">
-                          {cartItems[key].price.$numberDecimal}.000đ
+                          {cartItems[key].price.$numberDecimal}
                         </p>
 
                         <div className="ml-4">
@@ -468,7 +607,7 @@ const CheckOut = () => {
                 <div className="flex items-center justify-between">
                   <dt className="text-sm">Subtotal</dt>
                   <dd className="text-sm font-medium text-gray-900">
-                    {totalPrice.toFixed(3)}đ
+                    {formattedValue}
                   </dd>
                 </div>
                 <div className="flex items-center justify-between">
@@ -482,16 +621,18 @@ const CheckOut = () => {
                 <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                   <dt className="text-base font-medium">Total</dt>
                   <dd className="text-base font-medium text-gray-900">
-                    {totalPrice.toFixed(3)}đ
+                    {formattedValue}
                   </dd>
                 </div>
               </dl>
 
               <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                 <MDBBtn
-                  type="button"
+                  type={selectedPaymentMethod === "VNPAY" ? "submit" : "button"}
                   className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                  onClick={submitOrder}
+                  onClick={
+                    selectedPaymentMethod !== "VNPAY" ? submitOrder : undefined
+                  }
                 >
                   Xác nhận đặt hàng
                 </MDBBtn>
@@ -500,99 +641,6 @@ const CheckOut = () => {
           </div>
         </form>
       </div>
-      <form
-        id="createOrder"
-        action="http://localhost:8080/order/create_payment_url"
-        method="POST"
-      >
-        <div className="form-group">
-          <input
-            className="form-control"
-            id="amount"
-            name="orderId"
-            value={Math.random().toString(36).substring(2)}
-            type="hidden"
-          />
-        </div>
-        <div className="form-group">
-          <label>Số tiền</label>
-          <input
-            className="form-control"
-            id="amount"
-            name="amount"
-            placeholder="Số tiền"
-            value={totalPrice.toFixed(0)}
-            readOnly
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Chọn Phương thức thanh toán:</label>
-          <div className="controls">
-            <label className="radio-inline">
-              <input
-                type="radio"
-                name="bankCode"
-                id="defaultPaymentMethod"
-                value=""
-                defaultChecked
-              />{" "}
-              Cổng thanh toán VNPAYQR
-            </label>
-            <label className="radio-inline">
-              <input
-                type="radio"
-                name="bankCode"
-                id="vnpayqrPaymentMethod"
-                value="VNPAYQR"
-              />{" "}
-              Thanh toán qua ứng dụng hỗ trợ VNPAYQR
-            </label>
-            <label className="radio-inline">
-              <input
-                type="radio"
-                name="bankCode"
-                id="vnbankPaymentMethod"
-                value="VNBANK"
-              />{" "}
-              Thanh toán qua ATM-Tài khoản ngân hàng nội địa
-            </label>
-            <label className="radio-inline">
-              <input
-                type="radio"
-                name="bankCode"
-                id="intcardPaymentMethod"
-                value="INTCARD"
-              />{" "}
-              Thanh toán qua thẻ quốc tế
-            </label>
-          </div>
-        </div>
-
-        <div className="form-group">
-          <label>Ngôn ngữ</label>
-          <div className="controls">
-            <label className="radio-inline">
-              <input
-                type="radio"
-                name="language"
-                id="vnLanguage"
-                value="vn"
-                defaultChecked
-              />{" "}
-              Tiếng việt
-            </label>
-            <label className="radio-inline">
-              <input type="radio" name="language" id="enLanguage" value="en" />{" "}
-              Tiếng anh
-            </label>
-          </div>
-        </div>
-
-        <button className="btn btn-default" id="btnPopup" type="submit">
-          Thanh toán
-        </button>
-      </form>
     </div>
   );
 };

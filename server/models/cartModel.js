@@ -11,7 +11,7 @@ const cartSchema = new Schema(
           required: true,
         },
         quantity: { type: Number, default: 1 },
-        // price: { type: Schema.Types.Decimal128, required: true },
+        price: { type: Schema.Types.Decimal128, required: true },
       },
     ],
   },

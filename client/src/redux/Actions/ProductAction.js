@@ -14,11 +14,10 @@ import { port } from "../../Utils/Util";
 
 const listProduct =
   (keyword = "", currentPage = 1, resPerPage = 8, price, category, sort) =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: PRODUCT_LIST_REQUEST });
+  (dispatch) => {
+    dispatch({ type: PRODUCT_LIST_REQUEST });
 
-      //filter, sort, pagenation
+    return new Promise((resolve, reject) => {
       let link = `/product?resPerPage=${resPerPage}&page=${currentPage}`;
       if (keyword) {
         link = `/product?resPerPage=${resPerPage}&keyword=${keyword}&page=${currentPage}`;
@@ -32,21 +31,27 @@ const listProduct =
       if (sort === "price") {
         link += "&sort=price";
       }
-      const { data } = await axios.get(port + link);
 
-      dispatch({
-        type: PRODUCT_LIST_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: PRODUCT_LIST_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
-      });
-    }
+      axios
+        .get(port + link)
+        .then(({ data }) => {
+          dispatch({
+            type: PRODUCT_LIST_SUCCESS,
+            payload: data,
+          });
+          resolve();
+        })
+        .catch((error) => {
+          dispatch({
+            type: PRODUCT_LIST_FAIL,
+            payload:
+              error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+          });
+          reject();
+        });
+    });
   };
 
 const detailProduct = (slug) => async (dispatch) => {

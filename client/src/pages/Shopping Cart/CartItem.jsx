@@ -20,6 +20,18 @@ const CartItem = (props) => {
     props.decreaseQty(_id, quantity - 1);
   };
   const priceNumber = Number(price.$numberDecimal);
+  const value = priceNumber * 1000000;
+  const formattedValue = value.toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+  const numericValue = parseInt(formattedValue.replace(/[^\d]/g, ""));
+  const totalPrice = numericValue * quantity;
+  const formattedTotalPrice = totalPrice.toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+
   return (
     <div>
       <ul
@@ -53,7 +65,7 @@ const CartItem = (props) => {
                   style={{ fontSize: "18px" }}
                   className="mt-1 text-sm font-medium text-gray-900"
                 >
-                  {priceNumber.toFixed(3)}đ
+                  {formattedValue}
                 </p>
               </div>
               {props.showButtons && (
@@ -126,7 +138,7 @@ const CartItem = (props) => {
                 style={{ fontSize: "22px" }}
                 className="relative left-64 top-10 text-right text-sm font-medium text-gray-900"
               >
-                {(priceNumber * quantity).toFixed(3)}đ
+                {formattedTotalPrice}
               </div>
             </div>
           </div>

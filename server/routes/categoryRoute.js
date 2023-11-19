@@ -19,7 +19,7 @@ router.get("/:slug", getCategoryByName);
 router.post("/create-category", requiredSignin, isAdmin, createCategory);
 
 // UPDATE a category by ID
-router.patch("/:id", updateCategoryById);
+router.patch("/:_id", updateCategoryById);
 
 // DELETE a category
 router.delete("/:id", deleteCategory);

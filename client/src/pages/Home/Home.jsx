@@ -10,12 +10,7 @@ import { listProduct } from "../../redux/Actions/ProductAction";
 
 // import Sidebar from "../Header/Sidebar";
 
-const images = [
-  "images/catbanner-01.jpg",
-  "images/catbanner-02.jpg",
-  "images/catbanner-03.jpg",
-  "images/catbanner-04.jpg",
-];
+const images = ["images/Sale1.jpg", "images/Sale2.jpg"];
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -39,11 +34,11 @@ const Home = () => {
               <div className="main-banner position-relative p-3">
                 <div className="img-fluid rounded-3">
                   <Zoom scale={0.4} duration={1200}>
-                    {products.map((each) => (
+                    {images.map((each, index) => (
                       <img
-                        key={products._id}
-                        style={{ width: "100%" }}
-                        src={each?.proImg?.[0]?.img}
+                        key={index}
+                        style={{ width: "100%", borderRadius: "15px" }}
+                        src={each}
                       />
                     ))}
                   </Zoom>
@@ -61,43 +56,47 @@ const Home = () => {
                   <div className="small-banner-content position-absolute">
                     <h4>BEST SALE</h4>
                     <h5>LapTops Max</h5>
-                    <p>From 22.499.000 or 28.499.000 </p>
+                    <p className="price">Từ 22.499.000 </p>
+                    <p className="price">đến 28.499.000</p>
                   </div>
                 </div>
                 <div className="small-banner position-relative p-3">
                   <img
-                    src="images/catbanner-02.jpg "
+                    src="images/catbanner-02.jpg"
                     className="img-fluid rounded-3"
                     alt="main banner"
                   />
                   <div className="small-banner-content position-absolute">
                     <h4>NEW ARRIVAL</h4>
-                    <h5>BUY IPad</h5>
-                    <p>From 22.499.000 or 28.499.000 </p>
+                    <h5>Buy KeyBoard</h5>
+                    <p className="price">Từ 2.499.000 </p>
+                    <p className="price">đến 5.499.000</p>
                   </div>
                 </div>
                 <div className="small-banner position-relative p-3">
                   <img
-                    src="images/catbanner-03.jpg "
+                    src="images/catbanner-03.jpg"
                     className="img-fluid rounded-3"
                     alt="main banner"
                   />
                   <div className="small-banner-content position-absolute">
                     <h4>NEW ARRIVAL</h4>
-                    <h5>Buy IPad Air</h5>
-                    <p>From 22.499.000 or 28.499.000 </p>
+                    <h5>Buy Display</h5>
+                    <p className="price">Từ 5.499.000</p>
+                    <p className="price"> đến 8.499.000 </p>
                   </div>
                 </div>
                 <div className="small-banner position-relative p-3">
                   <img
-                    src="images/catbanner-04.jpg "
+                    src="images/catbanner-04.jpg"
                     className="img-fluid rounded-3"
                     alt="main banner"
                   />
                   <div className="small-banner-content position-absolute">
                     <h4>NEW ARRIVAL</h4>
-                    <h5>BUY IPad</h5>
-                    <p>From 22.499.000 or 28.499.000 </p>
+                    <h5>B Mouse</h5>
+                    <p className="price">Từ 1.499.000</p>
+                    <p className="price"> đến 2.499.000 </p>
                   </div>
                 </div>
               </div>
@@ -215,7 +214,10 @@ const Home = () => {
           <div className="container-xxl">
             <Link className="box">
               <div className="img_box">
-                <img src="images/manhinh.png" alt="Laptop"></img>
+                <img
+                  src="images/Gigabyte_aorus_17_ehxepu.png"
+                  alt="Laptop"
+                ></img>
                 <div className="detail">
                   <p>Laptop</p>
                 </div>
@@ -289,60 +291,70 @@ const Home = () => {
               <h3 className="section-heading">Laptop</h3>
             </div>
 
-            {products.map((product) => (
-              <div className="col-3" key={product._id}>
-                <div
-                  className="product-card position-relative"
-                  onClick={() => handleClick(product.slug)}
-                >
-                  <div className="wishlist-icon position-absolute">
-                    <Link>
-                      <img src="images/wish.svg" alt="wishlist" />
-                    </Link>
-                  </div>
-                  <div className="product-image">
-                    <img
-                      src={product.proImg[0]?.img}
-                      className="img-fluid"
-                      alt="product image"
-                    />
-                    <img
-                      src="images/laptop2.png"
-                      className="img-lfuid"
-                      alt="product image"
-                    />
-                  </div>
-                  <div className="product-details">
-                    <h6 className="brand">{product.name}</h6>
-                    <h5 className="product-title">{product.description}</h5>
-                    <ReactStarts
-                      count={5}
-                      size={24}
-                      value="3"
-                      edit={false}
-                      activeColor="#ffd700"
-                    />
-                    <p className="price">
-                      {" "}
-                      {product.price && product.price.$numberDecimal}
-                    </p>
-                  </div>
-                  <div className="action-bar position-absolute">
-                    <div className="d-flex flex-column gap-15">
+            {products.map((product) => {
+              const priceNumber = parseFloat(product.price.$numberDecimal);
+              const value = priceNumber * 1000000;
+              const formattedValue = value.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              });
+              return (
+                <div className="col-3" key={product._id}>
+                  <div
+                    className="product-card position-relative lg:h-full"
+                    onClick={() => handleClick(product.slug)}
+                  >
+                    <div className="wishlist-icon position-absolute">
                       <Link>
-                        <img src="images/prodcompare.svg" alt="compare" />
+                        <img src="images/wish.svg" alt="wishlist" />
                       </Link>
-                      <Link>
-                        <img src="images/view.svg" alt="view" />
-                      </Link>
-                      <Link>
-                        <img src="images/add-cart.svg" alt="addcart" />
-                      </Link>
+                    </div>
+                    <div className="product-image">
+                      <img
+                        src={product.proImg[0]?.img}
+                        className="img-fluid"
+                        alt="product image"
+                      />
+                      <img
+                        src={product.proImg[1]?.img}
+                        className="img-lfuid"
+                        alt="product image"
+                      />
+                    </div>
+                    <div className="product-details">
+                      <h6
+                        className="brand font-medium"
+                        style={{ fontSize: "17px" }}
+                      >
+                        {product.name}
+                      </h6>
+                      <h5 className="product-title">{product.description}</h5>
+                      <ReactStarts
+                        count={5}
+                        size={24}
+                        value="3"
+                        edit={false}
+                        activeColor="#ffd700"
+                      />
+                      <p className="price"> {formattedValue}</p>
+                    </div>
+                    <div className="action-bar position-absolute">
+                      <div className="d-flex flex-column gap-15">
+                        <Link>
+                          <img src="images/prodcompare.svg" alt="compare" />
+                        </Link>
+                        <Link>
+                          <img src="images/view.svg" alt="view" />
+                        </Link>
+                        <Link>
+                          <img src="images/add-cart.svg" alt="addcart" />
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

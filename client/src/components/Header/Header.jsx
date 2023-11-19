@@ -299,6 +299,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategory } from "../../redux/Actions/CategoryAction";
 import { logout } from "../../redux/Actions/UserAction";
 import { Link, useNavigate } from "react-router-dom";
+import { listProduct } from "../../redux/Actions/ProductAction";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -520,6 +521,32 @@ const Header = () => {
               </div>
 
               {/* Flyout menus */}
+              <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
+                <div className="flex h-full space-x-8">
+                  <Popover className="flex">
+                    <div className="relative flex">
+                      <Link
+                        to="#"
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          try {
+                            dispatch(listProduct("", 1, 8, 0, "", ""));
+                            navigate("/products");
+                          } catch (err) {
+                            console.log(err);
+                            // Handle error
+                          }
+                        }}
+                        className={
+                          "border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                        }
+                      >
+                        Tất cả
+                      </Link>
+                    </div>
+                  </Popover>
+                </div>
+              </Popover.Group>
               {categoryList.map((item) => (
                 <Popover.Group
                   className="hidden lg:ml-8 lg:block lg:self-stretch"
@@ -529,25 +556,24 @@ const Header = () => {
                     <Popover className="flex">
                       <div className="relative flex">
                         <Link
-                          to={`/search/${item.name}`}
+                          to="#"
+                          onClick={async (e) => {
+                            e.preventDefault();
+                            try {
+                              dispatch(listProduct("", 1, 8, 0, item._id, ""));
+                              navigate("/products");
+                            } catch (error) {
+                              console.log(error);
+                            }
+                          }}
                           className={
-                            "border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600  hover: text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                            "border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                           }
                         >
                           {item.name}
                         </Link>
                       </div>
                     </Popover>
-
-                    {/* {navigation.pages.map((page) => (
-                    <a
-                      key={page.name}
-                      href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
-                    >
-                      {page.name}
-                    </a>
-                  ))} */}
                   </div>
                 </Popover.Group>
               ))}

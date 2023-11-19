@@ -79,7 +79,8 @@ const getCategoryByName = async (req, res) => {
 };
 
 const updateCategoryById = asyncHandler(async (req, res) => {
-  const { _id, name, parentId, type } = req.body;
+  const { _id } = req.params;
+  const { name, parentId, type } = req.body;
   const updatedCategories = [];
   if (name instanceof Array) {
     for (let i = 0; i < name.length; i++) {
@@ -96,20 +97,22 @@ const updateCategoryById = asyncHandler(async (req, res) => {
         category,
         { new: true }
       );
+      console.log(updatedCategory);
       updatedCategories.push(updatedCategory);
     }
     return res.status(201).json({ updateCategories: updatedCategories });
   } else {
-    const category = {
-      name,
-      type,
-    };
+    const category = req.body;
+    if (name) {
+      category.slug = slugify(name);
+    }
     if (parentId !== "") {
       category.parentId = parentId;
     }
     const updatedCategory = await Category.findOneAndUpdate({ _id }, category, {
       new: true,
     });
+    console.log(updatedCategory);
     return res.status(201).json({ updatedCategory });
   }
 });

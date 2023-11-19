@@ -1,5 +1,6 @@
 import Cart from "../models/cartModel.js";
 import asyncHandler from "express-async-handler";
+import Product from "../models/productModel.js";
 
 const runUpdate = asyncHandler(async (condition, update) => {
   try {
@@ -18,36 +19,64 @@ export const addItemToCart = asyncHandler(async (req, res) => {
   if (cart) {
     let promiseArray = [];
 
-    req.body.cartItems.forEach((cartItem) => {
-      const product = cartItem.product;
-      const item = cart.cartItems.find((c) => c.product == product);
+    for (let cartItem of req.body.cartItems) {
+      const product = await Product.findById(cartItem.product);
+      if (!product) {
+        return res.status(400).json({ message: "Product not found" });
+      }
+
+      const item = cart.cartItems.find(
+        (c) => c.product.toString() === product._id.toString()
+      );
       let condition, update;
       if (item) {
         condition = {
           user: req.user._id,
-          cartItems: { $elemMatch: { product } },
+          cartItems: { $elemMatch: { product: product._id } },
         };
         update = {
           $inc: { "cartItems.$.quantity": cartItem.quantity },
+          $set: {
+            "cartItems.$.price":
+              product.price * (item.quantity + cartItem.quantity),
+          }, // update the price
         };
       } else {
         condition = { user: req.user._id };
         update = {
           $push: {
-            cartItems: cartItem,
+            cartItems: {
+              product: product._id,
+              quantity: cartItem.quantity,
+              price: product.price * cartItem.quantity, // calculate the price
+            },
           },
         };
       }
       promiseArray.push(runUpdate(condition, update));
-    });
+    }
 
     Promise.all(promiseArray)
       .then((response) => res.status(201).json({ response }))
       .catch((error) => res.status(400).json({ error }));
   } else {
+    const cartItemsWithPrice = await Promise.all(
+      req.body.cartItems.map(async (item) => {
+        const product = await Product.findById(item.product);
+        if (!product) {
+          return res.status(400).json({ message: "Product not found" });
+        }
+        return {
+          product: product._id,
+          quantity: item.quantity,
+          price: product.price * item.quantity, // calculate the price
+        };
+      })
+    );
+
     const cart = new Cart({
       user: req.user._id,
-      cartItems: req.body.cartItems,
+      cartItems: cartItemsWithPrice,
     });
 
     const newCart = await cart.save();

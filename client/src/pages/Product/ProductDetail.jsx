@@ -1,14 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Disclosure, Tab } from "@headlessui/react";
 import { HeartIcon, MinusIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { StarIcon } from "@heroicons/react/20/solid";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { detailProduct } from "../../redux/Actions/ProductAction";
 import MoonLoader from "react-spinners/MoonLoader";
 import { MDBBtn } from "mdb-react-ui-kit";
 import { addToCart } from "../../redux/Actions/CartAction";
 import toast from "react-hot-toast";
+import axios from "axios";
+import { port } from "../../Utils/Util";
+
 const product = {
   name: "Zip Tote Basket",
   price: "$140",
@@ -72,53 +75,53 @@ const product = {
     // More sections...
   ],
 };
-const relatedProducts = [
-  {
-    id: 1,
-    name: "Zip Tote Basket",
-    color: "White and black",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
-    imageAlt:
-      "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    price: "$140",
-  },
-  {
-    id: 2,
-    name: "Zip Tote Basket",
-    color: "White and black",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
-    imageAlt:
-      "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    price: "$140",
-  },
-  {
-    id: 3,
-    name: "Zip Tote Basket",
-    color: "White and black",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
-    imageAlt:
-      "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    price: "$140",
-  },
-  {
-    id: 4,
-    name: "Zip Tote Basket",
-    color: "White and black",
-    href: "#",
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
-    imageAlt:
-      "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
-    price: "$140",
-  },
-  // More products...
-];
+// const relatedProducts = [
+//   {
+//     id: 1,
+//     name: "Zip Tote Basket",
+//     color: "White and black",
+//     href: "#",
+//     imageSrc:
+//       "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
+//     imageAlt:
+//       "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
+//     price: "$140",
+//   },
+//   {
+//     id: 2,
+//     name: "Zip Tote Basket",
+//     color: "White and black",
+//     href: "#",
+//     imageSrc:
+//       "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
+//     imageAlt:
+//       "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
+//     price: "$140",
+//   },
+//   {
+//     id: 3,
+//     name: "Zip Tote Basket",
+//     color: "White and black",
+//     href: "#",
+//     imageSrc:
+//       "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
+//     imageAlt:
+//       "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
+//     price: "$140",
+//   },
+//   {
+//     id: 4,
+//     name: "Zip Tote Basket",
+//     color: "White and black",
+//     href: "#",
+//     imageSrc:
+//       "https://tailwindui.com/img/ecommerce-images/product-page-03-related-product-01.jpg",
+//     imageAlt:
+//       "Front of zip tote bag with white canvas, black canvas straps and handle, and black zipper pulls.",
+//     price: "$140",
+//   },
+//   // More products...
+// ];
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -127,14 +130,52 @@ function classNames(...classes) {
 const ProductDetail = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, products } = productDetails;
+
+  const [relatedProducts, setRelatedProducts] = useState([]);
+
+  const getRelatedProducts = async (currentProductCategory) => {
+    // Fetch all products
+    const response = await axios.get(`${port}/product`);
+    const allProducts = Object.values(response.data.products);
+    // console.log(allProducts);
+    // Filter out products that match the current product's category
+    const relatedProducts = allProducts.filter(
+      (product) => product.category?._id === currentProductCategory
+    );
+    console.log("relatedProducts:" + relatedProducts);
+    return relatedProducts;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (products) {
+        // Only run if products is defined
+        const currentProductCategory = products.category?._id;
+        const data = await getRelatedProducts(currentProductCategory);
+        setRelatedProducts(data);
+      }
+    };
+
+    fetchData();
+  }, [products]);
 
   useEffect(() => {
     dispatch(detailProduct(slug));
   }, [dispatch, slug]);
 
+  // Chỉnh giá theo VND
+  let priceNumber, value, formattedValue;
+  if (products && products.price) {
+    priceNumber = parseFloat(products.price.$numberDecimal);
+    value = priceNumber * 1000000;
+    formattedValue = value.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+  }
   return (
     <div>
       {loading ? (
@@ -208,8 +249,12 @@ const ProductDetail = () => {
                   <div className="mt-3">
                     <h2 className="sr-only">Product information</h2>
                     <p className="text-3xl tracking-tight text-gray-900">
-                      {products.price && products.price.$numberDecimal}
-                      <span className="font-medium text-gray-500">VNĐ</span>
+                      {/* {products.price && products.price.$numberDecimal
+                        ? parseFloat(products.price.$numberDecimal).toFixed(3)
+                        : ""}
+                      .000đ */}
+                      {formattedValue}
+                      {/* <span className="font-medium text-gray-500">VNĐ</span> */}
                     </p>
                   </div>
 
@@ -330,23 +375,23 @@ const ProductDetail = () => {
                               >
                                 <ul role="list">
                                   <span className="bold">CPU:</span>{" "}
-                                  {products.richDescription?.cpu}
+                                  {products.richdescription?.cpu}
                                 </ul>
                                 <ul role="list">
                                   <span className="bold">RAM: </span>{" "}
-                                  {products.richDescription?.ram}
+                                  {products.richdescription?.ram}
                                 </ul>
                                 <ul role="list">
                                   <span className="bold">VGA:</span>{" "}
-                                  {products.richDescription?.vga}
+                                  {products.richdescription?.vga}
                                 </ul>
                                 <ul role="list">
                                   <span className="bold"> Ổ cứng: </span>
-                                  {products.richDescription?.ssd}
+                                  {products.richdescription?.ssd}
                                 </ul>
                                 <ul role="list">
                                   <span className="bold">Màn hình:</span>
-                                  {products.richDescription?.display}
+                                  {products.richdescription?.display}
                                 </ul>
                               </Disclosure.Panel>
                             </>
@@ -366,16 +411,23 @@ const ProductDetail = () => {
                   id="related-heading"
                   className="text-xl font-bold text-gray-900"
                 >
-                  Customers also bought
+                  Sản phẩm liên quan:
                 </h2>
 
                 <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
                   {relatedProducts.map((product) => (
-                    <div key={product.id}>
+                    <div
+                      key={product._id}
+                      className="group relative
+
+                    
+                      "
+                      onClick={() => navigate(`/products/${product.slug}`)}
+                    >
                       <div className="relative">
                         <div className="relative h-72 w-full overflow-hidden rounded-lg">
                           <img
-                            src={product.imageSrc}
+                            src={product.proImg[0]?.img}
                             alt={product.imageAlt}
                             className="h-full w-full object-cover object-center"
                           />
@@ -384,9 +436,6 @@ const ProductDetail = () => {
                           <h3 className="text-sm font-medium text-gray-900">
                             {product.name}
                           </h3>
-                          <p className="mt-1 text-sm text-gray-500">
-                            {product.color}
-                          </p>
                         </div>
                         <div className="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
                           <div
@@ -394,18 +443,39 @@ const ProductDetail = () => {
                             className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"
                           />
                           <p className="relative text-lg font-semibold text-white">
-                            {product.price}
+                            {formattedValue}
                           </p>
                         </div>
                       </div>
                       <div className="mt-6">
-                        <a
-                          href={product.href}
-                          className="relative flex items-center justify-center rounded-md border border-transparent bg-gray-100 py-2 px-8 text-sm font-medium text-gray-900 hover:bg-gray-200"
+                        <MDBBtn
+                          onClick={() => {
+                            const { _id, name, price } = product;
+                            const img = product.proImg[0]?.img;
+                            const rs = dispatch(
+                              addToCart({ _id, name, price, img })
+                            );
+                            if (rs) {
+                              toast.success("Đã thêm vào giỏ hàng");
+                            } else {
+                              toast.error("Lỗi!!!");
+                            }
+                          }}
+                          className="flex max-w-xs flex-1 items-center justify-center rounded-md 
+                          border border-transparent bg-indigo-600 py-3 px-8 text-base 
+                          font-medium text-white hover:bg-indigo-700 focus:outline-none
+                           focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 
+                           focus:ring-offset-gray-50 sm:w-full sm:h-10"
+                          color="white"
+                          style={{
+                            color: "white",
+                            backgroundColor: "#4138c2",
+                            fontSize: "15px",
+                          }}
                         >
-                          Add to bag
+                          Thêm vào giỏ hàng
                           <span className="sr-only">, {product.name}</span>
-                        </a>
+                        </MDBBtn>
                       </div>
                     </div>
                   ))}
