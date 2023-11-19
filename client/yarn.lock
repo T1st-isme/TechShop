@@ -2478,6 +2478,11 @@
   resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
+"@tweenjs/tween.js@^18.6.4":
+  version "18.6.4"
+  resolved "https://registry.yarnpkg.com/@tweenjs/tween.js/-/tween.js-18.6.4.tgz#40a3d0a93647124872dec8e0fd1bd5926695b6ca"
+  integrity sha512-lB9lMjuqjtuJrx7/kOkqQBtllspPIN+96OvTCeJ2j5FEzinoAXTdAMFnDAQT1KVPRlnYfBrqxtqP66vDM40xxQ==
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.14":
   version "7.20.2"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.20.2.tgz#215db4f4a35d710256579784a548907237728756"
@@ -8832,6 +8837,11 @@ react-fast-compare@^3.0.1, react-fast-compare@^3.1.1:
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-3.2.2.tgz#929a97a532304ce9fee4bcae44234f1ce2c21d49"
   integrity sha512-nsO+KSNgo1SbJqJEYRE9ERzo7YtYbou/OqjSQKxV7jcKox7+usiUVZOAC+XnDOABXggQTno0Y1CpVnuWEc1boQ==
 
+react-fast-marquee@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/react-fast-marquee/-/react-fast-marquee-1.6.2.tgz#86d4d86af4e9624129d852921dde1dce1a4f1604"
+  integrity sha512-bXUuW1r+Yzd8ZjsPmMDy8WJMubHAZd/7n0W/IzUQHtd0iBfxWohP6hzCFnEHWMCOtC9wxSAq/BiEnig4kdI2Vw==
+
 react-helmet@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/react-helmet/-/react-helmet-6.1.0.tgz#a750d5165cb13cf213e44747502652e794468726"
@@ -8920,6 +8930,11 @@ react-query@^3.32.1:
     "@babel/runtime" "^7.5.5"
     broadcast-channel "^3.4.1"
     match-sorter "^6.0.2"
+
+react-rating-stars-component@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-rating-stars-component/-/react-rating-stars-component-2.2.0.tgz#e947c6a1f59278e6fea1098453f43cb15d077c14"
+  integrity sha512-A3lgLxumfFQQicKQmxacZ91fq/zRaVWlCPnVodJmJV6obvod4/yCotetN9WuyBiUfnKsEFDBo/8B85ocwmL7ng==
 
 react-redux@^8.1.3:
   version "8.1.3"
@@ -9027,6 +9042,14 @@ react-side-effect@^2.1.0:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/react-side-effect/-/react-side-effect-2.1.2.tgz#dc6345b9e8f9906dc2eeb68700b615e0b4fe752a"
   integrity sha512-PVjOcvVOyIILrYoyGEpDN3vmYNLdy1CajSFNt4TDsVQC5KpTijDvWVoR+/7Rz2xT978D8/ZtFceXxzsPwZEDvw==
+
+react-slideshow-image@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/react-slideshow-image/-/react-slideshow-image-4.3.0.tgz#6939fbd05a66addb55faddd4d736f64692e15a7d"
+  integrity sha512-SPiZtZRcBYAtin5Nva5ZgnLlMQHCcccBInkJ2Q8PEBBBMGhXZgSlAm+3VoMDjKUWYfNjTN3gEL6y+SrBzBeLXQ==
+  dependencies:
+    "@tweenjs/tween.js" "^18.6.4"
+    resize-observer-polyfill "^1.5.1"
 
 react-spinners@^0.13.8:
   version "0.13.8"
@@ -9245,6 +9268,11 @@ reselect@^4.1.8:
   version "4.1.8"
   resolved "https://registry.yarnpkg.com/reselect/-/reselect-4.1.8.tgz#3f5dc671ea168dccdeb3e141236f69f02eaec524"
   integrity sha512-ab9EmR80F/zQTMNeneUr4cv+jSwPJgIlvEmVwLerwrWVbpLlBuls9XHzIeTFy4cegU2NHBp3va0LKOzU5qFEYQ==
+
+resize-observer-polyfill@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
+  integrity sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
 
 resolve-cwd@^3.0.0:
   version "3.0.0"

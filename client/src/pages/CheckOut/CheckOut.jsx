@@ -1,8 +1,8 @@
-import { useEffect, useState, ButtonHTMLAttributes as Button } from "react";
+import { useEffect, useState } from "react";
 import { RadioGroup } from "@headlessui/react";
 import { CheckCircleIcon, TrashIcon } from "@heroicons/react/20/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { getCartItems, removeCartItem } from "../../redux/Actions/CartAction";
+import { removeCartItem } from "../../redux/Actions/CartAction";
 import { createOrder } from "../../redux/Actions/OrderAction";
 import { useNavigate } from "react-router-dom";
 import { MDBBtn } from "mdb-react-ui-kit";

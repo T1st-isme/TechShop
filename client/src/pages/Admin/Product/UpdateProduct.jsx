@@ -91,7 +91,7 @@ const UpdateProduct = () => {
                       type="text"
                       id="price_field"
                       className="form-control"
-                      value={priceNumber}
+                      value={priceNumber.toString()}
                       onChange={(e) => setPrice(e.target.value)}
                     />
                   </div>

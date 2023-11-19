@@ -13,15 +13,15 @@ import {
 import { port } from "../../Utils/Util";
 
 const listProduct =
-  (keyword = "", currentPage = 1, price, category, sort) =>
+  (keyword = "", currentPage = 1, resPerPage = 8, price, category, sort) =>
   async (dispatch) => {
     try {
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
       //filter, sort, pagenation
-      let link = `/product?page=${currentPage}`;
+      let link = `/product?resPerPage=${resPerPage}&page=${currentPage}`;
       if (keyword) {
-        link = `/product?keyword=${keyword}&page=${currentPage}`;
+        link = `/product?resPerPage=${resPerPage}&keyword=${keyword}&page=${currentPage}`;
       }
       if (category) {
         link += `&category=${category}`;
@@ -32,7 +32,6 @@ const listProduct =
       if (sort === "price") {
         link += "&sort=price";
       }
-
       const { data } = await axios.get(port + link);
 
       dispatch({

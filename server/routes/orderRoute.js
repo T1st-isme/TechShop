@@ -7,6 +7,10 @@ import path from "path";
 import crypto from "crypto";
 import express from "express";
 const router = express.Router();
+import { userModels } from "../models/userModel.js";
+import Product from "../models/productModel.js";
+import Cart from "../models/cartModel.js";
+import Order from "../models/orderModel.js";
 import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
 import {
   addOrder,
@@ -108,7 +112,7 @@ router.post("/create_payment_url", function (req, res, next) {
   res.redirect(vnpUrl);
 });
 
-router.get("/vnpay_return", function (req, res, next) {
+router.get("/vnpay_return", async function (req, res, next) {
   let vnp_Params = req.query;
 
   let secureHash = vnp_Params["vnp_SecureHash"];
@@ -129,8 +133,37 @@ router.get("/vnpay_return", function (req, res, next) {
     //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
     if (vnp_Params["vnp_ResponseCode"] == "00") {
       let status = "ok";
-      res.redirect(`http://localhost:5173/order-success`);
-    } else res.redirect(`http://localhost:5173/error-payment`);
+      try {
+        let user = JSON.parse(req.cookies.user);
+        console.log(user._id); // Clear cart
+        const cart = await Cart.findOne({ user: user._id });
+        console.log(cart);
+        // Save order to database
+        const order = new Order({
+          totalPrice: vnp_Params["vnp_Amount"],
+          items: cart.cartItems.map((item) => ({
+            productId: item.product,
+            purchasedQty: item.quantity,
+            payablePrice: item.price * item.quantity,
+          })),
+          user: user._id,
+          paymentType: "VNPAY PAYMENT",
+        });
+
+        await order.save();
+        await Cart.deleteOne({ user: user._id }).exec();
+
+        // Redirect to the success page
+        res.redirect(`http://localhost:5173/order-success`);
+      } catch (error) {
+        // Handle error when saving order and clearing cart
+        console.error(error);
+        res.redirect(`http://localhost:5173/error-payment`);
+      }
+    } else {
+      // Payment failed
+      res.redirect(`http://localhost:5173/error-payment`);
+    }
   } else {
     res.send("success", { code: "97" });
   }

@@ -81,8 +81,10 @@ const ProductList = () => {
   } = productList;
 
   useEffect(() => {
-    dispatch(listProduct(keyword, currentPage, price, category, sort));
-  }, [dispatch, keyword, currentPage, price, category, sort]);
+    dispatch(
+      listProduct(keyword, currentPage, resPerPage, price, category, sort)
+    );
+  }, [dispatch, keyword, currentPage, resPerPage, price, category, sort]);
 
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);

@@ -68,6 +68,7 @@ const addOrder = asyncHandler(async (req, res) => {
 
   const products = await Product.find({ _id: { $in: productIds } }).exec();
 
+  //check stock
   let hasEnoughStock = true;
   cartItems.forEach((item) => {
     const product = products.find(

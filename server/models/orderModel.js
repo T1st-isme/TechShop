@@ -30,11 +30,11 @@ const orderSchema = new Schema({
   paymentStatus: {
     type: String,
     enum: ["pending", "completed", "cancelled", "refund"],
-    required: true,
   },
   paymentType: {
     type: String,
-    enum: ["cod", "card"],
+    enum: ["COD", "VNPAY PAYMENT"],
+    default: "COD",
     required: true,
   },
   orderStatus: {

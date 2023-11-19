@@ -54,7 +54,7 @@
 //Protected Routes
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import Home from "./pages/Home.jsx";
+import Home from "./pages/Home/Home.jsx";
 import ProductList from "./pages/Product/ProductList.jsx";
 import Register from "./pages/Auth/Register/Register";
 import Login from "./pages/Auth/Login/Login";
