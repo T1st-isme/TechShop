@@ -254,7 +254,6 @@ const ProductDetail = () => {
                   <h1 className="text-3xl font-bold tracking-tight text-gray-900">
                     {products.name}
                   </h1>
-
                   <div className="mt-3">
                     <h2 className="sr-only">Product information</h2>
                     <p className="text-3xl tracking-tight text-gray-900">
@@ -266,7 +265,6 @@ const ProductDetail = () => {
                       {/* <span className="font-medium text-gray-500">VNĐ</span> */}
                     </p>
                   </div>
-
                   {/* Reviews */}
                   <div className="mt-3">
                     <h3 className="sr-only">Reviews</h3>
@@ -288,7 +286,6 @@ const ProductDetail = () => {
                       <p className="sr-only">{product.rating} out of 5 stars</p>
                     </div>
                   </div>
-
                   <div className="mt-6 gap-2">
                     <h3 className="sr-only">Description</h3>
                     <div
@@ -306,7 +303,49 @@ const ProductDetail = () => {
                       dangerouslySetInnerHTML={{ __html: products.description }}
                     />
                   </div>
-
+                  {/* //stock check */}
+                  {products.stock > 0 ? (
+                    <div className="mt-6">
+                      <h3 className="sr-only">Quantity</h3>
+                      <p
+                        id="inStock"
+                        className="
+                        text-2xl font-semibold"
+                        style={{ color: "#00FF00" }}
+                      >
+                        Còn hàng
+                      </p>
+                      {/* <div className="mt-4">
+                        <label htmlFor="quantity" className="sr-only">
+                          Quantity
+                        </label>
+                        <input
+                          type="number"
+                          id="quantity"
+                          min="1"
+                          max={products.stock}
+                          step="1"
+                          defaultValue="1"
+                          className="w-full border-gray-200 rounded-md text-center text-base font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                          // onChange={(e) => {
+                          //   setQuantity(e.target.value);
+                          // }}
+                        />
+                      </div> */}
+                    </div>
+                  ) : (
+                    <div className="mt-6">
+                      <h3 className="sr-only">Quantity</h3>
+                      <p
+                        id="outStock"
+                        className="
+                        text-2xl font-semibold"
+                        style={{ color: "#FF0000" }}
+                      >
+                        Hết hàng
+                      </p>
+                    </div>
+                  )}
                   <form className="mt-6">
                     <div className="mt-10 flex">
                       <MDBBtn
@@ -340,7 +379,6 @@ const ProductDetail = () => {
                       </button>
                     </div>
                   </form>
-
                   <section aria-labelledby="details-heading" className="mt-12">
                     <h2 id="details-heading" className="sr-only">
                       Additional details
@@ -360,6 +398,7 @@ const ProductDetail = () => {
                                         : "text-gray-900",
                                       "text-sm font-medium"
                                     )}
+                                    style={{ fontSize: "18px" }}
                                   >
                                     Cấu hình
                                   </span>
