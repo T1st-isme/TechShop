@@ -11,6 +11,14 @@ import {
   DELETE_CATEGORY_FAIL,
   DELETE_CATEGORY_RESET,
   CLEAR_ERRORS,
+  UPDATE_CATEGORY_REQUEST,
+  UPDATE_CATEGORY_SUCCESS,
+  UPDATE_CATEGORY_FAIL,
+  UPDATE_CATEGORY_RESET,
+  DETAIL_CATEGORY_RESET,
+  DETAIL_CATEGORY_FAIL,
+  DETAIL_CATEGORY_SUCCESS,
+  DETAIL_CATEGORY_REQUEST,
 } from "../Constants/CategoryConstants";
 
 const initialState = {
@@ -110,6 +118,84 @@ export const delCategoryReducer = (state = {}, action) => {
       };
 
     case DELETE_CATEGORY_RESET:
+      return {
+        ...state,
+        isDeleted: false,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+//DEtail Category Admin
+export const detailCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case DETAIL_CATEGORY_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case DETAIL_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        category: action.payload.category,
+      };
+
+    case DETAIL_CATEGORY_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case DETAIL_CATEGORY_RESET:
+      return {
+        ...state,
+        isDeleted: false,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const updateCategoryReducer = (state = {}, action) => {
+  switch (action.type) {
+    case UPDATE_CATEGORY_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+
+    case UPDATE_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        categoryList: action.payload.categoryList,
+        isDeleted: action.payload,
+      };
+
+    case UPDATE_CATEGORY_FAIL:
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case UPDATE_CATEGORY_RESET:
       return {
         ...state,
         isDeleted: false,

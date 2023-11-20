@@ -16,9 +16,18 @@ const Home = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const productList = useSelector((state) => state.productList);
-  const { loading, error, products, resPerPage = 4 } = productList;
+  const { categoryList } = useSelector((state) => state.category);
+  const { loading, error, products, resPerPage = 12 } = productList;
   const handleClick = (productSlug) => {
     navigate(`/Products/${productSlug}`);
+  };
+
+  const handleLinkCate = async (category) => {
+    try {
+      const rs = dispatch(listProduct("", 1, 12, 0, category, ""));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -32,7 +41,13 @@ const Home = () => {
           <div className="row">
             <div className="col-6">
               <div className="main-banner position-relative p-3">
-                <div className="img-fluid rounded-3">
+                <div
+                  className="img-fluid rounded-3"
+                  onClick={() => {
+                    dispatch(listProduct("", 1, 12, 0, "", ""));
+                    navigate("/Products");
+                  }}
+                >
                   <Zoom scale={0.4} duration={1200}>
                     {images.map((each, index) => (
                       <img
@@ -213,7 +228,10 @@ const Home = () => {
         <div className="categories">
           <div className="container-xxl">
             <Link className="box">
-              <div className="img_box">
+              <div
+                className="img_box"
+                onClick={handleLinkCate("6552ee08ea3b4606a040af7a")}
+              >
                 <img
                   src="images/Gigabyte_aorus_17_ehxepu.png"
                   alt="Laptop"
@@ -224,7 +242,10 @@ const Home = () => {
               </div>
             </Link>
             <Link className="box">
-              <div className="img_box">
+              <div
+                className="img_box"
+                onClick={handleLinkCate("6552ee08ea3b4606a040af7c")}
+              >
                 <img src="images/banphim.png" alt="Banphim"></img>
                 <div className="detail">
                   <p>Bàn phím</p>
@@ -232,7 +253,10 @@ const Home = () => {
               </div>
             </Link>
             <Link className="box">
-              <div className="img_box">
+              <div
+                className="img_box"
+                onClick={handleLinkCate("6552ee08ea3b4606a040af7d")}
+              >
                 <img src="images/manhinh.png" alt="Manhinh"></img>
                 <div className="detail">
                   <p>Màn Hình</p>
@@ -240,7 +264,10 @@ const Home = () => {
               </div>
             </Link>
             <Link className="box">
-              <div className="img_box">
+              <div
+                className="img_box"
+                onClick={handleLinkCate("6552ee08ea3b4606a040af7b")}
+              >
                 <img src="images/chuot1.png" alt="Chuot"></img>
                 <div className="detail">
                   <p>Chuột</p>

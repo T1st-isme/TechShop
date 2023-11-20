@@ -132,7 +132,7 @@ const UpdateProduct = () => {
                     />
                   </div>
                   <div className="form-group">
-                    <label htmlFor="stock_field">Stock</label>
+                    <label htmlFor="stock_field">Hình ảnh</label>
                     <input type="file" onChange={handleImageChange} />
                   </div>
 

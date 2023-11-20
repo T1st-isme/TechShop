@@ -235,3 +235,19 @@ right: 15px;
     top: 2%;
     right:15px;
 }
+
+.product-card .product-details .brand {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 3em;
+  }
+  
+.product-card .product-details .product-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-items: center;
+}

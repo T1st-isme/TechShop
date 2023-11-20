@@ -621,13 +621,13 @@ const Header = () => {
                             <Menu.Item>
                               {({ active }) => (
                                 <a
-                                  href="#"
+                                  href="/order/me"
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
                                     "block px-4 py-2 text-sm text-gray-700"
                                   )}
                                 >
-                                  Settings
+                                  Đơn hàng
                                 </a>
                               )}
                             </Menu.Item>

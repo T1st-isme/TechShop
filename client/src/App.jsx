@@ -75,6 +75,14 @@ import UpdateProduct from "./pages/Admin/Product/UpdateProduct.jsx";
 import OrderList from "./pages/Admin/Order/OrderList.jsx";
 import OrderDetail from "./pages/Admin/Order/OrderDetail.jsx";
 import MyOrder from "./pages/Admin/Order/MyOrder.jsx";
+import NewProduct from "./pages/Admin/Product/NewProduct.jsx";
+import UserList from "./pages/Admin/User/UserList.jsx";
+import UpdateUser from "./pages/Admin/User/UpdateUser.jsx";
+import NewUser from "./pages/Admin/User/NewUser.jsx";
+import CategoryList from "./pages/Admin/Category/CategoryList.jsx";
+import UpdateCategory from "./pages/Admin/Category/UpdateCategory.jsx";
+import NewCategory from "./pages/Admin/Category/NewCategory.jsx";
+import ProductsListAD from "./pages/Admin/Product/ProductsListAD.jsx";
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -108,8 +116,23 @@ function App() {
         <Route path="/Profile" element={<Profile />} />
         <Route path="/order-success" element={<OrderSuccessful />} />
         <Route path="/admin/update-product/:slug" element={<UpdateProduct />} />
+        <Route path="/admin/create-product" element={<NewProduct />} />
         <Route path="/admin/order" element={<OrderList />} />
         <Route path="/admin/order/:id" element={<OrderDetail />} />
+
+        <Route path="/admin/user" element={<UserList />} />
+        <Route path="/admin/update-user/:id" element={<UpdateUser />} />
+        <Route path="/admin/create-user" element={<NewUser />} />
+
+        {/* Category */}
+        <Route path="/admin/category" element={<CategoryList />} />
+        <Route path="/admin/update-category/:id" element={<UpdateCategory />} />
+        <Route path="/admin/create-category" element={<NewCategory />} />
+
+        {/* Product */}
+        <Route path="/admin/product" element={<ProductsListAD />} />
+        <Route path="/admin/update-product/:slug" element={<UpdateProduct />} />
+        <Route path="/admin/product/create" element={<NewProduct />} />
         {/* </>
         ) : (
           <>
