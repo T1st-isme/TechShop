@@ -18,23 +18,26 @@ const UpdateProduct = () => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState(0);
-  // const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]);
   // const [oldImages, setOldImages] = useState([]);
   // const [imagesPreview, setImagesPreview] = useState([]);
 
   useEffect(() => {
     dispatch(detailProduct(slug));
   }, [dispatch, slug]);
-
+  const handleImageChange = (e) => {
+    setImages(e.target.files[0]);
+  };
   const updatedProduct = () => {
-    const updatedProduct = {
-      name: name,
-      price: price,
-      description: description,
-      category: category,
-      stock: stock,
-    };
-    dispatch(updateProduct(slug, updatedProduct));
+    const formData = new FormData();
+    formData.append("proImg", images);
+    formData.append("name", name);
+    formData.append("price", price.$numberDecimal);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("stock", stock);
+
+    dispatch(updateProduct(slug, formData));
   };
 
   useEffect(() => {
@@ -42,7 +45,7 @@ const UpdateProduct = () => {
       setName(products.name);
       setPrice(products.price);
       setDescription(products.description);
-      setCategory(products.category);
+      setCategory(products.category?._id);
       setStock(products.stock);
       // setOldImages(products.images);
     }
@@ -127,6 +130,10 @@ const UpdateProduct = () => {
                       value={stock}
                       onChange={(e) => setStock(e.target.value)}
                     />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="stock_field">Stock</label>
+                    <input type="file" onChange={handleImageChange} />
                   </div>
 
                   {/* <div className="form-group">
