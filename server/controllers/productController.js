@@ -86,7 +86,7 @@ import { v2 as cloudinary } from "cloudinary";
 // });
 
 const getProducts = asyncHandler(async (req, res) => {
-  const { page = 1, sort, resPerPage = 8 } = req.query;
+  const { page = 1, sort, resPerPage = 12 } = req.query;
 
   const productsCount = await Product.countDocuments();
 

@@ -3,7 +3,7 @@ import Footer from "../Footer/Footer.jsx";
 import { Toaster } from "react-hot-toast";
 import { Helmet } from "react-helmet";
 
-const masterLayout = (props) => {
+const MasterLayout = (props) => {
   return (
     <div>
       <Helmet>
@@ -21,11 +21,11 @@ const masterLayout = (props) => {
   );
 };
 
-masterLayout.defaultProps = {
+MasterLayout.defaultProps = {
   title: "TechShop",
   description: "Một trang web bán đồ công nghệ hàng đầu.",
   keywords: "TechShop",
   author: "T1st",
 };
 
-export default masterLayout;
+export default MasterLayout;

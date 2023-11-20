@@ -7,9 +7,9 @@ const orderSchema = new Schema({
     required: true,
   },
   totalPrice: {
-    type: Number,
-    required: true,
+    type: Schema.Types.Decimal128,
     default: 0,
+    required: true,
   },
   items: [
     {
@@ -39,7 +39,7 @@ const orderSchema = new Schema({
   },
   orderStatus: {
     type: String,
-    enum: ["ordered", "processing", "delivered"],
+    enum: ["ordered", "processing", "delivered", "cancelled"],
     default: "ordered",
   },
   createdAt: {

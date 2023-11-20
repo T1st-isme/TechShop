@@ -307,11 +307,20 @@ function classNames(...classes) {
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
-  const { categoryList } = useSelector((state) => state.category);
-  const navigate = useNavigate();
 
+  const { categoryList } = useSelector((state) => state.category);
+
+  const handleLinkClick = async (category) => {
+    try {
+      dispatch(listProduct("", 1, 12, 0, category, ""));
+      navigate("/Products");
+    } catch (err) {
+      console.log(err);
+    }
+  };
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategory());
@@ -527,15 +536,9 @@ const Header = () => {
                     <div className="relative flex">
                       <Link
                         to="#"
-                        onClick={async (e) => {
+                        onClick={(e) => {
                           e.preventDefault();
-                          try {
-                            dispatch(listProduct("", 1, 8, 0, "", ""));
-                            navigate("/products");
-                          } catch (err) {
-                            console.log(err);
-                            // Handle error
-                          }
+                          handleLinkClick("");
                         }}
                         className={
                           "border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
@@ -557,14 +560,9 @@ const Header = () => {
                       <div className="relative flex">
                         <Link
                           to="#"
-                          onClick={async (e) => {
+                          onClick={(e) => {
                             e.preventDefault();
-                            try {
-                              dispatch(listProduct("", 1, 8, 0, item._id, ""));
-                              navigate("/products");
-                            } catch (error) {
-                              console.log(error);
-                            }
+                            handleLinkClick(item._id);
                           }}
                           className={
                             "border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"

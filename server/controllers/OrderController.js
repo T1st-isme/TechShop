@@ -52,7 +52,9 @@ const deleteOrder = asyncHandler(async (req, res) => {
 
 const myOrder = asyncHandler(async (req, res) => {
   console.log(req.user._id);
-  const order = await Order.find({ user: req.user._id });
+  const order = await Order.find({ user: req.user._id }).populate(
+    "items.productId"
+  );
   res.status(200).json({
     success: order ? true : false,
     data: order,
@@ -98,7 +100,10 @@ const getOrders = asyncHandler(async (req, res) => {
   const { _id } = req.user._id;
 
   const orders = await Order.find({ orderBy: _id })
-    .select("_id paymentStatus paymentType orderStatus items")
+    .select(
+      "_id user paymentStatus paymentType orderStatus totalPrice items createdAt"
+    )
+    .populate("user", "_id firstname lastname email")
     .populate("items.productId", "_id name proImg")
     .exec();
 
@@ -127,6 +132,7 @@ const AdGetOrders = asyncHandler(async (req, res) => {
 
 const getOrder = asyncHandler(async (req, res) => {
   const order = await Order.findOne({ _id: req.params.id })
+    .populate("user", "_id firstname lastname email")
     .populate("items.productId", "_id name proImg")
     .lean()
     .exec();

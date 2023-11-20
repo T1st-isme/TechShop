@@ -76,4 +76,4 @@ userSchema.methods.getJwtToken = function () {
   });
 };
 
-export const userModels = Model("user", userSchema);
+export const userModels = Model("User", userSchema);

@@ -42,12 +42,12 @@ const CheckOut = () => {
   const { loading, order, error } = orderState;
 
   const totalPrice = Object.values(cartItems).reduce(
-    (total, item) => total + item.price.$numberDecimal * item.quantity,
+    (total, item) =>
+      total + item.price.$numberDecimal * item.quantity * 1000000,
     0
   );
 
-  const value = totalPrice * 1000000;
-  const formattedValue = value.toLocaleString("vi-VN", {
+  const formattedValue = totalPrice.toLocaleString("vi-VN", {
     style: "currency",
     currency: "VND",
   });

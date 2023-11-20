@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 import aspectRatio from "@tailwindcss/aspect-ratio";
 import forms from "@tailwindcss/forms";
+import flowbite from "flowbite/plugin";
 
 export const content = ["./src/**/*.{js,jsx,ts,tsx}"];
 export const theme = {
@@ -11,4 +12,4 @@ export const theme = {
   },
 };
 
-export const plugins = [aspectRatio, forms];
+export const plugins = [aspectRatio, forms, flowbite];

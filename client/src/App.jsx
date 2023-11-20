@@ -63,7 +63,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProductDetail from "./pages/Product/ProductDetail.jsx";
 import CheckOut from "./pages/CheckOut/CheckOut.jsx";
 import Cart from "./pages/Shopping Cart/ShoppingCart.jsx";
-import Layout from "./components/Layout/masterLayout.jsx";
+import Layout from "./components/Layout/MasterLayout.jsx";
 import "mdb-react-ui-kit/dist/css/mdb.min.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,6 +72,9 @@ import { isUserLoggedIn } from "./redux/Actions/UserAction.js";
 import Profile from "./pages/Auth/UserProfile/Profile.jsx";
 import OrderSuccessful from "./pages/CheckOut/OrderSuccessfull.jsx";
 import UpdateProduct from "./pages/Admin/Product/UpdateProduct.jsx";
+import OrderList from "./pages/Admin/Order/OrderList.jsx";
+import OrderDetail from "./pages/Admin/Order/OrderDetail.jsx";
+import MyOrder from "./pages/Admin/Order/MyOrder.jsx";
 
 function App() {
   const auth = useSelector((state) => state.auth);
@@ -96,6 +99,7 @@ function App() {
         <Route path="/Products/:slug" element={<ProductDetail />} />
         <Route path="/Signup" element={<Register />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/order/me" element={<MyOrder />} />
         <Route path="*" element={<PageNotFound />} />
         {/* {auth.isAuthenticated ? (
           <> */}
@@ -104,6 +108,8 @@ function App() {
         <Route path="/Profile" element={<Profile />} />
         <Route path="/order-success" element={<OrderSuccessful />} />
         <Route path="/admin/update-product/:slug" element={<UpdateProduct />} />
+        <Route path="/admin/order" element={<OrderList />} />
+        <Route path="/admin/order/:id" element={<OrderDetail />} />
         {/* </>
         ) : (
           <>

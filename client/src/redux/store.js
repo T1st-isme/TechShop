@@ -12,7 +12,13 @@ import {
   delCategoryReducer,
   newCategoryReducer,
 } from "./Reducers/CategoryReducer";
-import { newOrderReducer } from "./Reducers/OrderReducer";
+import {
+  allOrdersReducer,
+  myOrdersReducer,
+  newOrderReducer,
+  orderDetailsReducer,
+  orderReducer,
+} from "./Reducers/OrderReducer";
 
 const reducer = combineReducers({
   productList: productListReducer,
@@ -23,6 +29,10 @@ const reducer = combineReducers({
   category: categoryReducer,
   delCategory: delCategoryReducer,
   newOrder: newOrderReducer,
+  orderList: allOrdersReducer,
+  orderDetails: orderDetailsReducer,
+  order: orderReducer,
+  myOrder: myOrdersReducer,
 });
 
 const initialState = {};

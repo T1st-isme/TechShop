@@ -13,7 +13,7 @@ import {
 import { port } from "../../Utils/Util";
 
 const listProduct =
-  (keyword = "", currentPage = 1, resPerPage = 8, price, category, sort) =>
+  (keyword = "", currentPage = 1, resPerPage = 12, price, category, sort) =>
   (dispatch) => {
     dispatch({ type: PRODUCT_LIST_REQUEST });
 

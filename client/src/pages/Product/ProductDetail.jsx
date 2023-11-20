@@ -135,18 +135,27 @@ const ProductDetail = () => {
   const { loading, error, products } = productDetails;
 
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [displayCount, setDisplayCount] = useState(4);
 
   const getRelatedProducts = async (currentProductCategory) => {
     // Fetch all products
-    const response = await axios.get(`${port}/product`);
-    const allProducts = Object.values(response.data.products);
-    // console.log(allProducts);
+    const response = await axios.get(`${port}/product/admin`);
+    const allProducts = Object.values(response.data.data);
+
     // Filter out products that match the current product's category
     const relatedProducts = allProducts.filter(
       (product) => product.category?._id === currentProductCategory
     );
-    console.log("relatedProducts:" + relatedProducts);
+
     return relatedProducts;
+  };
+
+  const handleSeeMore = () => {
+    if (displayCount >= relatedProducts.length) {
+      navigate("/Products");
+    } else {
+      setDisplayCount(displayCount + 4);
+    }
   };
 
   useEffect(() => {
@@ -415,7 +424,7 @@ const ProductDetail = () => {
                 </h2>
 
                 <div className="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-                  {relatedProducts.map((product) => (
+                  {relatedProducts.slice(0, displayCount).map((product) => (
                     <div
                       key={product._id}
                       className="group relative
@@ -479,6 +488,17 @@ const ProductDetail = () => {
                       </div>
                     </div>
                   ))}
+                  <a
+                    className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                    onClick={handleSeeMore}
+                    style={{
+                      cursor: "pointer",
+                      color: "black",
+                      fontSize: "15px",
+                    }}
+                  >
+                    Xem thêm...
+                  </a>
                 </div>
               </section>
             </div>

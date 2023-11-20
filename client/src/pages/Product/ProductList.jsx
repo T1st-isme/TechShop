@@ -14,6 +14,7 @@ import MoonLoader from "react-spinners/MoonLoader";
 import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "react-js-pagination";
 import { BeakerIcon } from "@heroicons/react/24/solid";
+import PropTypes from "prop-types";
 
 const subCategories = [
   { name: "Totes", href: "#" },
