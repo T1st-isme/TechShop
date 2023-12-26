@@ -1,14 +1,14 @@
-import slugify from "slugify";
-import Product from "../models/productModel.js";
-import asyncHandler from "express-async-handler";
-import APIFeatures from "../Utils/apiFeatures.js";
-import uploader from "../config/cloudinary.config.js";
-import { v2 as cloudinary } from "cloudinary";
+import slugify from 'slugify'
+import Product from '../models/productModel.js'
+import asyncHandler from 'express-async-handler'
+import APIFeatures from '../Utils/apiFeatures.js'
+import uploader from '../config/cloudinary.config.js'
+import { v2 as cloudinary } from 'cloudinary'
 
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
-//Filtering, sorting and paginating
+// Filtering, sorting and paginating
 // const getProducts = asyncHandler(async (req, res) => {
 //   const queries = { ...req.query };
 //   const removeFields = ["sort", "limit", "page"];
@@ -86,28 +86,28 @@ import { v2 as cloudinary } from "cloudinary";
 // });
 
 const getProducts = asyncHandler(async (req, res) => {
-  const { page = 1, sort, resPerPage = 12 } = req.query;
+  const { page = 1, sort, resPerPage = 12 } = req.query
 
-  const productsCount = await Product.countDocuments();
+  const productsCount = await Product.countDocuments()
 
-  const startIndex = (page - 1) * resPerPage;
-  const endIndex = page * resPerPage;
+  const startIndex = (page - 1) * resPerPage
+  const endIndex = page * resPerPage
 
   const apiFeatures = new APIFeatures(
-    Product.find().populate("category"),
+    Product.find().populate('category'),
     req.query
   )
     .search()
     .filter()
-    .sort(sort);
+    .sort(sort)
 
-  apiFeatures.pagination(resPerPage);
+  apiFeatures.pagination(resPerPage)
   const products = await apiFeatures.query
     .skip(startIndex)
     .limit(resPerPage)
-    .exec();
+    .exec()
 
-  const filteredProductsCount = products.length;
+  const filteredProductsCount = products.length
 
   res.status(200).json({
     success: true,
@@ -117,43 +117,43 @@ const getProducts = asyncHandler(async (req, res) => {
     resPerPage,
     totalProducts: productsCount,
     filteredProductsCount,
-    products,
-  });
-});
+    products
+  })
+})
 
 const AdGetProducts = asyncHandler(async (req, res) => {
-  const product = await Product.find({}).populate("category");
+  const product = await Product.find({}).populate('category')
   return res.status(200).json({
-    success: product ? true : false,
-    data: product ? product : "Không tìm thấy sản phẩm!!!",
-  });
-});
+    success: Boolean(product),
+    data: product || 'Không tìm thấy sản phẩm!!!'
+  })
+})
 
 // @desc    Fetch single product
 // @route   GET /api/products/:id
 // @access  Public
 const getProductByName = asyncHandler(async (req, res) => {
-  const ndf = "-createdAt -updatedAt -__v";
+  const ndf = '-createdAt -updatedAt -__v'
   const product = await Product.findOne({ slug: req.params.slug })
-    .populate("category", `-slug ${ndf}`)
-    .select(ndf);
+    .populate('category', `-slug ${ndf}`)
+    .select(ndf)
   return res.status(200).json({
-    success: product ? true : false,
-    data: product ? product : "Không tìm thấy sản phẩm!!!",
-  });
-});
+    success: Boolean(product),
+    data: product || 'Không tìm thấy sản phẩm!!!'
+  })
+})
 
 // @desc    Fetch single product
 // @route   GET /api/products/:id
 // @access  Public
 const getProductByID = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const product = await Product.findById(id);
+  const { id } = req.params
+  const product = await Product.findById(id)
   return res.status(200).json({
-    success: product ? true : false,
-    data: product ? product : "Không tìm thấy sản phẩm!!!",
-  });
-});
+    success: Boolean(product),
+    data: product || 'Không tìm thấy sản phẩm!!!'
+  })
+})
 
 // @desc    Create a product
 // @route   POST /api/products
@@ -162,67 +162,65 @@ const createProduct = asyncHandler(async (req, res) => {
   if (Object.keys(req.body).length === 0) {
     return res
       .status(400)
-      .json({ message: "Vui lòng điền đầy đủ thông tin!!!" });
+      .json({ message: 'Vui lòng điền đầy đủ thông tin!!!' })
   }
   if (req.body && req.body.name) {
-    req.body.slug = slugify(req.body.name);
+    req.body.slug = slugify(req.body.name)
     req.body.proImg = req.files.map((file) => {
-      return { img: file.path };
-    });
+      return { img: file.path }
+    })
   }
-  console.log(req.body.proImg);
+  console.log(req.body.proImg)
 
   // Upload image to Cloudinary
-  const newProduct = await Product.create(req.body);
+  const newProduct = await Product.create(req.body)
   res.status(201).json({
-    success: newProduct ? true : false,
-    data: newProduct ? newProduct : "Thêm sản phẩm không thành công!!!",
-  });
-});
+    success: Boolean(newProduct),
+    data: newProduct || 'Thêm sản phẩm không thành công!!!'
+  })
+})
 
 // @desc    Update a product
 // @route   PUT /api/products/:id
 // @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
   if (req.body && req.body.name) {
-    req.body.slug = slugify(req.body.name);
+    req.body.slug = slugify(req.body.name)
     req.body.proImg = req.files.map((file) => {
-      return { img: file.path };
-    });
+      return { img: file.path }
+    })
   }
-  console.log(req.body.proImg);
+  console.log(req.body.proImg)
   const updateProduct = await Product.findOneAndUpdate(
     { slug: req.params.slug },
     req.body,
     { new: true }
-  );
+  )
   res.status(201).json({
-    success: updateProduct ? true : false,
-    data: updateProduct
-      ? updateProduct
-      : "Cập nhật sản phẩm không thành công!!!",
-  });
-});
+    success: Boolean(updateProduct),
+    data: updateProduct || 'Cập nhật sản phẩm không thành công!!!'
+  })
+})
 
 // @desc    Delete a product
 // @route   DELETE /api/products/:id
 // @access  Private/Admin
 const deleteProduct = asyncHandler(async (req, res) => {
-  const delProduct = await Product.findByIdAndDelete(req.params.id);
+  const delProduct = await Product.findByIdAndDelete(req.params.id)
   return res.status(200).json({
-    success: delProduct ? true : false,
-    data: delProduct ? delProduct : "Xóa sản phẩm không thành công!!!",
-  });
-});
+    success: Boolean(delProduct),
+    data: delProduct || 'Xóa sản phẩm không thành công!!!'
+  })
+})
 
 const uploadImage = asyncHandler(async (req, res) => {
-  console.log(req.file);
+  console.log(req.file)
   return res.status(200).json({
     success: true,
-    message: "Upload image successfully!!!",
-    data: req.file,
-  });
-});
+    message: 'Upload image successfully!!!',
+    data: req.file
+  })
+})
 
 export {
   getProducts,
@@ -232,5 +230,5 @@ export {
   deleteProduct,
   uploadImage,
   getProductByID,
-  AdGetProducts,
-};
+  AdGetProducts
+}

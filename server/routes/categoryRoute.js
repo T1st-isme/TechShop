@@ -1,27 +1,27 @@
-import express from "express";
-const router = express.Router();
-import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
+import express from 'express'
+import { isAdmin, requiredSignin } from '../middlewares/authMiddleware.js'
 import {
   createCategory,
   deleteCategory,
   getAllCategories,
   getCategoryByName,
-  updateCategoryById,
-} from "../controllers/categoryController.js";
+  updateCategoryById
+} from '../controllers/categoryController.js'
+const router = express.Router()
 
 // GET all categories
-router.get("/", getAllCategories);
+router.get('/', getAllCategories)
 
 // GET a single category by name
-router.get("/:slug", getCategoryByName);
+router.get('/:slug', getCategoryByName)
 
 // CREATE a new category
-router.post("/create-category", requiredSignin, isAdmin, createCategory);
+router.post('/create-category', requiredSignin, isAdmin, createCategory)
 
 // UPDATE a category by ID
-router.patch("/:_id", updateCategoryById);
+router.patch('/:_id', updateCategoryById)
 
 // DELETE a category
-router.delete("/:id", deleteCategory);
+router.delete('/:id', deleteCategory)
 
-export default router;
+export default router
