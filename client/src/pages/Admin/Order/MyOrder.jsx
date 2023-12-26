@@ -177,7 +177,7 @@ const MyOrder = () => {
                       <MDBTypography tag="h5" className="fw-normal mb-0">
                         <a href="#!">Tra cứu</a>
                       </MDBTypography>
-                      <div className="border-start h-100"></div>
+                      <div className="border-start h-100" />
                       {order?.orderStatus === "delivered" ? null : (
                         <MDBTypography tag="h5" className="fw-normal mb-0">
                           <div
@@ -190,9 +190,9 @@ const MyOrder = () => {
                         </MDBTypography>
                       )}
 
-                      <div className="border-start h-100"></div>
+                      <div className="border-start h-100" />
 
-                      <div className="border-start h-100"></div>
+                      <div className="border-start h-100" />
                       <MDBTypography tag="h5" className="fw-normal mb-0">
                         <a href="#!" className="text-muted">
                           <MDBIcon fas icon="ellipsis-v" />

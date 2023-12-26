@@ -72,7 +72,7 @@ const NewProduct = () => {
                     rows="8"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                  ></textarea>
+                   />
                 </div>
 
                 <div className="form-group">

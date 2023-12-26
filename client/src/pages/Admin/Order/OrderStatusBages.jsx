@@ -32,7 +32,7 @@ const OrderStatusBadge = ({ order }) => {
     <div className="flex items-center">
       <div
         className={`inline-block w-4 h-4 mr-2 rounded-full ${orderStatusColor}`}
-      ></div>
+       />
       {orderStatusText}
     </div>
   );

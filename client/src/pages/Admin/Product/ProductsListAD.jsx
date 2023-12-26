@@ -174,7 +174,7 @@ const ProductsListAD = () => {
                         </td>
                         <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                           <div className="flex items-center">
-                            <div className="inline-block w-4 h-4 mr-2 bg-red-700 rounded-full"></div>
+                            <div className="inline-block w-4 h-4 mr-2 bg-red-700 rounded-full" />
                             {product.stock}
                           </div>
                         </td>
@@ -209,13 +209,13 @@ const ProductsListAD = () => {
                               to={`/admin/update-product/${product.slug}`}
                               className="btn btn-primary py-1 px-2"
                             >
-                              <i className="fa fa-pencil"></i>
+                              <i className="fa fa-pencil" />
                             </Link>
                             <button
                               className="btn btn-danger py-1 px-2 ml-2"
                               onClick={() => openConfirmModal(product._id)}
                             >
-                              <i className="fa fa-trash"></i>
+                              <i className="fa fa-trash" />
                             </button>
                           </Fragment>
                         </td>

@@ -158,13 +158,13 @@ const CategoryList = () => {
                               to={`/admin/update-category/${categoryList._id}`}
                               className="btn btn-primary py-1 px-2"
                             >
-                              <i className="fa fa-pencil"></i>
+                              <i className="fa fa-pencil" />
                             </Link>
                             <button
                               className="btn btn-danger py-1 px-2 ml-2"
                               onClick={() => openConfirmModal(categoryList._id)}
                             >
-                              <i className="fa fa-trash"></i>
+                              <i className="fa fa-trash" />
                             </button>
                           </Fragment>
                         </td>

@@ -94,13 +94,13 @@ const UserList = () => {
                 to={`/admin/update-user/${user._id}`}
                 className="btn btn-primary py-1 px-2"
               >
-                <i className="fa fa-pencil"></i>
+                <i className="fa fa-pencil" />
               </Link>
               <button
                 className="btn btn-danger py-1 px-2 ml-2"
                 onClick={() => deleteUserHandler(user._id)}
               >
-                <i className="fa fa-trash"></i>
+                <i className="fa fa-trash" />
               </button>
             </Fragment>
           ),
@@ -237,13 +237,13 @@ const UserList = () => {
                               to={`/admin/update-user/${user._id}`}
                               className="btn btn-primary py-1 px-2"
                             >
-                              <i className="fa fa-pencil"></i>
+                              <i className="fa fa-pencil" />
                             </Link>
                             <button
                               className="btn btn-danger py-1 px-2 ml-2"
                               onClick={() => openConfirmModal(user._id)}
                             >
-                              <i className="fa fa-trash"></i>
+                              <i className="fa fa-trash" />
                             </button>
                           </Fragment>
                         </td>

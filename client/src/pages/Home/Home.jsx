@@ -171,52 +171,52 @@ const Home = () => {
               <div className="marquee-inner-wrapper card-wrapper">
                 <Marquee className="d-flex">
                   <div className="mx-4 w-25">
-                    <img src="images/brand-01.png" alt="brand"></img>
+                    <img src="images/brand-01.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-02.png" alt="brand"></img>
+                    <img src="images/brand-02.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-03.png" alt="brand"></img>
+                    <img src="images/brand-03.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-04.png" alt="brand"></img>
+                    <img src="images/brand-04.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-05.png" alt="brand"></img>
+                    <img src="images/brand-05.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-06.png" alt="brand"></img>
+                    <img src="images/brand-06.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-07.png" alt="brand"></img>
+                    <img src="images/brand-07.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-08.png" alt="brand"></img>
+                    <img src="images/brand-08.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/lenovo.png" alt="brand"></img>
+                    <img src="images/lenovo.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/acer.png" alt="brand"></img>
+                    <img src="images/acer.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/asus.png" alt="brand"></img>
+                    <img src="images/asus.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/gigabyte.png" alt="brand"></img>
+                    <img src="images/gigabyte.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/corsair.png" alt="brand"></img>
+                    <img src="images/corsair.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/razer.png" alt="brand"></img>
+                    <img src="images/razer.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/hp.png" alt="brand"></img>
+                    <img src="images/hp.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/logitech.png" alt="brand"></img>
+                    <img src="images/logitech.png" alt="brand" />
                   </div>
                 </Marquee>
               </div>
@@ -235,7 +235,7 @@ const Home = () => {
                 <img
                   src="images/Gigabyte_aorus_17_ehxepu.png"
                   alt="Laptop"
-                ></img>
+                 />
                 <div className="detail">
                   <p>Laptop</p>
                 </div>
@@ -246,7 +246,7 @@ const Home = () => {
                 className="img_box"
                 onClick={handleLinkCate("6552ee08ea3b4606a040af7c")}
               >
-                <img src="images/banphim.png" alt="Banphim"></img>
+                <img src="images/banphim.png" alt="Banphim" />
                 <div className="detail">
                   <p>Bàn phím</p>
                 </div>
@@ -257,7 +257,7 @@ const Home = () => {
                 className="img_box"
                 onClick={handleLinkCate("6552ee08ea3b4606a040af7d")}
               >
-                <img src="images/manhinh.png" alt="Manhinh"></img>
+                <img src="images/manhinh.png" alt="Manhinh" />
                 <div className="detail">
                   <p>Màn Hình</p>
                 </div>
@@ -268,7 +268,7 @@ const Home = () => {
                 className="img_box"
                 onClick={handleLinkCate("6552ee08ea3b4606a040af7b")}
               >
-                <img src="images/chuot1.png" alt="Chuot"></img>
+                <img src="images/chuot1.png" alt="Chuot" />
                 <div className="detail">
                   <p>Chuột</p>
                 </div>
