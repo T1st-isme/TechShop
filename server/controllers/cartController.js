@@ -81,7 +81,7 @@ export const addItemToCart = asyncHandler(async (req, res) => {
 
     const newCart = await cart.save()
     return res.status(201).json({
-      success: !!newCart,
+      success: Boolean(newCart),
       cart: newCart
     })
   }
@@ -131,7 +131,7 @@ export const getCartItems = asyncHandler(async (req, res) => {
   }, {})
 
   res.status(200).json({
-    success: !!cartItems,
+    success: Boolean(cartItems),
     cartItems
   })
 })

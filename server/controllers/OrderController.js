@@ -43,7 +43,7 @@ const deleteOrder = asyncHandler(async (req, res) => {
   const order = await Order.findByIdAndDelete(id)
 
   res.status(200).json({
-    success: !!order,
+    success: Boolean(order),
     message: order
       ? 'Xóa đơn hàng thành công!!!'
       : 'Không tìm thấy đơn hàng!!!'
@@ -56,7 +56,7 @@ const myOrder = asyncHandler(async (req, res) => {
     'items.productId'
   )
   res.status(200).json({
-    success: !!order,
+    success: Boolean(order),
     data: order
   })
 })
@@ -91,7 +91,7 @@ const addOrder = asyncHandler(async (req, res) => {
   await order.save()
 
   res.status(201).json({
-    success: !!order,
+    success: Boolean(order),
     order
   })
 })
@@ -108,7 +108,7 @@ const getOrders = asyncHandler(async (req, res) => {
     .exec()
 
   res.status(200).json({
-    success: !!orders,
+    success: Boolean(orders),
     data: orders ? { orders } : 'Không tìm thấy đơn hàng!!!'
   })
 })
@@ -125,7 +125,7 @@ const AdGetOrders = asyncHandler(async (req, res) => {
   })
 
   res.status(200).json({
-    success: !!orders,
+    success: Boolean(orders),
     data: orders ? { orders, totalAmount } : 'Không tìm thấy đơn hàng!!!'
   })
 })
@@ -138,7 +138,7 @@ const getOrder = asyncHandler(async (req, res) => {
     .exec()
 
   res.status(200).json({
-    success: !!order,
+    success: Boolean(order),
     data: order ? { order } : 'Không tìm thấy đơn hàng!!!'
   })
 })

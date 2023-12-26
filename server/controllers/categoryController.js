@@ -55,7 +55,7 @@ const createCategory = asyncHandler(async (req, res) => {
   }
   const newCategory = await Category.create(cateObj)
   res.status(201).json({
-    success: !!newCategory,
+    success: Boolean(newCategory),
     data: newCategory || 'Lỗi!!!'
   })
 })
@@ -122,7 +122,7 @@ const deleteCategory = asyncHandler(async (req, res) => {
   const cate = await Category.findByIdAndDelete(id)
 
   return res.status(200).json({
-    success: !!cate,
+    success: Boolean(cate),
     data: 'Xóa danh mục thành công.'
   })
 })

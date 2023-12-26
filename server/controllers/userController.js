@@ -111,7 +111,7 @@ const allUsers = asyncHandler(async (req, res, next) => {
   const users = await userModels.find()
 
   res.status(200).json({
-    success: !!users,
+    success: Boolean(users),
     user: users || 'Không tìm thấy!!!'
   })
 })
@@ -121,7 +121,7 @@ const getUserDetails = asyncHandler(async (req, res, next) => {
   const user = await userModels.findById(req.params.id)
 
   res.status(200).json({
-    success: !!user,
+    success: Boolean(user),
     user: user || 'Không tìm thấy user!!!'
   })
 })
@@ -154,7 +154,7 @@ const deleteUser = asyncHandler(async (req, res, next) => {
   // const image_id = user.avatar.public_id;
   // await cloudinary.v2.uploader.destroy(image_id);
   res.status(200).json({
-    success: !!user,
+    success: Boolean(user),
     message: user ? 'Xóa thành công' : 'Không tìm thấy user!!!'
   })
 })
@@ -162,7 +162,7 @@ const deleteUser = asyncHandler(async (req, res, next) => {
 const userProfile = asyncHandler(async (req, res, next) => {
   const user = await userModels.findById(req.user._id)
   res.status(200).json({
-    success: !!user,
+    success: Boolean(user),
     user: user || 'Không tìm thấy user!!!'
   })
 })
