@@ -2,6 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 body {
-    padding-top: 5%;
-    margin: 0%;
+  padding-top: 5%;
+  margin: 0%;
 }
