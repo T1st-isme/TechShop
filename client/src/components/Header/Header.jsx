@@ -313,14 +313,23 @@ const Header = () => {
 
   const { categoryList } = useSelector((state) => state.category);
 
-  const handleLinkClick = async (category) => {
-    try {
-      dispatch(listProduct("", 1, 12, 0, category, ""));
-      navigate("/Products");
-    } catch (err) {
-      console.log(err);
-    }
+  // const handleLinkClick = async (category) => {
+  //   try {
+  //     dispatch(listProduct("", 1, 12, 0, category, ""));
+  //     navigate("/Products");
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const handleLinkClick = (category) => {
+    // Optionally, dispatch the action right away if needed
+    dispatch(listProduct({ category: category }));
+
+    // Navigate to the products page with the category query param
+    navigate(`/product-category/${category}`);
   };
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategory());

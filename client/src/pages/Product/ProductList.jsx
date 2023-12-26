@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -14,15 +14,8 @@ import MoonLoader from "react-spinners/MoonLoader";
 import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "react-js-pagination";
 import { BeakerIcon } from "@heroicons/react/24/solid";
-import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 
-const subCategories = [
-  { name: "Totes", href: "#" },
-  { name: "Backpacks", href: "#" },
-  { name: "Travel Bags", href: "#" },
-  { name: "Hip Bags", href: "#" },
-  { name: "Laptop Sleeves", href: "#" },
-];
 const filters = [
   {
     id: "color",
@@ -66,6 +59,7 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { keyword } = useParams();
+  const { cate } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState(0);
   const [sort, setSort] = useState("");
@@ -80,12 +74,21 @@ const ProductList = () => {
     resPerPage,
     filteredProductsCount,
   } = productList;
+  const initialApiCallMade = useRef(false);
 
   useEffect(() => {
-    dispatch(
-      listProduct(keyword, currentPage, resPerPage, price, category, sort)
-    );
-  }, [dispatch, keyword, currentPage, resPerPage, price, category, sort]);
+    dispatch(listProduct(keyword, currentPage, resPerPage, price, cate, sort));
+  }, [dispatch, keyword, currentPage, resPerPage, price, cate, sort]);
+  // useEffect(() => {
+  //   // if (!initialApiCallMade.current) {
+  //   //   initialApiCallMade.current = true;
+  //   dispatch(
+  //     listProduct(keyword, currentPage, resPerPage, price, category, sort)
+  //   );
+  //   // }
+  // }, [dispatch, keyword, currentPage, resPerPage, price, category, sort]);
+
+  if (error) return <div>Error: {error.message}</div>;
 
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
@@ -152,7 +155,7 @@ const ProductList = () => {
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                     >
-                      <option value="">All</option>
+                      <option value="">Tất cả</option>
                       {categoryList.map((category) => (
                         <option key={category._id} value={category.name}>
                           {category.name}

@@ -42,6 +42,12 @@ const orderSchema = new Schema({
     enum: ["ordered", "processing", "delivered", "cancelled"],
     default: "ordered",
   },
+  address: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

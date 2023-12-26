@@ -17,22 +17,11 @@ const Home = () => {
   const navigate = useNavigate();
   const productList = useSelector((state) => state.productList);
   const { categoryList } = useSelector((state) => state.category);
-  const { loading, error, products, resPerPage = 12 } = productList;
+  const { loading, error, products } = productList;
   const handleClick = (productSlug) => {
     navigate(`/Products/${productSlug}`);
   };
 
-  const handleLinkCate = async (category) => {
-    try {
-      const rs = dispatch(listProduct("", 1, 12, 0, category, ""));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    dispatch(listProduct("", 1, resPerPage)); // replace 10 with your desired number of results per page
-  }, [dispatch]);
   return (
     <>
       {/* <Sidebar> */}
@@ -83,7 +72,7 @@ const Home = () => {
                   />
                   <div className="small-banner-content position-absolute">
                     <h4>NEW ARRIVAL</h4>
-                    <h5>Buy KeyBoard</h5>
+                    <h5>Mua Bàn Phím</h5>
                     <p className="price">Từ 2.499.000 </p>
                     <p className="price">đến 5.499.000</p>
                   </div>
@@ -96,7 +85,7 @@ const Home = () => {
                   />
                   <div className="small-banner-content position-absolute">
                     <h4>NEW ARRIVAL</h4>
-                    <h5>Buy Display</h5>
+                    <h5>Mua Màn hình</h5>
                     <p className="price">Từ 5.499.000</p>
                     <p className="price"> đến 8.499.000 </p>
                   </div>
@@ -109,7 +98,7 @@ const Home = () => {
                   />
                   <div className="small-banner-content position-absolute">
                     <h4>NEW ARRIVAL</h4>
-                    <h5>B Mouse</h5>
+                    <h5>Mua Chuột</h5>
                     <p className="price">Từ 1.499.000</p>
                     <p className="price"> đến 2.499.000 </p>
                   </div>
@@ -227,47 +216,68 @@ const Home = () => {
       <section className="home-wrapper-2 ">
         <div className="categories">
           <div className="container-xxl">
-            <Link className="box">
-              <div
-                className="img_box"
-                onClick={handleLinkCate("6552ee08ea3b4606a040af7a")}
-              >
+            <Link
+              className="box"
+              onClick={() => {
+                dispatch(
+                  listProduct("", 1, 12, 0, "6552ee08ea3b4606a040af7a", "")
+                );
+              }}
+              to={"/Products"}
+            >
+              <div className="img_box">
                 <img
                   src="images/Gigabyte_aorus_17_ehxepu.png"
                   alt="Laptop"
                 ></img>
+
                 <div className="detail">
                   <p>Laptop</p>
                 </div>
               </div>
             </Link>
-            <Link className="box">
-              <div
-                className="img_box"
-                onClick={handleLinkCate("6552ee08ea3b4606a040af7c")}
-              >
+            <Link
+              className="box"
+              onClick={() => {
+                dispatch(
+                  listProduct("", 1, 12, 0, "6552ee08ea3b4606a040af7c", "")
+                );
+              }}
+              to={"/Products"}
+            >
+              <div className="img_box">
                 <img src="images/banphim.png" alt="Banphim"></img>
                 <div className="detail">
                   <p>Bàn phím</p>
                 </div>
               </div>
             </Link>
-            <Link className="box">
-              <div
-                className="img_box"
-                onClick={handleLinkCate("6552ee08ea3b4606a040af7d")}
-              >
+            <Link
+              className="box"
+              onClick={() => {
+                dispatch(
+                  listProduct("", 1, 12, 0, "6552ee08ea3b4606a040af7d", "")
+                );
+              }}
+              to={"/Products"}
+            >
+              <div className="img_box">
                 <img src="images/manhinh.png" alt="Manhinh"></img>
                 <div className="detail">
                   <p>Màn Hình</p>
                 </div>
               </div>
             </Link>
-            <Link className="box">
-              <div
-                className="img_box"
-                onClick={handleLinkCate("6552ee08ea3b4606a040af7b")}
-              >
+            <Link
+              className="box"
+              onClick={() => {
+                dispatch(
+                  listProduct("", 1, 12, 0, "6552ee08ea3b4606a040af7b", "")
+                );
+              }}
+              to={"/Products"}
+            >
+              <div className="img_box">
                 <img src="images/chuot1.png" alt="Chuot"></img>
                 <div className="detail">
                   <p>Chuột</p>

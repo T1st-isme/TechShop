@@ -24,7 +24,6 @@ export const getCartItems = () => {
           type: ADD_TO_CART_SUCCESS,
           payload: { cartItems },
         });
-
         return cartItems;
       }
     } catch (error) {

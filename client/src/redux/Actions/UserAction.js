@@ -81,8 +81,6 @@ export const login = (email, password) => {
 
     if (res.status === 200) {
       const { token, user } = res.data;
-      Cookies.set("token", token);
-      Cookies.set("user", JSON.stringify(user));
       dispatch({
         type: LOGIN_SUCCESS,
         payload: {
@@ -90,11 +88,13 @@ export const login = (email, password) => {
           user,
         },
       });
+      Cookies.set("token", token);
+      Cookies.set("user", JSON.stringify(user));
       dispatch(getCartItems());
     } else if (res.status === 400) {
       dispatch({
         type: LOGIN_FAIL,
-        payload: { error: res.data.error },
+        payload: { error: res.data.message },
       });
     }
   };
@@ -140,9 +140,12 @@ export const logout = () => {
         }
       );
       if (res.status === 200) {
+        dispatch({
+          type: LOGOUT_SUCCESS,
+          payload: { error: res.data.message },
+        });
         Cookies.remove("token");
         Cookies.remove("user");
-        dispatch({ type: LOGOUT_SUCCESS });
         dispatch({ type: RESET_CART });
       }
 
