@@ -313,23 +313,14 @@ const Header = () => {
 
   const { categoryList } = useSelector((state) => state.category);
 
-  // const handleLinkClick = async (category) => {
-  //   try {
-  //     dispatch(listProduct("", 1, 12, 0, category, ""));
-  //     navigate("/Products");
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  const handleLinkClick = (category) => {
-    // Optionally, dispatch the action right away if needed
-    dispatch(listProduct({ category: category }));
-
-    // Navigate to the products page with the category query param
-    navigate(`/product-category/${category}`);
+  const handleLinkClick = async (category) => {
+    try {
+      dispatch(listProduct("", 1, 12, 0, category, ""));
+      navigate("/Products");
+    } catch (err) {
+      console.log(err);
+    }
   };
-
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategory());
@@ -549,9 +540,7 @@ const Header = () => {
                           e.preventDefault();
                           handleLinkClick("");
                         }}
-                        className={
-                          "border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
-                        }
+                        className="border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                       >
                         Tất cả
                       </Link>
@@ -573,9 +562,7 @@ const Header = () => {
                             e.preventDefault();
                             handleLinkClick(item._id);
                           }}
-                          className={
-                            "border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
-                          }
+                          className="border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                         >
                           {item.name}
                         </Link>

@@ -81,6 +81,8 @@ export const login = (email, password) => {
 
     if (res.status === 200) {
       const { token, user } = res.data;
+      Cookies.set("token", token);
+      Cookies.set("user", JSON.stringify(user));
       dispatch({
         type: LOGIN_SUCCESS,
         payload: {
@@ -88,13 +90,11 @@ export const login = (email, password) => {
           user,
         },
       });
-      Cookies.set("token", token);
-      Cookies.set("user", JSON.stringify(user));
       dispatch(getCartItems());
     } else if (res.status === 400) {
       dispatch({
         type: LOGIN_FAIL,
-        payload: { error: res.data.message },
+        payload: { error: res.data.error },
       });
     }
   };
@@ -140,16 +140,13 @@ export const logout = () => {
         }
       );
       if (res.status === 200) {
-        dispatch({
-          type: LOGOUT_SUCCESS,
-          payload: { error: res.data.message },
-        });
         Cookies.remove("token");
         Cookies.remove("user");
+        dispatch({ type: LOGOUT_SUCCESS });
         dispatch({ type: RESET_CART });
       }
 
-      //const res = await axios.post(`/admin/signout`);
+      // const res = await axios.post(`/admin/signout`);
       // if(res.status === 200){
     } catch (e) {
       dispatch({
@@ -245,7 +242,7 @@ export const updateUser = (id, user) => async (dispatch) => {
 export const createUser = (user) => async (dispatch) => {
   try {
     dispatch({ type: NEW_USER_REQUEST });
-    const data = await axios.post(port + `/user/admin/create-user`, user, {
+    const data = await axios.post(port + "/user/admin/create-user", user, {
       withCredentials: true,
       credentials: "include",
     });

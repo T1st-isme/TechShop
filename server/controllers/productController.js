@@ -8,7 +8,7 @@ import { v2 as cloudinary } from "cloudinary";
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
-//Filtering, sorting and paginating
+// Filtering, sorting and paginating
 // const getProducts = asyncHandler(async (req, res) => {
 //   const queries = { ...req.query };
 //   const removeFields = ["sort", "limit", "page"];
@@ -86,18 +86,12 @@ import { v2 as cloudinary } from "cloudinary";
 // });
 
 const getProducts = asyncHandler(async (req, res) => {
-  const page = parseInt(req.query.page, 10) || 1;
-  const resPerPage = parseInt(req.query.resPerPage, 10) || 12;
+  const { page = 1, sort, resPerPage = 12 } = req.query;
+
   const productsCount = await Product.countDocuments();
 
-  // Validate page number
-  const totalPages = Math.ceil(productsCount / resPerPage);
-  if (page > totalPages) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid page number",
-    });
-  }
+  const startIndex = (page - 1) * resPerPage;
+  const endIndex = page * resPerPage;
 
   const apiFeatures = new APIFeatures(
     Product.find().populate("category"),
@@ -105,10 +99,13 @@ const getProducts = asyncHandler(async (req, res) => {
   )
     .search()
     .filter()
-    .sort()
-    .pagination(resPerPage); // Note: No need to pass sort here
+    .sort(sort);
 
-  const products = await apiFeatures.query.exec();
+  apiFeatures.pagination(resPerPage);
+  const products = await apiFeatures.query
+    .skip(startIndex)
+    .limit(resPerPage)
+    .exec();
 
   const filteredProductsCount = products.length;
 
@@ -126,8 +123,8 @@ const getProducts = asyncHandler(async (req, res) => {
 const AdGetProducts = asyncHandler(async (req, res) => {
   const product = await Product.find({}).populate("category");
   return res.status(200).json({
-    success: product ? true : false,
-    data: product ? product : "Không tìm thấy sản phẩm!!!",
+    success: Boolean(product),
+    data: product || "Không tìm thấy sản phẩm!!!",
   });
 });
 
@@ -140,8 +137,8 @@ const getProductByName = asyncHandler(async (req, res) => {
     .populate("category", `-slug ${ndf}`)
     .select(ndf);
   return res.status(200).json({
-    success: product ? true : false,
-    data: product ? product : "Không tìm thấy sản phẩm!!!",
+    success: Boolean(product),
+    data: product || "Không tìm thấy sản phẩm!!!",
   });
 });
 
@@ -152,8 +149,8 @@ const getProductByID = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
   return res.status(200).json({
-    success: product ? true : false,
-    data: product ? product : "Không tìm thấy sản phẩm!!!",
+    success: Boolean(product),
+    data: product || "Không tìm thấy sản phẩm!!!",
   });
 });
 
@@ -177,8 +174,8 @@ const createProduct = asyncHandler(async (req, res) => {
   // Upload image to Cloudinary
   const newProduct = await Product.create(req.body);
   res.status(201).json({
-    success: newProduct ? true : false,
-    data: newProduct ? newProduct : "Thêm sản phẩm không thành công!!!",
+    success: Boolean(newProduct),
+    data: newProduct || "Thêm sản phẩm không thành công!!!",
   });
 });
 
@@ -199,10 +196,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     { new: true }
   );
   res.status(201).json({
-    success: updateProduct ? true : false,
-    data: updateProduct
-      ? updateProduct
-      : "Cập nhật sản phẩm không thành công!!!",
+    success: Boolean(updateProduct),
+    data: updateProduct || "Cập nhật sản phẩm không thành công!!!",
   });
 });
 
@@ -212,8 +207,8 @@ const updateProduct = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
   const delProduct = await Product.findByIdAndDelete(req.params.id);
   return res.status(200).json({
-    success: delProduct ? true : false,
-    data: delProduct ? delProduct : "Xóa sản phẩm không thành công!!!",
+    success: Boolean(delProduct),
+    data: delProduct || "Xóa sản phẩm không thành công!!!",
   });
 });
 

@@ -51,7 +51,7 @@
 
 // export default App;
 
-//Protected Routes
+// Protected Routes
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home.jsx";
@@ -104,7 +104,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/search/:keyword" element={<ProductList />} />
         <Route path="/Products" element={<ProductList />} />
-        <Route path="/product-category/:cate" element={<ProductList />} />
         <Route path="/Products/:slug" element={<ProductDetail />} />
         <Route path="/Signup" element={<Register />} />
         <Route path="/Login" element={<Login />} />

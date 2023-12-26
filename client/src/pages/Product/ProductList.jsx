@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState, useRef } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Disclosure, Menu, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import {
@@ -14,8 +14,15 @@ import MoonLoader from "react-spinners/MoonLoader";
 import { useNavigate, useParams } from "react-router-dom";
 import Pagination from "react-js-pagination";
 import { BeakerIcon } from "@heroicons/react/24/solid";
-import { useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
 
+const subCategories = [
+  { name: "Totes", href: "#" },
+  { name: "Backpacks", href: "#" },
+  { name: "Travel Bags", href: "#" },
+  { name: "Hip Bags", href: "#" },
+  { name: "Laptop Sleeves", href: "#" },
+];
 const filters = [
   {
     id: "color",
@@ -59,7 +66,6 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { keyword } = useParams();
-  const { cate } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState(0);
   const [sort, setSort] = useState("");
@@ -74,21 +80,12 @@ const ProductList = () => {
     resPerPage,
     filteredProductsCount,
   } = productList;
-  const initialApiCallMade = useRef(false);
 
   useEffect(() => {
-    dispatch(listProduct(keyword, currentPage, resPerPage, price, cate, sort));
-  }, [dispatch, keyword, currentPage, resPerPage, price, cate, sort]);
-  // useEffect(() => {
-  //   // if (!initialApiCallMade.current) {
-  //   //   initialApiCallMade.current = true;
-  //   dispatch(
-  //     listProduct(keyword, currentPage, resPerPage, price, category, sort)
-  //   );
-  //   // }
-  // }, [dispatch, keyword, currentPage, resPerPage, price, category, sort]);
-
-  if (error) return <div>Error: {error.message}</div>;
+    dispatch(
+      listProduct(keyword, currentPage, resPerPage, price, category, sort)
+    );
+  }, [dispatch, keyword, currentPage, resPerPage, price, category, sort]);
 
   function setCurrentPageNo(pageNumber) {
     setCurrentPage(pageNumber);
@@ -155,7 +152,7 @@ const ProductList = () => {
                       value={category}
                       onChange={(e) => setCategory(e.target.value)}
                     >
-                      <option value="">Tất cả</option>
+                      <option value="">All</option>
                       {categoryList.map((category) => (
                         <option key={category._id} value={category.name}>
                           {category.name}
@@ -427,7 +424,7 @@ const ProductList = () => {
                               <input
                                 id={`filter-${categoryList._id}-${optionIdx}`}
                                 name={`${categoryList._id}[]`}
-                                defaultValue={""}
+                                defaultValue=""
                                 type="checkbox"
                                 defaultChecked={option.checked}
                                 onChange={(e) => {
@@ -533,10 +530,10 @@ const ProductList = () => {
                 itemsCountPerPage={resPerPage}
                 totalItemsCount={productsCount}
                 onChange={setCurrentPageNo}
-                nextPageText={">>"}
+                nextPageText=">>"
                 prevPageText={currentPage > 1 ? "<<" : null}
-                firstPageText={"First"}
-                lastPageText={"Last"}
+                firstPageText="First"
+                lastPageText="Last"
                 itemClass="page-item"
                 linkClass="page-link"
                 activeLinkClass="bg-f96822"

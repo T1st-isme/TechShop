@@ -1,91 +1,95 @@
-import { Fragment, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Fragment, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import {
   updateCategory,
-  detailCategory,
-} from "../../../redux/Actions/CategoryAction";
-import { useParams, useNavigate } from "react-router-dom";
-import MoonLoader from "react-spinners/MoonLoader";
+  detailCategory
+} from '../../../redux/Actions/CategoryAction'
+import { useParams, useNavigate } from 'react-router-dom'
+import MoonLoader from 'react-spinners/MoonLoader'
 
 const UpdateCategory = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const detailsCategory = useSelector((state) => state.detailsCategory);
-  const { loading, error, category } = detailsCategory;
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { id } = useParams()
+  const detailsCategory = useSelector((state) => state.detailsCategory)
+  const { loading, error, category } = detailsCategory
 
-  const [name, setName] = useState("");
+  const [name, setName] = useState('')
 
   useEffect(() => {
-    dispatch(detailCategory(id));
-  }, [dispatch, id]);
+    dispatch(detailCategory(id))
+  }, [dispatch, id])
 
   const updatedCategory = () => {
     const updatedCategory = {
-      name: name,
-    };
-    dispatch(updateCategory(id, updatedCategory));
-    navigate("/admin/category"); // Navigate to the productList page after updating
-  };
+      name
+    }
+    dispatch(updateCategory(id, updatedCategory))
+    navigate('/admin/category') // Navigate to the productList page after updating
+  }
 
   useEffect(() => {
     if (category) {
-      setName(category.name);
+      setName(category.name)
     }
-  }, [category]);
+  }, [category])
 
   const submitHandler = (e) => {
-    e.preventDefault();
-    updatedCategory();
-  };
+    e.preventDefault()
+    updatedCategory()
+  }
 
   return (
-    <Fragment>
-      <div className="row mt-5">
-        <div className="col-12 col-md-10 mt-5">
-          <Fragment>
-            <div className="wrapper my-5">
-              <h1 className="mb-4">Chỉnh sửa danh mục</h1>
+    <>
+      <div className='row mt-5'>
+        <div className='col-12 col-md-10 mt-5'>
+          <>
+            <div className='wrapper my-5'>
+              <h1 className='mb-4'>Chỉnh sửa danh mục</h1>
 
-              {loading ? (
-                <div
-                  style={{ position: "absolute", right: "700px", top: "400px" }}
-                >
-                  <div className="flex justify-center items-center">
-                    <MoonLoader color="#f59e0b" size={150} />
-                  </div>
-                </div>
-              ) : error ? (
-                <h1>{error}</h1>
-              ) : (
-                <form onSubmit={submitHandler} noValidate>
-                  <div className="form-group">
-                    <label htmlFor="firstname_field">Tên danh mục</label>
-                    <input
-                      type="text"
-                      id="firstname_field"
-                      className="form-control"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                  </div>
-
-                  <button
-                    id="login_button"
-                    type="submit"
-                    className="btn btn-block py-3"
+              {loading
+                ? (
+                  <div
+                    style={{ position: 'absolute', right: '700px', top: '400px' }}
                   >
-                    Cập nhật
-                  </button>
-                </form>
-              )}
+                    <div className='flex justify-center items-center'>
+                      <MoonLoader color='#f59e0b' size={150} />
+                    </div>
+                  </div>
+                  )
+                : error
+                  ? (
+                    <h1>{error}</h1>
+                    )
+                  : (
+                    <form onSubmit={submitHandler} noValidate>
+                      <div className='form-group'>
+                        <label htmlFor='firstname_field'>Tên danh mục</label>
+                        <input
+                          type='text'
+                          id='firstname_field'
+                          className='form-control'
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                      </div>
+
+                      <button
+                        id='login_button'
+                        type='submit'
+                        className='btn btn-block py-3'
+                      >
+                        Cập nhật
+                      </button>
+                    </form>
+                    )}
             </div>
-          </Fragment>
+          </>
         </div>
       </div>
-    </Fragment>
-  );
-};
+    </>
+  )
+}
 
-export default UpdateCategory;
+export default UpdateCategory

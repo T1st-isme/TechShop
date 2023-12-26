@@ -24,6 +24,7 @@ export const getCartItems = () => {
           type: ADD_TO_CART_SUCCESS,
           payload: { cartItems },
         });
+
         return cartItems;
       }
     } catch (error) {
@@ -97,7 +98,7 @@ export const removeCartItem = (payload) => {
 export const updateCart = () => {
   return async (dispatch) => {
     // const { auth } = store.getState();
-    let cartItems = localStorage.getItem("cart")
+    const cartItems = localStorage.getItem("cart")
       ? JSON.parse(localStorage.getItem("cart"))
       : null;
 
@@ -105,7 +106,7 @@ export const updateCart = () => {
 
     // if (auth.authenticate) {
     localStorage.removeItem("cart");
-    //dispatch(getCartItems());
+    // dispatch(getCartItems());
     if (cartItems) {
       //   const payload = {
       //     cartItems: Object.keys(cartItems).map((key, index) => {
