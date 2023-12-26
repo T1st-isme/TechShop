@@ -290,98 +290,98 @@
 import {
   Bars3Icon,
   ShoppingBagIcon,
-  XMarkIcon as XMarkIconOutline,
-} from "@heroicons/react/24/outline";
-import { Dialog, Menu, Popover, Tab, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
-import Search from "../Layout/Search";
-import { useDispatch, useSelector } from "react-redux";
-import { getCategory } from "../../redux/Actions/CategoryAction";
-import { logout } from "../../redux/Actions/UserAction";
-import { Link, useNavigate } from "react-router-dom";
-import { listProduct } from "../../redux/Actions/ProductAction";
+  XMarkIcon as XMarkIconOutline
+} from '@heroicons/react/24/outline'
+import { Dialog, Menu, Popover, Tab, Transition } from '@headlessui/react'
+import { Fragment, useEffect, useState } from 'react'
+import Search from '../Layout/Search'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCategory } from '../../redux/Actions/CategoryAction'
+import { logout } from '../../redux/Actions/UserAction'
+import { Link, useNavigate } from 'react-router-dom'
+import { listProduct } from '../../redux/Actions/ProductAction'
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
+function classNames (...classes) {
+  return classes.filter(Boolean).join(' ')
 }
 
 const Header = () => {
-  const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  const auth = useSelector((state) => state.auth);
-  const cart = useSelector((state) => state.cart);
+  const [open, setOpen] = useState(false)
+  const navigate = useNavigate()
+  const auth = useSelector((state) => state.auth)
+  const cart = useSelector((state) => state.cart)
 
-  const { categoryList } = useSelector((state) => state.category);
+  const { categoryList } = useSelector((state) => state.category)
 
   const handleLinkClick = async (category) => {
     try {
-      dispatch(listProduct("", 1, 12, 0, category, ""));
-      navigate("/Products");
+      dispatch(listProduct('', 1, 12, 0, category, ''))
+      navigate('/Products')
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
-  const dispatch = useDispatch();
+  }
+  const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(getCategory());
-  }, [dispatch]);
+    dispatch(getCategory())
+  }, [dispatch])
 
   const logoutHandler = () => {
-    dispatch(logout());
-    alert.success("Logged out successfully.");
-  };
+    dispatch(logout())
+    alert.success('Logged out successfully.')
+  }
 
-  let totalItemsInCart = 0;
+  let totalItemsInCart = 0
   if (cart.cartItems) {
-    totalItemsInCart = Object.values(cart.cartItems).length;
+    totalItemsInCart = Object.values(cart.cartItems).length
   }
 
   return (
     <div
-      className=" top-0 z-100 bg-white"
-      style={{ position: "fixed", width: "100%", zIndex: 2 }}
+      className=' top-0 z-100 bg-white'
+      style={{ position: 'fixed', width: '100%', zIndex: 2 }}
     >
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
+        <Dialog as='div' className='relative z-40 lg:hidden' onClose={setOpen}>
           <Transition.Child
             as={Fragment}
-            enter="transition-opacity ease-linear duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity ease-linear duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
+            enter='transition-opacity ease-linear duration-300'
+            enterFrom='opacity-0'
+            enterTo='opacity-100'
+            leave='transition-opacity ease-linear duration-300'
+            leaveFrom='opacity-100'
+            leaveTo='opacity-0'
           >
-            <div className=" inset-0 bg-black bg-opacity-25" />
+            <div className=' inset-0 bg-black bg-opacity-25' />
           </Transition.Child>
 
-          <div className=" inset-0 z-40 flex">
+          <div className=' inset-0 z-40 flex'>
             <Transition.Child
               as={Fragment}
-              enter="transition ease-in-out duration-300 transform"
-              enterFrom="-translate-x-full"
-              enterTo="translate-x-0"
-              leave="transition ease-in-out duration-300 transform"
-              leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
+              enter='transition ease-in-out duration-300 transform'
+              enterFrom='-translate-x-full'
+              enterTo='translate-x-0'
+              leave='transition ease-in-out duration-300 transform'
+              leaveFrom='translate-x-0'
+              leaveTo='-translate-x-full'
             >
-              <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
-                <div className="flex px-4 pt-5 pb-2">
+              <Dialog.Panel className='relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl'>
+                <div className='flex px-4 pt-5 pb-2'>
                   <button
-                    type="button"
-                    className="-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                    type='button'
+                    className='-m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400'
                     onClick={() => setOpen(false)}
                   >
-                    <span className="sr-only">Close menu</span>
-                    <XMarkIconOutline className="h-6 w-6" aria-hidden="true" />
+                    <span className='sr-only'>Close menu</span>
+                    <XMarkIconOutline className='h-6 w-6' aria-hidden='true' />
                   </button>
                 </div>
 
                 {/* Links */}
-                <Tab.Group as="div" className="mt-2">
-                  <div className="border-b border-gray-200">
-                    <Tab.List className="-mb-px flex space-x-8 px-4">
+                <Tab.Group as='div' className='mt-2'>
+                  <div className='border-b border-gray-200'>
+                    <Tab.List className='-mb-px flex space-x-8 px-4'>
                       {/* {navigation.categories.map((category) => (
                         <Tab
                           key={category.name}
@@ -464,7 +464,7 @@ const Header = () => {
                   </Tab.Panels>
                 </Tab.Group>
 
-                <div className="space-y-6 border-t border-gray-200 py-6 px-4">
+                <div className='space-y-6 border-t border-gray-200 py-6 px-4'>
                   {/* {navigation.pages.map((page) => (
                     <div key={page.name} className="flow-root">
                       <a
@@ -477,19 +477,19 @@ const Header = () => {
                   ))} */}
                 </div>
 
-                <div className="space-y-6 border-t border-gray-200 py-6 px-4">
-                  <div className="flow-root">
+                <div className='space-y-6 border-t border-gray-200 py-6 px-4'>
+                  <div className='flow-root'>
                     <a
-                      href="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
+                      href='#'
+                      className='-m-2 block p-2 font-medium text-gray-900'
                     >
                       Đăng nhập
                     </a>
                   </div>
-                  <div className="flow-root">
+                  <div className='flow-root'>
                     <a
-                      href="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
+                      href='#'
+                      className='-m-2 block p-2 font-medium text-gray-900'
                     >
                       Đăng ký
                     </a>
@@ -501,46 +501,46 @@ const Header = () => {
         </Dialog>
       </Transition.Root>
 
-      <header className="relative bg-white">
+      <header className='relative bg-white'>
         <nav
-          aria-label="Top"
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+          aria-label='Top'
+          className='mx-auto max-w-7xl px-4 sm:px-6 lg:px-8'
         >
-          <div className="border-b border-gray-200">
-            <div className="flex h-16 items-center">
+          <div className='border-b border-gray-200'>
+            <div className='flex h-16 items-center'>
               <button
-                type="button"
-                className="rounded-md bg-white p-2 text-gray-400 lg:hidden"
+                type='button'
+                className='rounded-md bg-white p-2 text-gray-400 lg:hidden'
                 onClick={() => setOpen(true)}
               >
-                <span className="sr-only">Open menu</span>
-                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                <span className='sr-only'>Open menu</span>
+                <Bars3Icon className='h-6 w-6' aria-hidden='true' />
               </button>
 
               {/* Logo */}
-              <div className="ml-4 flex lg:ml-0">
-                <a href="/">
-                  <span className="sr-only">TechShop</span>
+              <div className='ml-4 flex lg:ml-0'>
+                <a href='/'>
+                  <span className='sr-only'>TechShop</span>
                   <img
-                    className="h-16 w-auto"
-                    src="../../../Logo/LogoTechShop4-removebg.png"
-                    alt=""
+                    className='h-16 w-auto'
+                    src='../../../Logo/LogoTechShop4-removebg.png'
+                    alt=''
                   />
                 </a>
               </div>
 
               {/* Flyout menus */}
-              <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
-                <div className="flex h-full space-x-8">
-                  <Popover className="flex">
-                    <div className="relative flex">
+              <Popover.Group className='hidden lg:ml-8 lg:block lg:self-stretch'>
+                <div className='flex h-full space-x-8'>
+                  <Popover className='flex'>
+                    <div className='relative flex'>
                       <Link
-                        to="#"
+                        to='#'
                         onClick={(e) => {
-                          e.preventDefault();
-                          handleLinkClick("");
+                          e.preventDefault()
+                          handleLinkClick('')
                         }}
-                        className="border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                        className='border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out'
                       >
                         Tất cả
                       </Link>
@@ -550,19 +550,19 @@ const Header = () => {
               </Popover.Group>
               {categoryList.map((item) => (
                 <Popover.Group
-                  className="hidden lg:ml-8 lg:block lg:self-stretch"
+                  className='hidden lg:ml-8 lg:block lg:self-stretch'
                   key={item._id}
                 >
-                  <div className="flex h-full space-x-8">
-                    <Popover className="flex">
-                      <div className="relative flex">
+                  <div className='flex h-full space-x-8'>
+                    <Popover className='flex'>
+                      <div className='relative flex'>
                         <Link
-                          to="#"
+                          to='#'
                           onClick={(e) => {
-                            e.preventDefault();
-                            handleLinkClick(item._id);
+                            e.preventDefault()
+                            handleLinkClick(item._id)
                           }}
-                          className="border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                          className='border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out'
                         >
                           {item.name}
                         </Link>
@@ -572,42 +572,42 @@ const Header = () => {
                 </Popover.Group>
               ))}
               {/* Search */}
-              <div className="pr-35">
+              <div className='pr-35'>
                 <Search />
               </div>
-              <div className="ml-6 flex items-center">
-                <div className="ml-auto flex items-center">
+              <div className='ml-6 flex items-center'>
+                <div className='ml-auto flex items-center'>
                   {/* Display name when logged in */}
                   {auth.isAuthenticated && (
                     <>
                       {/* Profile dropdown */}
-                      <Menu as="div" className="relative ml-4 flex-shrink-0">
+                      <Menu as='div' className='relative ml-4 flex-shrink-0'>
                         <div>
-                          <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                            <span className="sr-only">Open user menu</span>
-                            <div className="text-sm font-medium text-gray-700">
-                              {auth.user.user.firstname}{" "}
+                          <Menu.Button className='flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'>
+                            <span className='sr-only'>Open user menu</span>
+                            <div className='text-sm font-medium text-gray-700'>
+                              {auth.user.user.firstname}{' '}
                               {auth.user.user.lastname}
                             </div>
                           </Menu.Button>
                         </div>
                         <Transition
                           as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
+                          enter='transition ease-out duration-100'
+                          enterFrom='transform opacity-0 scale-95'
+                          enterTo='transform opacity-100 scale-100'
+                          leave='transition ease-in duration-75'
+                          leaveFrom='transform opacity-100 scale-100'
+                          leaveTo='transform opacity-0 scale-95'
                         >
-                          <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
                             <Menu.Item>
                               {({ active }) => (
                                 <a
-                                  href="/Profile"
+                                  href='/Profile'
                                   className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
                                   )}
                                 >
                                   Cá nhân
@@ -617,10 +617,10 @@ const Header = () => {
                             <Menu.Item>
                               {({ active }) => (
                                 <a
-                                  href="/order/me"
+                                  href='/order/me'
                                   className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
                                   )}
                                 >
                                   Đơn hàng
@@ -630,11 +630,11 @@ const Header = () => {
                             <Menu.Item>
                               {({ active }) => (
                                 <Link
-                                  to="/"
+                                  to='/'
                                   onClick={logoutHandler}
                                   className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
+                                    active ? 'bg-gray-100' : '',
+                                    'block px-4 py-2 text-sm text-gray-700'
                                   )}
                                 >
                                   Đăng xuất
@@ -649,20 +649,20 @@ const Header = () => {
 
                   {/* Hide login button when logged in */}
                   {!auth.isAuthenticated && (
-                    <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                    <div className='hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6'>
                       <a
-                        href="/login"
-                        className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                        href='/login'
+                        className='text-sm font-medium text-gray-700 hover:text-gray-800'
                       >
                         Đăng nhập
                       </a>
                       <span
-                        className="h-6 w-px bg-gray-200"
-                        aria-hidden="true"
+                        className='h-6 w-px bg-gray-200'
+                        aria-hidden='true'
                       />
                       <a
-                        href="/signup"
-                        className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                        href='/signup'
+                        className='text-sm font-medium text-gray-700 hover:text-gray-800'
                       >
                         Đăng ký
                       </a>
@@ -670,37 +670,37 @@ const Header = () => {
                   )}
 
                   {/* Cart */}
-                  <div className="ml-4 flow-root lg:ml-6">
+                  <div className='ml-4 flow-root lg:ml-6'>
                     <div
-                      type="button"
-                      className="group -m-2 flex items-center p-2"
+                      type='button'
+                      className='group -m-2 flex items-center p-2'
                       onClick={() => {
-                        navigate("/Cart");
+                        navigate('/Cart')
                       }}
-                      tabIndex="0"
+                      tabIndex='0'
                     >
                       <ShoppingBagIcon
-                        className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                        aria-hidden="true"
+                        className='h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500'
+                        aria-hidden='true'
                       />
 
                       <div
                         style={{
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          backgroundColor: "red",
-                          color: "white",
-                          borderRadius: "50%",
-                          width: "25px",
-                          height: "25px",
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          backgroundColor: 'red',
+                          color: 'white',
+                          borderRadius: '50%',
+                          width: '25px',
+                          height: '25px'
                         }}
                       >
-                        <span className="text-sm font-medium group-hover:text-gray-800">
+                        <span className='text-sm font-medium group-hover:text-gray-800'>
                           {totalItemsInCart}
                         </span>
                       </div>
-                      <span className="sr-only">items in cart, view bag</span>
+                      <span className='sr-only'>items in cart, view bag</span>
                     </div>
                   </div>
                 </div>
@@ -710,7 +710,7 @@ const Header = () => {
         </nav>
       </header>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

@@ -43,10 +43,10 @@ const orderSchema = new Schema({
     default: 'ordered'
   },
   address: {
-    type: String,
+    type: String
   },
   phone: {
-    type: String,
+    type: String
   },
   createdAt: {
     type: Date,

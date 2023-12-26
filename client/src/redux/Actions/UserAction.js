@@ -1,5 +1,5 @@
-import axios from "axios";
-import Cookies from "js-cookie";
+import axios from 'axios'
+import Cookies from 'js-cookie'
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -28,122 +28,122 @@ import {
   UPDATE_USER_FAIL,
   NEW_USER_REQUEST,
   NEW_USER_SUCCESS,
-  NEW_USER_FAIL,
-} from "../Constants/UserConstant";
+  NEW_USER_FAIL
+} from '../Constants/UserConstant'
 
-import { RESET_CART } from "../Constants/CartConstant";
-import { port } from "../../Utils/Util";
-import { getCartItems } from "./CartAction";
+import { RESET_CART } from '../Constants/CartConstant'
+import { port } from '../../Utils/Util'
+import { getCartItems } from './CartAction'
 
 // new update signup action
 export const signup = (user) => {
   return async (dispatch) => {
     try {
-      dispatch({ type: REGISTER_USER_REQUEST });
-      const res = await axios.post(`${port}/user/signup`, user);
+      dispatch({ type: REGISTER_USER_REQUEST })
+      const res = await axios.post(`${port}/user/signup`, user)
       if (res.status === 201) {
-        dispatch({ type: REGISTER_USER_SUCCESS });
-        const { token, user } = res.data;
-        Cookies.set("token", token);
-        Cookies.set("user", JSON.stringify(user));
+        dispatch({ type: REGISTER_USER_SUCCESS })
+        const { token, user } = res.data
+        Cookies.set('token', token)
+        Cookies.set('user', JSON.stringify(user))
         dispatch({
           type: LOGIN_SUCCESS,
           payload: {
             token,
-            user,
-          },
-        });
+            user
+          }
+        })
       } else {
-        const { error } = res.data;
-        dispatch({ type: REGISTER_USER_FAIL, payload: { error } });
+        const { error } = res.data
+        dispatch({ type: REGISTER_USER_FAIL, payload: { error } })
       }
     } catch (error) {
-      const { data } = error.response;
+      const { data } = error.response
       dispatch({
         type: REGISTER_USER_FAIL,
-        payload: { error: data.error },
-      });
+        payload: { error: data.error }
+      })
     }
-  };
-};
+  }
+}
 
 export const login = (email, password) => {
   return async (dispatch) => {
-    dispatch({ type: LOGIN_REQUEST });
+    dispatch({ type: LOGIN_REQUEST })
     const res = await axios.post(
       `${port}/user/login`,
       {
         email,
-        password,
+        password
       },
-      { credentials: "include" }
-    );
+      { credentials: 'include' }
+    )
 
     if (res.status === 200) {
-      const { token, user } = res.data;
-      Cookies.set("token", token);
-      Cookies.set("user", JSON.stringify(user));
+      const { token, user } = res.data
+      Cookies.set('token', token)
+      Cookies.set('user', JSON.stringify(user))
       dispatch({
         type: LOGIN_SUCCESS,
         payload: {
           token,
-          user,
-        },
-      });
-      dispatch(getCartItems());
+          user
+        }
+      })
+      dispatch(getCartItems())
     } else if (res.status === 400) {
       dispatch({
         type: LOGIN_FAIL,
-        payload: { error: res.data.error },
-      });
+        payload: { error: res.data.error }
+      })
     }
-  };
-};
+  }
+}
 
 export const isUserLoggedIn = () => {
   return async (dispatch) => {
-    const token = Cookies.get("token");
+    const token = Cookies.get('token')
     if (token) {
-      dispatch({ type: LOAD_USER_REQUEST });
+      dispatch({ type: LOAD_USER_REQUEST })
       try {
         const { data } = await axios.get(`${port}/user/me`, {
-          withCredentials: true,
-        });
+          withCredentials: true
+        })
         dispatch({
           type: LOAD_USER_SUCCESS,
           payload: {
             token,
-            user: data.user,
-          },
-        });
-        dispatch(getCartItems());
+            user: data.user
+          }
+        })
+        dispatch(getCartItems())
       } catch (error) {
-        console.log(error);
+        console.log(error)
         dispatch({
           type: LOAD_USER_FAIL,
-          payload: { error: error.response.data.error },
-        });
+          payload: { error: error.response.data.error }
+        })
       }
     }
-  };
-};
+  }
+}
 
 export const logout = () => {
   return async (dispatch) => {
     try {
-      dispatch({ type: LOGOUT_REQUEST });
+      dispatch({ type: LOGOUT_REQUEST })
       const res = await axios.get(
         `${port}/user/logout`,
         {},
         {
-          withCredentials: true,
+          withCredentials: true
         }
-      );
+      )
       if (res.status === 200) {
-        Cookies.remove("token");
-        Cookies.remove("user");
-        dispatch({ type: LOGOUT_SUCCESS });
-        dispatch({ type: RESET_CART });
+        Cookies.remove('token')
+        Cookies.remove('user')
+        dispatch({ type: LOGOUT_SUCCESS })
+        dispatch({ type: RESET_CART })
       }
 
       // const res = await axios.post(`/admin/signout`);
@@ -151,119 +151,119 @@ export const logout = () => {
     } catch (e) {
       dispatch({
         type: LOGOUT_FAIL,
-        payload: { error: e.message },
-      });
+        payload: { error: e.message }
+      })
     }
-  };
-};
+  }
+}
 
 export const deleteUser = (id) => async (dispatch) => {
   try {
-    dispatch({ type: DELETE_USER_REQUEST });
+    dispatch({ type: DELETE_USER_REQUEST })
     const { data } = await axios.delete(`${port}/user/admin/user/${id}`, {
-      withCredentials: true,
-    });
+      withCredentials: true
+    })
     dispatch({
       type: DELETE_USER_SUCCESS,
-      payload: data,
-    });
+      payload: data
+    })
   } catch (error) {
     dispatch({
       type: DELETE_USER_FAIL,
-      payload: error.response.data.message,
-    });
+      payload: error.response.data.message
+    })
   }
-};
+}
 
 export const listUser = () => async (dispatch) => {
   try {
-    dispatch({ type: ALL_USERS_REQUEST });
+    dispatch({ type: ALL_USERS_REQUEST })
     const { data } = await axios.get(`${port}/user/admin/users`, {
       withCredentials: true,
-      credentials: "include",
-    });
+      credentials: 'include'
+    })
     dispatch({
       type: ALL_USERS_SUCCESS,
-      payload: data,
-    });
+      payload: data
+    })
   } catch (error) {
     dispatch({
       type: ALL_USERS_FAIL,
-      payload: error.data,
-    });
+      payload: error.data
+    })
   }
-};
+}
 
 export const detailUser = (id) => async (dispatch) => {
   try {
-    dispatch({ type: USER_DETAILS_REQUEST });
+    dispatch({ type: USER_DETAILS_REQUEST })
     const { data } = await axios.get(port + `/user/admin/user/${id}`, {
       withCredentials: true,
-      credentials: "include",
-    });
+      credentials: 'include'
+    })
     dispatch({
       type: USER_DETAILS_SUCCESS,
-      payload: data,
-    });
+      payload: data
+    })
   } catch (error) {
     dispatch({
       type: USER_DETAILS_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
-    });
+          : error.message
+    })
   }
-};
+}
 
 export const updateUser = (id, user) => async (dispatch) => {
   try {
-    dispatch({ type: UPDATE_USER_REQUEST });
+    dispatch({ type: UPDATE_USER_REQUEST })
 
     const { data } = await axios.put(port + `/user/admin/user/${id}`, user, {
       withCredentials: true,
-      credentials: "include",
-    });
+      credentials: 'include'
+    })
     dispatch({
       type: UPDATE_USER_SUCCESS,
-      payload: data,
-    });
+      payload: data
+    })
   } catch (error) {
     dispatch({
       type: UPDATE_USER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
-    });
+          : error.message
+    })
   }
-};
+}
 
 export const createUser = (user) => async (dispatch) => {
   try {
-    dispatch({ type: NEW_USER_REQUEST });
-    const data = await axios.post(port + "/user/admin/create-user", user, {
+    dispatch({ type: NEW_USER_REQUEST })
+    const data = await axios.post(port + '/user/admin/create-user', user, {
       withCredentials: true,
-      credentials: "include",
-    });
+      credentials: 'include'
+    })
     dispatch({
       type: NEW_USER_SUCCESS,
-      payload: data,
-    });
+      payload: data
+    })
   } catch (error) {
     dispatch({
       type: NEW_USER_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
-    });
+          : error.message
+    })
   }
-};
+}
 
 // Clear Errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({
-    type: CLEAR_ERRORS,
-  });
-};
+    type: CLEAR_ERRORS
+  })
+}
