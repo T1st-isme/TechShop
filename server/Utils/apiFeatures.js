@@ -1,54 +1,55 @@
-import Category from "../models/categoryModel.js";
+import Category from '../models/categoryModel.js'
 class APIFeatures {
-  constructor(query, queryStr) {
-    this.query = query;
-    this.queryStr = queryStr;
+  constructor (query, queryStr) {
+    this.query = query
+    this.queryStr = queryStr
   }
 
-  search() {
+  search () {
     const keyword = this.queryStr.keyword
       ? {
           name: {
             $regex: this.queryStr.keyword,
-            $options: "i",
-          },
+            $options: 'i'
+          }
         }
-      : {};
+      : {}
 
-    this.query = this.query.find({ ...keyword });
-    return this;
+    this.query = this.query.find({ ...keyword })
+    return this
   }
 
-  filter() {
-    const queryCopy = { ...this.queryStr };
+  filter () {
+    const queryCopy = { ...this.queryStr }
 
     // Removing fields from the query
-    const removeFields = ["sort", "page"];
-    removeFields.forEach((el) => delete queryCopy[el]);
+    const removeFields = ['sort', 'page']
+    removeFields.forEach((el) => delete queryCopy[el])
 
     // Advance filter for price, ratings etc
-    let queryStr = JSON.stringify(queryCopy);
-    queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
+    let queryStr = JSON.stringify(queryCopy)
+    queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`)
 
-    this.query = this.query.find(JSON.parse(queryStr));
-    return this;
+    this.query = this.query.find(JSON.parse(queryStr))
+    return this
   }
 
-  pagination(resPerPage) {
-    const currentPage = Number(this.queryStr.page) || 1;
-    const skip = resPerPage * (currentPage - 1);
+  pagination (resPerPage) {
+    const currentPage = Number(this.queryStr.page) || 1
+    const skip = resPerPage * (currentPage - 1)
 
-    this.query = this.query.limit(resPerPage).skip(skip);
-    return this;
+    this.query = this.query.limit(resPerPage).skip(skip)
+    return this
   }
-  sort() {
+
+  sort () {
     // console.log("Sorting by:", this.queryStr.sort); // Add this line to debug
     const sortBy = this.queryStr.sort
-      ? this.queryStr.sort.split(",").join(" ")
-      : "-sold";
-    this.query = this.query.sort(sortBy);
-    return this;
+      ? this.queryStr.sort.split(',').join(' ')
+      : '-sold'
+    this.query = this.query.sort(sortBy)
+    return this
   }
 }
 
-export default APIFeatures;
+export default APIFeatures
