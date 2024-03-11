@@ -122,7 +122,7 @@ const ProductsListAD = () => {
                     <th scope="col" className="px-4 py-3">
                       Tổng lượng bán
                     </th>
-                    <th scope="col" className="px-4 py-3 w-25">
+                    <th scope="col" className="px-4 py-3 ">
                       Hành động
                     </th>
                     <th scope="col" className="px-4 py-3">
@@ -184,7 +184,7 @@ const ProductsListAD = () => {
                         </td>
                         {/*Sales/ month  */}
                         <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          0.47
+                          {(product.sold / 30).toFixed(2)}
                         </td>
 
                         <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -199,7 +199,7 @@ const ProductsListAD = () => {
                               <path d="M2.25 2.25a.75.75 0 000 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 00-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 000-1.5H5.378A2.25 2.25 0 017.5 15h11.218a.75.75 0 00.674-.421 60.358 60.358 0 002.96-7.228.75.75 0 00-.525-.965A60.864 60.864 0 005.68 4.509l-.232-.867A1.875 1.875 0 003.636 2.25H2.25zM3.75 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zM16.5 20.25a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z" />
                             </svg>
                             {/* Sold data */}
-                            1.6M
+                            {product.sold}
                           </div>
                         </td>
                         {/* Hành động  */}
@@ -221,7 +221,9 @@ const ProductsListAD = () => {
                         </td>
                         {/* Update date */}
                         <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Just now
+                          {product?.updatedAt
+                            ? new Date(product.updatedAt).toLocaleDateString()
+                            : "Just now"}
                         </td>
                       </tr>
                       {/* Modal xác nhận xoá sản phẩm*/}

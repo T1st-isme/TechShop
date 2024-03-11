@@ -42,12 +42,11 @@ class APIFeatures {
     return this;
   }
   sort() {
-    if (this.queryStr.sort) {
-      const sortBy = this.queryStr.sort.split(",").join(" ");
-      this.query = this.query.sort(sortBy);
-    } else {
-      this.query = this.query.sort("-createdAt");
-    }
+    // console.log("Sorting by:", this.queryStr.sort); // Add this line to debug
+    const sortBy = this.queryStr.sort
+      ? this.queryStr.sort.split(",").join(" ")
+      : "-sold";
+    this.query = this.query.sort(sortBy);
     return this;
   }
 }

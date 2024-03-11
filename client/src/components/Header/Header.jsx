@@ -313,14 +313,21 @@ const Header = () => {
 
   const { categoryList } = useSelector((state) => state.category);
 
-  const handleLinkClick = async (category) => {
-    try {
-      dispatch(listProduct("", 1, 12, 0, category, ""));
-      navigate("/Products");
-    } catch (err) {
-      console.log(err);
-    }
+  // const handleLinkClick = async (category) => {
+  //   try {
+  //     dispatch(listProduct("", 1, 12, 0, category, ""));
+  //     navigate("/Products");
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+
+  const handleLinkClick = (category) => {
+    dispatch(listProduct({ category: category })).then(() => {
+      navigate(`/product-category/${category}`);
+    });
   };
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCategory());
@@ -538,7 +545,9 @@ const Header = () => {
                         to="#"
                         onClick={(e) => {
                           e.preventDefault();
-                          handleLinkClick("");
+                          dispatch(listProduct()).then(() => {
+                            navigate(`/Products`);
+                          });
                         }}
                         className={
                           "border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
@@ -677,6 +686,8 @@ const Header = () => {
                   <div className="ml-4 flow-root lg:ml-6">
                     <div
                       type="button"
+                      name="GioHang"
+                      id="CartBtn"
                       className="group -m-2 flex items-center p-2"
                       onClick={() => {
                         navigate("/Cart");

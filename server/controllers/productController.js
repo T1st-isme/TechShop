@@ -86,12 +86,18 @@ import { v2 as cloudinary } from "cloudinary";
 // });
 
 const getProducts = asyncHandler(async (req, res) => {
-  const { page = 1, sort, resPerPage = 12 } = req.query;
-
+  const page = parseInt(req.query.page, 10) || 1;
+  const resPerPage = parseInt(req.query.resPerPage, 10) || 12;
   const productsCount = await Product.countDocuments();
 
-  const startIndex = (page - 1) * resPerPage;
-  const endIndex = page * resPerPage;
+  // Validate page number
+  const totalPages = Math.ceil(productsCount / resPerPage);
+  if (page > totalPages) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid page number",
+    });
+  }
 
   const apiFeatures = new APIFeatures(
     Product.find().populate("category"),
@@ -99,23 +105,19 @@ const getProducts = asyncHandler(async (req, res) => {
   )
     .search()
     .filter()
-    .sort(sort);
+    .sort()
+    .pagination(resPerPage); // Note: No need to pass sort here
 
-  apiFeatures.pagination(resPerPage);
-  const products = await apiFeatures.query
-    .skip(startIndex)
-    .limit(resPerPage)
-    .exec();
+  const products = await apiFeatures.query.exec();
 
   const filteredProductsCount = products.length;
 
   res.status(200).json({
     success: true,
     productsCount,
-    totalPages: Math.ceil(productsCount / resPerPage),
+    totalPages,
     currentPage: page,
     resPerPage,
-    totalProducts: productsCount,
     filteredProductsCount,
     products,
   });

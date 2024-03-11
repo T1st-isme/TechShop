@@ -53,7 +53,7 @@ export const getCategory = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ALL_CATEGORY_FAIL,
-      payload: error,
+      payload: error.error,
     });
   }
 };
