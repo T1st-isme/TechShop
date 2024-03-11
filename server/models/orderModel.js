@@ -49,10 +49,10 @@ const orderSchema = new Schema({
     type: String
   },
   address: {
-    type: String,
+    type: String
   },
   phone: {
-    type: String,
+    type: String
   },
   createdAt: {
     type: Date,
