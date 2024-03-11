@@ -171,52 +171,52 @@ const Home = () => {
               <div className="marquee-inner-wrapper card-wrapper">
                 <Marquee className="d-flex">
                   <div className="mx-4 w-25">
-                    <img src="images/brand-01.png" alt="brand"></img>
+                    <img src="images/brand-01.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-02.png" alt="brand"></img>
+                    <img src="images/brand-02.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-03.png" alt="brand"></img>
+                    <img src="images/brand-03.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-04.png" alt="brand"></img>
+                    <img src="images/brand-04.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-05.png" alt="brand"></img>
+                    <img src="images/brand-05.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-06.png" alt="brand"></img>
+                    <img src="images/brand-06.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-07.png" alt="brand"></img>
+                    <img src="images/brand-07.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/brand-08.png" alt="brand"></img>
+                    <img src="images/brand-08.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/lenovo.png" alt="brand"></img>
+                    <img src="images/lenovo.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/acer.png" alt="brand"></img>
+                    <img src="images/acer.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/asus.png" alt="brand"></img>
+                    <img src="images/asus.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/gigabyte.png" alt="brand"></img>
+                    <img src="images/gigabyte.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/corsair.png" alt="brand"></img>
+                    <img src="images/corsair.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/razer.png" alt="brand"></img>
+                    <img src="images/razer.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/hp.png" alt="brand"></img>
+                    <img src="images/hp.png" alt="brand" />
                   </div>
                   <div className="mx-4 w-25">
-                    <img src="images/logitech.png" alt="brand"></img>
+                    <img src="images/logitech.png" alt="brand" />
                   </div>
                 </Marquee>
               </div>

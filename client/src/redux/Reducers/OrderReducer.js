@@ -19,120 +19,120 @@ import {
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
   ORDER_DETAILS_FAIL,
-  CLEAR_ERRORS,
-} from "../Constants/OrderConstant";
+  CLEAR_ERRORS
+} from '../Constants/OrderConstant'
 
 export const newOrderReducer = (state = { order: {} }, action) => {
   switch (action.type) {
     case CREATE_ORDER_REQUEST:
       return {
         ...state,
-        loading: true,
-      };
+        loading: true
+      }
     case CREATE_ORDER_SUCCESS:
       return {
         ...state,
         loading: false,
-        order: action.payload,
-      };
+        order: action.payload
+      }
     case CREATE_ORDER_FAIL:
       return {
         ...state,
         loading: false,
-        error: action.payload,
-      };
+        error: action.payload
+      }
     default:
-      return state;
+      return state
   }
-};
+}
 
 export const myOrdersReducer = (state = { orders: [] }, action) => {
   switch (action.type) {
     case MY_ORDERS_REQUEST:
       return {
-        loading: true,
-      };
+        loading: true
+      }
 
     case MY_ORDERS_SUCCESS:
       return {
         loading: false,
-        orders: action.payload.data,
-      };
+        orders: action.payload.data
+      }
 
     case MY_ORDERS_FAIL:
       return {
         loading: false,
-        error: action.payload,
-      };
+        error: action.payload
+      }
     case CLEAR_ERRORS:
       return {
         ...state,
-        error: null,
-      };
+        error: null
+      }
 
     default:
-      return state;
+      return state
   }
-};
+}
 
 export const orderDetailsReducer = (state = { order: {} }, action) => {
   switch (action.type) {
     case ORDER_DETAILS_REQUEST:
       return {
-        loading: true,
-      };
+        loading: true
+      }
 
     case ORDER_DETAILS_SUCCESS:
       return {
         loading: false,
-        order: action.payload.data.order,
-      };
+        order: action.payload.data.order
+      }
 
     case ORDER_DETAILS_FAIL:
       return {
         loading: false,
-        error: action.payload,
-      };
+        error: action.payload
+      }
     case CLEAR_ERRORS:
       return {
         ...state,
-        error: null,
-      };
+        error: null
+      }
 
     default:
-      return state;
+      return state
   }
-};
+}
 
 export const allOrdersReducer = (state = { orders: [] }, action) => {
   switch (action.type) {
     case ALL_ORDERS_REQUEST:
       return {
-        loading: true,
-      };
+        loading: true
+      }
 
     case ALL_ORDERS_SUCCESS:
       return {
         loading: false,
-        orders: action.payload.data.orders,
+        orders: action.payload.data.orders
         // totalAmount: action.payload.totalAmount,
-      };
+      }
 
     case ALL_ORDERS_FAIL:
       return {
         loading: false,
-        error: action.payload,
-      };
+        error: action.payload
+      }
     case CLEAR_ERRORS:
       return {
         ...state,
-        error: null,
-      };
+        error: null
+      }
 
     default:
-      return state;
+      return state
   }
-};
+}
 
 export const orderReducer = (state = {}, action) => {
   switch (action.type) {
@@ -140,49 +140,49 @@ export const orderReducer = (state = {}, action) => {
     case DELETE_ORDER_REQUEST:
       return {
         ...state,
-        loading: true,
-      };
+        loading: true
+      }
 
     case UPDATE_ORDER_SUCCESS:
       return {
         ...state,
         loading: false,
-        isUpdated: action.payload,
-      };
+        isUpdated: action.payload
+      }
 
     case DELETE_ORDER_SUCCESS:
       return {
         ...state,
         loading: false,
-        isDeleted: action.payload,
-      };
+        isDeleted: action.payload
+      }
 
     case UPDATE_ORDER_FAIL:
     case DELETE_ORDER_FAIL:
       return {
         ...state,
-        error: action.payload,
-      };
+        error: action.payload
+      }
 
     case UPDATE_ORDER_RESET:
       return {
         ...state,
-        isUpdated: false,
-      };
+        isUpdated: false
+      }
 
     case DELETE_ORDER_RESET:
       return {
         ...state,
-        isDeleted: false,
-      };
+        isDeleted: false
+      }
 
     case CLEAR_ERRORS:
       return {
         ...state,
-        error: null,
-      };
+        error: null
+      }
 
     default:
-      return state;
+      return state
   }
-};
+}

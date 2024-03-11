@@ -8,7 +8,7 @@ import { v2 as cloudinary } from "cloudinary";
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
-//Filtering, sorting and paginating
+// Filtering, sorting and paginating
 // const getProducts = asyncHandler(async (req, res) => {
 //   const queries = { ...req.query };
 //   const removeFields = ["sort", "limit", "page"];
@@ -116,6 +116,7 @@ const getProducts = asyncHandler(async (req, res) => {
     success: true,
     productsCount,
     totalPages,
+    totalPages,
     currentPage: page,
     resPerPage,
     filteredProductsCount,
@@ -126,8 +127,8 @@ const getProducts = asyncHandler(async (req, res) => {
 const AdGetProducts = asyncHandler(async (req, res) => {
   const product = await Product.find({}).populate("category");
   return res.status(200).json({
-    success: product ? true : false,
-    data: product ? product : "Không tìm thấy sản phẩm!!!",
+    success: Boolean(product),
+    data: product || "Không tìm thấy sản phẩm!!!",
   });
 });
 
@@ -140,8 +141,8 @@ const getProductByName = asyncHandler(async (req, res) => {
     .populate("category", `-slug ${ndf}`)
     .select(ndf);
   return res.status(200).json({
-    success: product ? true : false,
-    data: product ? product : "Không tìm thấy sản phẩm!!!",
+    success: Boolean(product),
+    data: product || "Không tìm thấy sản phẩm!!!",
   });
 });
 
@@ -152,8 +153,8 @@ const getProductByID = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
   return res.status(200).json({
-    success: product ? true : false,
-    data: product ? product : "Không tìm thấy sản phẩm!!!",
+    success: Boolean(product),
+    data: product || "Không tìm thấy sản phẩm!!!",
   });
 });
 
@@ -177,8 +178,8 @@ const createProduct = asyncHandler(async (req, res) => {
   // Upload image to Cloudinary
   const newProduct = await Product.create(req.body);
   res.status(201).json({
-    success: newProduct ? true : false,
-    data: newProduct ? newProduct : "Thêm sản phẩm không thành công!!!",
+    success: Boolean(newProduct),
+    data: newProduct || "Thêm sản phẩm không thành công!!!",
   });
 });
 
@@ -199,10 +200,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     { new: true }
   );
   res.status(201).json({
-    success: updateProduct ? true : false,
-    data: updateProduct
-      ? updateProduct
-      : "Cập nhật sản phẩm không thành công!!!",
+    success: Boolean(updateProduct),
+    data: updateProduct || "Cập nhật sản phẩm không thành công!!!",
   });
 });
 
@@ -212,8 +211,8 @@ const updateProduct = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
   const delProduct = await Product.findByIdAndDelete(req.params.id);
   return res.status(200).json({
-    success: delProduct ? true : false,
-    data: delProduct ? delProduct : "Xóa sản phẩm không thành công!!!",
+    success: Boolean(delProduct),
+    data: delProduct || "Xóa sản phẩm không thành công!!!",
   });
 });
 

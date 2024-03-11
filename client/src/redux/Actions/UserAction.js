@@ -149,7 +149,7 @@ export const logout = () => {
         dispatch({ type: RESET_CART });
       }
 
-      //const res = await axios.post(`/admin/signout`);
+      // const res = await axios.post(`/admin/signout`);
       // if(res.status === 200){
     } catch (e) {
       dispatch({
@@ -245,7 +245,7 @@ export const updateUser = (id, user) => async (dispatch) => {
 export const createUser = (user) => async (dispatch) => {
   try {
     dispatch({ type: NEW_USER_REQUEST });
-    const data = await axios.post(port + `/user/admin/create-user`, user, {
+    const data = await axios.post(port + "/user/admin/create-user", user, {
       withCredentials: true,
       credentials: "include",
     });

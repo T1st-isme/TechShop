@@ -1,15 +1,15 @@
-import mongoose from "mongoose";
-mongoose.set("strictQuery", true);
+import mongoose from 'mongoose'
+mongoose.set('strictQuery', true)
 const dbConnect = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("Kết nối MongoDB thành công.");
+      useUnifiedTopology: true
+    })
+    console.log('Kết nối MongoDB thành công.')
   } catch (err) {
-    console.log("Lỗi kết nỗi MongoDB: ", err);
+    console.log('Lỗi kết nỗi MongoDB: ', err)
   }
-};
+}
 
-export default dbConnect;
+export default dbConnect

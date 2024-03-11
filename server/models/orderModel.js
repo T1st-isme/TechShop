@@ -1,46 +1,52 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose'
 // A
 const orderSchema = new Schema({
   user: {
     type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+    ref: 'User',
+    required: true
   },
   totalPrice: {
     type: Schema.Types.Decimal128,
     default: 0,
-    required: true,
+    required: true
   },
   items: [
     {
       productId: {
         type: Schema.Types.ObjectId,
-        ref: "Product",
+        ref: 'Product'
       },
       payablePrice: {
         type: Number,
-        required: true,
+        required: true
       },
       purchasedQty: {
         type: Number,
-        required: true,
-      },
-    },
+        required: true
+      }
+    }
   ],
   paymentStatus: {
     type: String,
-    enum: ["pending", "completed", "cancelled", "refund"],
+    enum: ['pending', 'completed', 'cancelled', 'refund']
   },
   paymentType: {
     type: String,
-    enum: ["COD", "VNPAY PAYMENT"],
-    default: "COD",
-    required: true,
+    enum: ['COD', 'VNPAY PAYMENT'],
+    default: 'COD',
+    required: true
   },
   orderStatus: {
     type: String,
-    enum: ["ordered", "processing", "delivered", "cancelled"],
-    default: "ordered",
+    enum: ['ordered', 'processing', 'delivered', 'cancelled'],
+    default: 'ordered'
+  },
+  address: {
+    type: String
+  },
+  phone: {
+    type: String
   },
   address: {
     type: String,
@@ -50,8 +56,8 @@ const orderSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now,
-  },
-});
+    default: Date.now
+  }
+})
 
-export default model("Order", orderSchema);
+export default model('Order', orderSchema)

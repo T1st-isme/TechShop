@@ -427,7 +427,7 @@ const ProductList = () => {
                               <input
                                 id={`filter-${categoryList._id}-${optionIdx}`}
                                 name={`${categoryList._id}[]`}
-                                defaultValue={""}
+                                defaultValue=""
                                 type="checkbox"
                                 defaultChecked={option.checked}
                                 onChange={(e) => {
@@ -533,10 +533,10 @@ const ProductList = () => {
                 itemsCountPerPage={resPerPage}
                 totalItemsCount={productsCount}
                 onChange={setCurrentPageNo}
-                nextPageText={">>"}
+                nextPageText=">>"
                 prevPageText={currentPage > 1 ? "<<" : null}
-                firstPageText={"First"}
-                lastPageText={"Last"}
+                firstPageText="First"
+                lastPageText="Last"
                 itemClass="page-item"
                 linkClass="page-link"
                 activeLinkClass="bg-f96822"

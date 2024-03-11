@@ -1,20 +1,20 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose'
 
 const productSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: true
     },
     slug: {
       type: String,
-      required: true,
+      required: true
     },
     description: {
       type: String,
       required: true,
       trim: true,
-      maxlength: 2000,
+      maxlength: 2000
     },
     richdescription: {
       cpu: { type: String },
@@ -29,51 +29,51 @@ const productSchema = new Schema(
       dophangiai: { type: String },
       mau: { type: String },
       trongluong: { type: String },
-      kichthuoc: { type: String },
+      kichthuoc: { type: String }
     },
     proImg: [{ img: { type: String } }],
     brand: {
       type: String,
-      default: "",
+      default: ''
     },
     price: {
       type: Schema.Types.Decimal128,
-      default: 0,
+      default: 0
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: "Category",
+      ref: 'Category'
     },
     stock: {
       type: Number,
       required: true,
-      default: 0,
+      default: 0
     },
     sold: {
       type: Number,
-      default: 0,
+      default: 0
     },
     rating: [
       {
         star: { type: Number },
-        postedBy: { type: Schema.Types.ObjectId, ref: "User" },
-        comment: { type: String },
-      },
+        postedBy: { type: Schema.Types.ObjectId, ref: 'User' },
+        comment: { type: String }
+      }
     ],
     totalRating: {
       type: Number,
-      default: 0,
+      default: 0
     },
     numReviews: {
       type: Number,
-      default: 0,
+      default: 0
     },
     shipping: {
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   { timestamps: true }
-);
+)
 
 // productSchema.virtual("id").get(function () {
 //   return this._id.toHexString();
@@ -83,4 +83,4 @@ const productSchema = new Schema(
 //   virtuals: true,
 // });
 
-export default model("Product", productSchema);
+export default model('Product', productSchema)
