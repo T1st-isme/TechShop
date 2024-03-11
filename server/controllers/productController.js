@@ -116,7 +116,6 @@ const getProducts = asyncHandler(async (req, res) => {
     success: true,
     productsCount,
     totalPages,
-    totalPages,
     currentPage: page,
     resPerPage,
     filteredProductsCount,
