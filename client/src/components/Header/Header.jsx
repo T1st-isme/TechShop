@@ -311,7 +311,7 @@ const Header = () => {
   const auth = useSelector((state) => state.auth);
   const cart = useSelector((state) => state.cart);
 
-  const { categoryList } = useSelector((state) => state.category);
+  const { categoryList } = useSelector((state) => state.categoryList);
 
   // const handleLinkClick = async (category) => {
   //   try {
