@@ -54,48 +54,52 @@ export const signup = (user) => {
           },
         });
       } else {
-        const { error } = res.data;
+        const { error } = res.data.message;
         dispatch({ type: REGISTER_USER_FAIL, payload: { error } });
       }
     } catch (error) {
-      const { data } = error.response;
+      const { data } = error.response.data.message;
       dispatch({
         type: REGISTER_USER_FAIL,
-        payload: { error: data.error },
+        payload: { error: data },
       });
+      console.log(error.response.data.message);
     }
   };
 };
 
 export const login = (email, password) => {
   return async (dispatch) => {
-    dispatch({ type: LOGIN_REQUEST });
-    const res = await axios.post(
-      `${port}/user/login`,
-      {
-        email,
-        password,
-      },
-      { credentials: "include" }
-    );
-
-    if (res.status === 200) {
-      const { token, user } = res.data;
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: {
-          token,
-          user,
+    try {
+      dispatch({ type: LOGIN_REQUEST });
+      const res = await axios.post(
+        `${port}/user/login`,
+        {
+          email,
+          password,
         },
-      });
-      Cookies.set("token", token);
-      Cookies.set("user", JSON.stringify(user));
-      dispatch(getCartItems());
-    } else if (res.status === 400) {
+        { credentials: "include" }
+      );
+
+      if (res.status === 200) {
+        const { token, user } = res.data;
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: {
+            token,
+            user,
+          },
+        });
+        Cookies.set("token", token);
+        Cookies.set("user", JSON.stringify(user));
+        dispatch(getCartItems());
+      }
+    } catch (e) {
       dispatch({
         type: LOGIN_FAIL,
-        payload: { error: res.data.message },
+        payload: { error: e.response.data.message },
       });
+      console.log(e.response.data.message);
     }
   };
 };
