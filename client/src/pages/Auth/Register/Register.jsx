@@ -185,7 +185,7 @@
 
 // export default SignUp;
 
-import "./styleReg.css";
+import './styleReg.css'
 import {
   MDBBtn,
   MDBContainer,
@@ -195,94 +195,94 @@ import {
   MDBIcon,
   MDBRow,
   MDBCol,
-  MDBCheckbox,
-} from "mdb-react-ui-kit";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, signup } from "../../../redux/Actions/UserAction";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+  MDBCheckbox
+} from 'mdb-react-ui-kit'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { clearErrors, signup } from '../../../redux/Actions/UserAction'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const SignUp = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [firstname, setFirstName] = useState("");
-  const [lastname, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [firstname, setFirstName] = useState('')
+  const [lastname, setLastName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
-  const { error, isAuthenticated } = useSelector((state) => state.auth);
+  const { error, isAuthenticated } = useSelector((state) => state.auth)
 
   useEffect(() => {
     if (isAuthenticated) {
       setTimeout(() => {
-        navigate("/");
-      }, 1000);
-      toast.success("Đăng ký thành công.");
-      console.log("Sign up success");
+        navigate('/')
+      }, 1000)
+      toast.success('Đăng ký thành công.')
+      console.log('Sign up success')
     } else if (error) {
-      toast.error(error);
-      dispatch(clearErrors());
+      toast.error(error)
+      dispatch(clearErrors())
     }
-  }, [dispatch, isAuthenticated, error, navigate]);
+  }, [dispatch, isAuthenticated, error, navigate])
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(signup({ firstname, lastname, email, password }));
-  };
+    e.preventDefault()
+    dispatch(signup({ firstname, lastname, email, password }))
+  }
   return (
-    <MDBContainer fluid className="my-5">
-      <MDBRow className="g-0 align-items-center">
-        <MDBCol col="6">
+    <MDBContainer fluid className='my-5'>
+      <MDBRow className='g-0 align-items-center'>
+        <MDBCol col='6'>
           <MDBCard
-            className="my-5 cascading-right"
+            className='my-5 cascading-right'
             style={{
-              background: "hsla(0, 0%, 100%, 0.55)",
-              backdropFilter: "blur(30px)",
+              background: 'hsla(0, 0%, 100%, 0.55)',
+              backdropFilter: 'blur(30px)'
             }}
           >
-            <MDBCardBody className="p-5 shadow-5 text-center">
-              <h2 className="fw-bold mb-5">Đăng ký</h2>
+            <MDBCardBody className='p-5 shadow-5 text-center'>
+              <h2 className='fw-bold mb-5'>Đăng ký</h2>
               <form onSubmit={handleSubmit}>
                 <MDBRow>
-                  <MDBCol col="6">
+                  <MDBCol col='6'>
                     <MDBInput
-                      wrapperClass="mb-4"
-                      label="First name"
+                      wrapperClass='mb-4'
+                      label='First name'
                       value={firstname}
                       onChange={(e) => setFirstName(e.target.value)}
-                      id="form1"
-                      type="text"
+                      id='form1'
+                      type='text'
                     />
                   </MDBCol>
 
-                  <MDBCol col="6">
+                  <MDBCol col='6'>
                     <MDBInput
-                      wrapperClass="mb-4"
-                      label="Last name"
+                      wrapperClass='mb-4'
+                      label='Last name'
                       value={lastname}
                       onChange={(e) => setLastName(e.target.value)}
-                      id="form2"
-                      type="text"
+                      id='form2'
+                      type='text'
                     />
                   </MDBCol>
                 </MDBRow>
                 <MDBInput
-                  wrapperClass="mb-4"
-                  label="Email"
+                  wrapperClass='mb-4'
+                  label='Email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  id="form3"
-                  type="email"
+                  id='form3'
+                  type='email'
                 />
                 <MDBInput
-                  wrapperClass="mb-4"
-                  label="Password"
+                  wrapperClass='mb-4'
+                  label='Password'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  id="form4"
-                  type="password"
+                  id='form4'
+                  type='password'
                 />
                 {/* Nhớ mật khẩu */}
                 {/* <div className="d-flex justify-content-center mb-4">
@@ -293,63 +293,63 @@ const SignUp = () => {
                   label="Nhớ mật khẩu"
                 />
               </div> */}
-                <MDBBtn type="submit" className="w-100 mb-4" size="md">
+                <MDBBtn type='submit' className='w-100 mb-4' size='md'>
                   Đăng ký
                 </MDBBtn>
               </form>
-              <div className="text-center">
+              <div className='text-center'>
                 <p>or sign up with:</p>
 
                 <MDBBtn
-                  tag="a"
-                  color="none"
-                  className="mx-3"
-                  style={{ color: "#1266f1" }}
+                  tag='a'
+                  color='none'
+                  className='mx-3'
+                  style={{ color: '#1266f1' }}
                 >
-                  <MDBIcon fab icon="facebook-f" size="sm" />
+                  <MDBIcon fab icon='facebook-f' size='sm' />
                 </MDBBtn>
 
                 <MDBBtn
-                  tag="a"
-                  color="none"
-                  className="mx-3"
-                  style={{ color: "#1266f1" }}
+                  tag='a'
+                  color='none'
+                  className='mx-3'
+                  style={{ color: '#1266f1' }}
                 >
-                  <MDBIcon fab icon="twitter" size="sm" />
+                  <MDBIcon fab icon='twitter' size='sm' />
                 </MDBBtn>
 
                 <MDBBtn
-                  tag="a"
-                  color="none"
-                  className="mx-3"
-                  style={{ color: "#1266f1" }}
+                  tag='a'
+                  color='none'
+                  className='mx-3'
+                  style={{ color: '#1266f1' }}
                 >
-                  <MDBIcon fab icon="google" size="sm" />
+                  <MDBIcon fab icon='google' size='sm' />
                 </MDBBtn>
 
                 <MDBBtn
-                  tag="a"
-                  color="none"
-                  className="mx-3"
-                  style={{ color: "#1266f1" }}
+                  tag='a'
+                  color='none'
+                  className='mx-3'
+                  style={{ color: '#1266f1' }}
                 >
-                  <MDBIcon fab icon="github" size="sm" />
+                  <MDBIcon fab icon='github' size='sm' />
                 </MDBBtn>
               </div>
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
 
-        <MDBCol col="6">
+        <MDBCol col='6'>
           <img
-            src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg"
-            className="w-100 rounded-4 shadow-4"
-            alt=""
+            src='https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg'
+            className='w-100 rounded-4 shadow-4'
+            alt=''
           />
         </MDBCol>
       </MDBRow>
     </MDBContainer>
-  );
-};
+  )
+}
 
-export default SignUp;
+export default SignUp

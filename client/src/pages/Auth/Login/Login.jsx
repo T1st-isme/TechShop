@@ -163,7 +163,7 @@
 
 // export default SignIn;
 
-import "./styleLogin.css";
+import './styleLogin.css'
 import {
   MDBBtn,
   MDBContainer,
@@ -173,124 +173,124 @@ import {
   MDBRow,
   MDBCol,
   MDBIcon,
-  MDBInput,
-} from "mdb-react-ui-kit";
-import { useDispatch, useSelector } from "react-redux";
-import toast from "react-hot-toast";
-import { clearErrors, login } from "../../../redux/Actions/UserAction";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+  MDBInput
+} from 'mdb-react-ui-kit'
+import { useDispatch, useSelector } from 'react-redux'
+import toast from 'react-hot-toast'
+import { clearErrors, login } from '../../../redux/Actions/UserAction'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const SignIn = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const { isAuthenticated, loading, error } = useSelector(
     (state) => state.auth
-  );
+  )
 
   useEffect(() => {
     if (isAuthenticated) {
       setTimeout(() => {
-        navigate("/");
-      }, 1000);
-      toast.success("Đăng nhập thành công.");
+        navigate('/')
+      }, 1000)
+      toast.success('Đăng nhập thành công.')
     } else if (error) {
-      toast.error(error);
-      dispatch(clearErrors());
+      toast.error(error)
+      dispatch(clearErrors())
     }
-  }, [dispatch, isAuthenticated, error, navigate, loading]);
+  }, [dispatch, isAuthenticated, error, navigate, loading])
 
   const submitHandler = (e) => {
-    e.preventDefault();
-    dispatch(clearErrors());
-    dispatch(login(email, password));
-  };
+    e.preventDefault()
+    dispatch(clearErrors())
+    dispatch(login(email, password))
+  }
 
   return (
-    <MDBContainer className="my-5" style={{ maxWidth: "1357px" }}>
+    <MDBContainer className='my-5' style={{ maxWidth: '1357px' }}>
       <MDBCard>
-        <MDBRow className="g-0">
-          <MDBCol md="6">
+        <MDBRow className='g-0'>
+          <MDBCol md='6'>
             <MDBCardImage
-              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
-              alt="login form"
-              className="rounded-start w-100"
+              src='https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp'
+              alt='login form'
+              className='rounded-start w-100'
             />
           </MDBCol>
 
-          <MDBCol md="6" center>
-            <MDBCardBody className="d-flex flex-column">
+          <MDBCol md='6' center>
+            <MDBCardBody className='d-flex flex-column'>
               <form onSubmit={submitHandler}>
-                <div className="d-flex flex-row mt-2">
+                <div className='d-flex flex-row mt-2'>
                   <MDBIcon
                     fas
-                    icon="cubes fa-3x me-3"
-                    style={{ color: "#ff6219" }}
+                    icon='cubes fa-3x me-3'
+                    style={{ color: '#ff6219' }}
                   />
-                  <span className="h1 fw-bold mb-0">TechShop</span>
+                  <span className='h1 fw-bold mb-0'>TechShop</span>
                 </div>
 
                 <h5
-                  className="fw-normal my-4 pb-3"
-                  style={{ letterSpacing: "1px" }}
+                  className='fw-normal my-4 pb-3'
+                  style={{ letterSpacing: '1px' }}
                 >
                   Đăng nhập
                 </h5>
 
                 <MDBInput
-                  wrapperClass="mb-4"
-                  name="email"
-                  label="Email address"
-                  id="formControlLg"
-                  type="email"
-                  size="lg"
+                  wrapperClass='mb-4'
+                  name='email'
+                  label='Email address'
+                  id='formControlLg'
+                  type='email'
+                  size='lg'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                {error && <p className="text-danger">{error}</p>}
+                {error && <p className='text-danger'>{error}</p>}
 
                 <MDBInput
-                  wrapperClass="mb-4"
-                  label="Password"
-                  name="password"
-                  id="formControlLg"
-                  type="password"
-                  size="lg"
+                  wrapperClass='mb-4'
+                  label='Password'
+                  name='password'
+                  id='formControlLg'
+                  type='password'
+                  size='lg'
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   minLength={6}
                 />
-                {error && <p className="text-danger">{error}</p>}
+                {error && <p className='text-danger'>{error}</p>}
 
                 <MDBBtn
-                  className="mb-4 px-9"
-                  size="lg"
-                  color="dark grey"
+                  className='mb-4 px-9'
+                  size='lg'
+                  color='dark grey'
                   style={{
-                    width: "100%",
-                    border: "none",
-                    fontSize: "14px",
-                    fontWeight: "bold",
-                    letterSpacing: "1px",
-                    textTransform: "uppercase",
-                    transition: "all 0.2s ease-in-out",
+                    width: '100%',
+                    border: 'none',
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
+                    transition: 'all 0.2s ease-in-out'
                   }}
-                  type="submit"
+                  type='submit'
                 >
                   Đăng nhập
                 </MDBBtn>
               </form>
 
-              <a className="small text-muted" href="#!">
+              <a className='small text-muted' href='#!'>
                 Quên mật khẩu?
               </a>
-              <p className="mb-5 pb-lg-2" style={{ color: "#393f81" }}>
-                Không có tài khoản?{" "}
-                <a href="/signup" style={{ color: "#393f81" }}>
+              <p className='mb-5 pb-lg-2' style={{ color: '#393f81' }}>
+                Không có tài khoản?{' '}
+                <a href='/signup' style={{ color: '#393f81' }}>
                   Đăng ký ngay!
                 </a>
               </p>
@@ -299,7 +299,7 @@ const SignIn = () => {
         </MDBRow>
       </MDBCard>
     </MDBContainer>
-  );
-};
+  )
+}
 
-export default SignIn;
+export default SignIn
