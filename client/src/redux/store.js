@@ -1,32 +1,32 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
-import thunk from "redux-thunk";
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk'
 import {
   allProduct,
   productDetailReducer,
-  productListReducer,
-} from "./Reducers/ProductReducer";
-import cartReducer from "./Reducers/CartReducer";
+  productListReducer
+} from './Reducers/ProductReducer'
+import cartReducer from './Reducers/CartReducer'
 import {
   allUsersReducer,
   authReducer,
   userDetailsReducer,
-  userReducer,
-} from "./Reducers/userReducer";
+  userReducer
+} from './Reducers/userReducer'
 import {
   categoryReducer,
   delCategoryReducer,
   detailCategoryReducer,
   newCategoryReducer,
-  updateCategoryReducer,
-} from "./Reducers/CategoryReducer";
+  updateCategoryReducer
+} from './Reducers/CategoryReducer'
 import {
   allOrdersReducer,
   myOrdersReducer,
   newOrderReducer,
   orderDetailsReducer,
-  orderReducer,
-} from "./Reducers/OrderReducer";
+  orderReducer
+} from './Reducers/OrderReducer'
 
 const reducer = combineReducers({
   allProduct,
@@ -50,17 +50,17 @@ const reducer = combineReducers({
   // User admin reducer
   userReducer,
   userList: allUsersReducer,
-  userDetail: userDetailsReducer,
-});
+  userDetail: userDetailsReducer
+})
 
-const initialState = {};
+const initialState = {}
 
-const middleware = [thunk];
+const middleware = [thunk]
 
 const store = createStore(
   reducer,
   initialState,
   composeWithDevTools(applyMiddleware(...middleware))
-);
+)
 
-export default store;
+export default store
