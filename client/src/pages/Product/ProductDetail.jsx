@@ -144,7 +144,7 @@ const ProductDetail = () => {
 
     // Filter out products that match the current product's category
     const relatedProducts = allProducts.filter(
-      (product) => product.category?._id === currentProductCategory
+      (product) => product.category?._id === currentProductCategory,
     );
 
     return relatedProducts;
@@ -225,7 +225,7 @@ const ProductDetail = () => {
                                   selected
                                     ? "ring-indigo-500"
                                     : "ring-transparent",
-                                  "pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2"
+                                  "pointer-events-none absolute inset-0 rounded-md ring-2 ring-offset-2",
                                 )}
                                 aria-hidden="true"
                               />
@@ -277,7 +277,7 @@ const ProductDetail = () => {
                               product.rating > rating
                                 ? "text-indigo-500"
                                 : "text-gray-300",
-                              "h-5 w-5 flex-shrink-0"
+                              "h-5 w-5 flex-shrink-0",
                             )}
                             aria-hidden="true"
                           />
@@ -315,7 +315,7 @@ const ProductDetail = () => {
                             const { _id, name, price } = products;
                             const img = products.proImg[0]?.img;
                             const rs = dispatch(
-                              addToCart({ _id, name, price, img })
+                              addToCart({ _id, name, price, img }),
                             );
                             if (rs) {
                               // toast.success("Đã thêm vào giỏ hàng");
@@ -371,7 +371,7 @@ const ProductDetail = () => {
                                       open
                                         ? "text-indigo-600"
                                         : "text-gray-900",
-                                      "text-sm font-medium"
+                                      "text-sm font-medium",
                                     )}
                                     style={{ fontSize: "18px" }}
                                   >
@@ -475,7 +475,7 @@ const ProductDetail = () => {
                             const { _id, name, price } = product;
                             const img = product.proImg[0]?.img;
                             const rs = dispatch(
-                              addToCart({ _id, name, price, img })
+                              addToCart({ _id, name, price, img }),
                             );
                             if (rs) {
                               toast.success("Đã thêm vào giỏ hàng");
