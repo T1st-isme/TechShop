@@ -35,9 +35,9 @@ const userLogin = asyncHandler(async (req, res) => {
 
 // signup user
 const userSignup = asyncHandler(async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  const { fullname, email, password } = req.body;
 
-  if (!firstname || !lastname || !email || !password) {
+  if (!fullname || !email || !password) {
     return res
       .status(400)
       .send({ message: "Vui lòng điền đầy đủ thông tin!!!" });
@@ -60,7 +60,6 @@ const userSignup = asyncHandler(async (req, res) => {
       message: "Email đã tồn tại!!!",
     });
   }
-
   const user = await userModels.create(req.body);
   sendToken(user, 201, res);
   // const token = createToken(user._id);
@@ -86,6 +85,36 @@ const userSignup = asyncHandler(async (req, res) => {
   //     err,
   //   });
   // }
+});
+
+// create user
+const createUser = asyncHandler(async (req, res) => {
+  const { fullname, email, password, role } = req.body;
+
+  if (!fullname || !email || !password || !role) {
+    return res
+      .status(400)
+      .send({ message: "Vui lòng điền đầy đủ thông tin!!!" });
+  }
+
+  if (!validator.isEmail(email)) {
+    return res.status(400).send({ message: "Email không hợp lệ!!!" });
+  }
+
+  if (!validator.isLength(password, { min: 6 })) {
+    res.status(400).send({ message: "Mật khẩu phải có ít nhất 6 ký tự!!!" });
+  }
+
+  // check user
+  const exisitingUser = await userModels.findOne({ email });
+  // exisiting user
+  if (exisitingUser) {
+    return res.status(400).send({
+      success: false,
+      message: "Email đã tồn tại!!!",
+    });
+  }
+  await userModels.create(req.body);
 });
 
 const userLogout = asyncHandler(async (req, res) => {
@@ -129,11 +158,10 @@ const getUserDetails = asyncHandler(async (req, res, next) => {
 // Update user profile   =>   /api/v1/admin/user/:id
 const updateUser = asyncHandler(async (req, res, next) => {
   const newUserData = {
-    name: req.body.name,
+    fullname: req.body.fullname,
     email: req.body.email,
     role: req.body.role,
   };
-
   const user = await userModels.findByIdAndUpdate(req.params.id, newUserData, {
     new: true,
     runValidators: true,
@@ -167,6 +195,27 @@ const userProfile = asyncHandler(async (req, res, next) => {
   });
 });
 
+//update profile
+const updateUserProfile = asyncHandler(async (req, res, next) => {
+  const user = await userModels.findById(req.user._id);
+  if (user) {
+    user.fullname = req.body.fullname;
+    user.email = req.body.email;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    const updatedUser = await user.save();
+    res.status(200).json({
+      success: true,
+      user: updatedUser,
+    });
+  } else {
+    res.status(404);
+    throw new Error("User not found");
+  }
+});
+
 export {
   userLogin,
   userSignup,
@@ -176,4 +225,6 @@ export {
   updateUser,
   deleteUser,
   userProfile,
+  createUser,
+  updateUserProfile,
 };

@@ -192,12 +192,14 @@ const SignIn = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
+      alert("Đăng nhập thành công.");
       setTimeout(() => {
         navigate("/");
       }, 1000);
-      toast.success("Đăng nhập thành công.");
+      // toast.success("Đăng nhập thành công.");
     } else if (error) {
-      toast.error(error);
+      // toast.error(error);
+      alert("Đăng nhập thất bại.");
       dispatch(clearErrors());
     }
   }, [dispatch, isAuthenticated, error, navigate, loading]);

@@ -52,10 +52,9 @@ export const createOrder =
     } catch (error) {
       dispatch({
         type: CREATE_ORDER_FAIL,
-        payload:
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message,
+        payload: error?.response?.data?.message
+          ? error?.response?.data?.message
+          : error.message,
       });
     }
   };

@@ -2,8 +2,6 @@ import slugify from "slugify";
 import Product from "../models/productModel.js";
 import asyncHandler from "express-async-handler";
 import APIFeatures from "../Utils/apiFeatures.js";
-import uploader from "../config/cloudinary.config.js";
-import { v2 as cloudinary } from "cloudinary";
 
 // @desc    Fetch all products
 // @route   GET /api/products
@@ -146,11 +144,11 @@ const getProductByName = asyncHandler(async (req, res) => {
 });
 
 // @desc    Fetch single product
-// @route   GET /api/products/:id
+// @route   GET /api/product/:id
 // @access  Public
 const getProductByID = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const product = await Product.findById(id);
+  const product = await Product.findById(req.params.id);
+  console.log(product);
   return res.status(200).json({
     success: Boolean(product),
     data: product || "Không tìm thấy sản phẩm!!!",
@@ -166,7 +164,7 @@ const createProduct = asyncHandler(async (req, res) => {
       .status(400)
       .json({ message: "Vui lòng điền đầy đủ thông tin!!!" });
   }
-  if (req.body && req.body.name) {
+  if (req.body?.name) {
     req.body.slug = slugify(req.body.name);
     req.body.proImg = req.files.map((file) => {
       return { img: file.path };
@@ -186,7 +184,7 @@ const createProduct = asyncHandler(async (req, res) => {
 // @route   PUT /api/products/:id
 // @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
-  if (req.body && req.body.name) {
+  if (req.body?.name) {
     req.body.slug = slugify(req.body.name);
     req.body.proImg = req.files.map((file) => {
       return { img: file.path };
@@ -224,6 +222,33 @@ const uploadImage = asyncHandler(async (req, res) => {
   });
 });
 
+// @desc    Get all brands
+// @route   GET /api/brands
+// @access  Public
+const getBrands = asyncHandler(async (req, res) => {
+  const brands = await Product.find({}).select("brand").distinct("brand");
+  return res.status(200).json({
+    success: Boolean(brands),
+    data: brands || "Không tìm thấy hãng!!",
+  });
+});
+
+// @desc    Get top 5 brands
+// @route   GET /api/brands/top
+// @access  Public
+const getTopBrands = asyncHandler(async (req, res) => {
+  const brands = await Product.aggregate([
+    { $group: { _id: "$brand", count: { $sum: 1 } } },
+    { $sort: { count: -1 } },
+    { $limit: 5 },
+  ]);
+
+  return res.status(200).json({
+    success: Boolean(brands.length),
+    data: brands.map((brand) => brand._id) || "Không tìm thấy hãng!!",
+  });
+});
+
 export {
   getProducts,
   getProductByName,
@@ -233,4 +258,6 @@ export {
   uploadImage,
   getProductByID,
   AdGetProducts,
+  getBrands,
+  getTopBrands,
 };

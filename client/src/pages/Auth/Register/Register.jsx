@@ -219,10 +219,12 @@ const SignUp = () => {
       setTimeout(() => {
         navigate("/");
       }, 1000);
-      toast.success("Đăng ký thành công.");
+      // toast.success("Đăng ký thành công.");
+      alert("Đăng ký thành công.");
       console.log("Sign up success");
     } else if (error) {
-      toast.error(error);
+      // toast.error(error);
+      alert("Đăng ký thất bại.");
       dispatch(clearErrors());
     }
   }, [dispatch, isAuthenticated, error, navigate]);
@@ -251,6 +253,7 @@ const SignUp = () => {
                       wrapperClass="mb-4"
                       label="First name"
                       value={firstname}
+                      required
                       onChange={(e) => setFirstName(e.target.value)}
                       id="form1"
                       type="text"
@@ -260,7 +263,8 @@ const SignUp = () => {
                   <MDBCol col="6">
                     <MDBInput
                       wrapperClass="mb-4"
-                      label="Last name"
+                      label="Last name
+                      required"
                       value={lastname}
                       onChange={(e) => setLastName(e.target.value)}
                       id="form2"
@@ -272,6 +276,7 @@ const SignUp = () => {
                   wrapperClass="mb-4"
                   label="Email"
                   value={email}
+                  required
                   onChange={(e) => setEmail(e.target.value)}
                   id="form3"
                   type="email"
@@ -279,6 +284,7 @@ const SignUp = () => {
                 <MDBInput
                   wrapperClass="mb-4"
                   label="Password"
+                  required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   id="form4"
@@ -293,7 +299,12 @@ const SignUp = () => {
                   label="Nhớ mật khẩu"
                 />
               </div> */}
-                <MDBBtn type="submit" className="w-100 mb-4" size="md">
+                <MDBBtn
+                  type="submit"
+                  id="dkBtn"
+                  className="w-100 mb-4"
+                  size="md"
+                >
                   Đăng ký
                 </MDBBtn>
               </form>

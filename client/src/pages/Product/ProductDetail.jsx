@@ -304,69 +304,43 @@ const ProductDetail = () => {
                     />
                   </div>
                   {/* //stock check */}
-                  {products.stock > 0 ? (
-                    <div className="mt-6">
-                      <h3 className="sr-only">Quantity</h3>
-                      <p
-                        id="inStock"
-                        className="
-                        text-2xl font-semibold"
-                        style={{ color: "#00FF00" }}
-                      >
-                        Còn hàng
-                      </p>
-                      {/* <div className="mt-4">
-                        <label htmlFor="quantity" className="sr-only">
-                          Quantity
-                        </label>
-                        <input
-                          type="number"
-                          id="quantity"
-                          min="1"
-                          max={products.stock}
-                          step="1"
-                          defaultValue="1"
-                          className="w-full border-gray-200 rounded-md text-center text-base font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                          // onChange={(e) => {
-                          //   setQuantity(e.target.value);
-                          // }}
-                        />
-                      </div> */}
-                    </div>
-                  ) : (
-                    <div className="mt-6">
-                      <h3 className="sr-only">Quantity</h3>
-                      <p
-                        id="outStock"
-                        className="
-                        text-2xl font-semibold"
-                        style={{ color: "#FF0000" }}
-                      >
-                        Hết hàng
-                      </p>
-                    </div>
-                  )}
                   <form className="mt-6">
                     <div className="mt-10 flex">
-                      <MDBBtn
-                        name="Mua"
-                        type="button"
-                        className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
-                        onClick={() => {
-                          const { _id, name, price } = products;
-                          const img = products.proImg[0]?.img;
-                          const rs = dispatch(
-                            addToCart({ _id, name, price, img })
-                          );
-                          if (rs) {
-                            toast.success("Đã thêm vào giỏ hàng");
-                          } else {
-                            toast.error("Lỗi!!!");
-                          }
-                        }}
-                      >
-                        Mua
-                      </MDBBtn>
+                      {products.stock > 0 ? (
+                        <MDBBtn
+                          name="Mua"
+                          type="button"
+                          className="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 py-3 px-8 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 sm:w-full"
+                          onClick={() => {
+                            const { _id, name, price } = products;
+                            const img = products.proImg[0]?.img;
+                            const rs = dispatch(
+                              addToCart({ _id, name, price, img })
+                            );
+                            if (rs) {
+                              // toast.success("Đã thêm vào giỏ hàng");
+                              alert("Đã thêm vào giỏ hàng.");
+                            } else {
+                              // toast.error("Lỗi!!!");
+                              alert("Có lỗi xảy ra, vui lòng thử lại");
+                            }
+                          }}
+                        >
+                          Mua
+                        </MDBBtn>
+                      ) : (
+                        <div className="mt-6">
+                          <h3 className="sr-only">Quantity</h3>
+                          <p
+                            id="outStock"
+                            className="
+                        text-2xl font-semibold"
+                            style={{ color: "#FF0000" }}
+                          >
+                            Hết hàng
+                          </p>
+                        </div>
+                      )}
 
                       <button
                         type="button"

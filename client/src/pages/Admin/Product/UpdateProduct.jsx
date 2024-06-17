@@ -20,6 +20,7 @@ const UpdateProduct = () => {
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState(0);
   const [images, setImages] = useState([]);
+  const [oldImages, setOldImages] = useState([]);
   // const [oldImages, setOldImages] = useState([]);
   // const [imagesPreview, setImagesPreview] = useState([]);
   const { categoryList } = useSelector((state) => state.categoryList);
@@ -30,7 +31,15 @@ const UpdateProduct = () => {
   }, [dispatch, slug]);
   const handleImageChange = (e) => {
     setImages(e.target.files[0]);
+    setOldImages(e.target.files[0]);
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImages((old) => [...old, reader.result]);
+      }
+    };
   };
+
   const updatedProduct = () => {
     const formData = new FormData();
     formData.append("proImg", images);
@@ -127,7 +136,6 @@ const UpdateProduct = () => {
                         </option>
                       ))}
                     </select>
-                    {console.log(products?.category)}
                   </div>
 
                   <div className="form-group">
@@ -143,6 +151,17 @@ const UpdateProduct = () => {
                   <div className="form-group">
                     <label htmlFor="stock_field">Hình ảnh</label>
                     <input type="file" onChange={handleImageChange} />
+                    {/* display image */}
+                    <div className="form-group flex">
+                      {products.proImg?.map((img) => (
+                        <img
+                          key={img._id}
+                          src={img.img}
+                          alt=""
+                          className="img-fluid"
+                        />
+                      ))}{" "}
+                    </div>
                   </div>
 
                   {/* <div className="form-group">

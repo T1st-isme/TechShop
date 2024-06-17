@@ -334,8 +334,13 @@ const Header = () => {
   }, [dispatch]);
 
   const logoutHandler = () => {
-    dispatch(logout());
-    alert.success("Logged out successfully.");
+    const rs = dispatch(logout());
+    if (rs) {
+      alert("Đăng xuất bằng thành công.");
+      setTimeout(() => {
+        navigate("/login");
+      }, 500);
+    }
   };
 
   let totalItemsInCart = 0;

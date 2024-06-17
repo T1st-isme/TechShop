@@ -1,4 +1,4 @@
-import express from 'express'
+import express from "express";
 import {
   createProduct,
   deleteProduct,
@@ -7,33 +7,38 @@ import {
   updateProduct,
   uploadImage,
   getProductByID,
-  AdGetProducts
-} from '../controllers/productController.js'
-import { isAdmin, requiredSignin } from '../middlewares/authMiddleware.js'
-import uploadCloud from '../config/cloudinary.config.js'
+  AdGetProducts,
+  getBrands,
+  getTopBrands,
+} from "../controllers/productController.js";
+import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
+import uploadCloud from "../config/cloudinary.config.js";
 
-const router = express.Router()
+const router = express.Router();
 
 // GET all products
-router.get('/', getProducts)
+router.get("/", getProducts);
 
-router.get('/admin', AdGetProducts)
+router.get("/admin", isAdmin, requiredSignin, AdGetProducts);
+
+// GET all brands
+router.get("/brands", getBrands);
+router.get("/brands/top", getTopBrands);
 
 // GET a single product
-router.get('/:slug', getProductByName)
-
-// GET a single product
-// router.get("/:id", getProductByID);
+router.get("/:slug", getProductByName);
 
 // CREATE a product
-router.post('/', uploadCloud, createProduct)
+router.post("/", uploadCloud, createProduct);
 
 // UPDATE a product
-router.put('/:slug', uploadCloud, updateProduct)
+router.put("/:slug", uploadCloud, updateProduct);
 
-// DELETE a product
-router.delete('/:id', deleteProduct)
+// DELETE & GET a product
+router.route("/:id").delete(requiredSignin, deleteProduct);
+// .get(requiredSignin, getProductByID);
 
 // Upload images
-router.post('/upload/:id', uploadCloud, uploadImage)
-export default router
+router.post("/upload/:id", uploadCloud, uploadImage);
+
+export default router;

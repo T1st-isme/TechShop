@@ -65,7 +65,7 @@ const ProductList = () => {
   const [sort, setSort] = useState("");
   const [category, setCategory] = useState("");
   const productList = useSelector((state) => state.productList);
-  const { categoryList } = useSelector((state) => state.category);
+  const { categoryList } = useSelector((state) => state.categoryList);
   const {
     loading,
     error,
@@ -74,7 +74,6 @@ const ProductList = () => {
     resPerPage,
     filteredProductsCount,
   } = productList;
-  const initialApiCallMade = useRef(false);
 
   useEffect(() => {
     dispatch(listProduct(keyword, currentPage, resPerPage, price, cate, sort));

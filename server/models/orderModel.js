@@ -16,6 +16,7 @@ const orderSchema = new Schema({
       productId: {
         type: Schema.Types.ObjectId,
         ref: "Product",
+        required: true,
       },
       payablePrice: {
         type: Number,
