@@ -11,10 +11,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { listProduct } from "../../redux/Actions/ProductAction";
 import MoonLoader from "react-spinners/MoonLoader";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Pagination from "react-js-pagination";
 import { BeakerIcon } from "@heroicons/react/24/solid";
-import { useLocation } from "react-router-dom";
 
 const filters = [
   {
@@ -474,7 +473,7 @@ const ProductList = () => {
                     ) : (
                       products.map((product) => {
                         const priceNumber = parseFloat(
-                          product.price.$numberDecimal
+                          product.price.$numberDecimal,
                         );
                         const value = priceNumber * 1000000;
                         const formattedValue = value.toLocaleString("vi-VN", {

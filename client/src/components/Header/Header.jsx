@@ -323,7 +323,7 @@ const Header = () => {
   // };
 
   const handleLinkClick = (category) => {
-    dispatch(listProduct({ category: category })).then(() => {
+    dispatch(listProduct({ category })).then(() => {
       navigate(`/product-category/${category}`);
     });
   };
@@ -551,12 +551,10 @@ const Header = () => {
                         onClick={(e) => {
                           e.preventDefault();
                           dispatch(listProduct()).then(() => {
-                            navigate(`/Products`);
+                            navigate("/Products");
                           });
                         }}
-                        className={
-                          "border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
-                        }
+                        className="border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                       >
                         Tất cả
                       </Link>
@@ -578,9 +576,7 @@ const Header = () => {
                             e.preventDefault();
                             handleLinkClick(item._id);
                           }}
-                          className={
-                            "border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
-                          }
+                          className="border-transparent text-gray-700 hover:border-indigo-600 text-indigo-600 hover:text-gray-800 relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                         >
                           {item.name}
                         </Link>
@@ -625,7 +621,7 @@ const Header = () => {
                                   href="/Profile"
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
+                                    "block px-4 py-2 text-sm text-gray-700",
                                   )}
                                 >
                                   Cá nhân
@@ -638,7 +634,7 @@ const Header = () => {
                                   href="/order/me"
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
+                                    "block px-4 py-2 text-sm text-gray-700",
                                   )}
                                 >
                                   Đơn hàng
@@ -652,7 +648,7 @@ const Header = () => {
                                   onClick={logoutHandler}
                                   className={classNames(
                                     active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
+                                    "block px-4 py-2 text-sm text-gray-700",
                                   )}
                                 >
                                   Đăng xuất

@@ -21,7 +21,7 @@ const NewUser = () => {
       email,
       role,
     };
-    var disPatch = dispatch(createUser(newUser));
+    const disPatch = dispatch(createUser(newUser));
     if (disPatch) {
       alert("Them nguoi dung thanh cong");
       setTimeout(() => navigate("/admin/user"), 1000);

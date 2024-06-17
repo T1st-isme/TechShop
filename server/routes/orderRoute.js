@@ -294,7 +294,7 @@ router.post("/querydr", function (req, res, next) {
     },
     function (error, response, body) {
       console.log(response);
-    }
+    },
   );
 });
 
@@ -384,7 +384,7 @@ router.post("/refund", function (req, res, next) {
     },
     function (error, response, body) {
       console.log(response);
-    }
+    },
   );
 });
 
