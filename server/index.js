@@ -30,7 +30,7 @@ app.use(
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // allow session cookie from browser to pass through
     preflightContinue: false,
-  })
+  }),
 );
 
 app.use(bodyParser.json());

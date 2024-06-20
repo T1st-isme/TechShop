@@ -51,7 +51,7 @@
 
 // export default App;
 
-//Protected Routes
+// Protected Routes
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home.jsx";

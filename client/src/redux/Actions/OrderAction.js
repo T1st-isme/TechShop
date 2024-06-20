@@ -30,7 +30,7 @@ export const createOrder = (cartItems, totalPrice) => async (dispatch) => {
       const { data } = await axios.post(
         `${port}/order/add-order`,
         {
-          totalPrice: totalPrice,
+          totalPrice,
           items: cartItems,
           paymentStatus: "pending",
           paymentType: "COD",
@@ -41,7 +41,7 @@ export const createOrder = (cartItems, totalPrice) => async (dispatch) => {
         {
           withCredentials: true,
           credentials: "include",
-        }
+        },
       );
       dispatch({
         type: CREATE_ORDER_SUCCESS,
@@ -160,7 +160,7 @@ export const updateOrder = (id, status) => async (dispatch) => {
       {
         withCredentials: true,
         credentials: "include",
-      }
+      },
     );
     dispatch({
       type: UPDATE_ORDER_SUCCESS,

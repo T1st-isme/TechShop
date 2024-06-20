@@ -99,12 +99,12 @@ const getProducts = asyncHandler(async (req, res) => {
 
   const apiFeatures = new APIFeatures(
     Product.find().populate("category"),
-    req.query
+    req.query,
   )
     .search()
     .filter()
     .sort()
-    //pagination response
+    // pagination response
     .pagination(resPerPage);
 
   const products = await apiFeatures.query.exec();
@@ -195,7 +195,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   const updateProduct = await Product.findOneAndUpdate(
     { slug: req.params.slug },
     req.body,
-    { new: true }
+    { new: true },
   );
   res.status(201).json({
     success: Boolean(updateProduct),
