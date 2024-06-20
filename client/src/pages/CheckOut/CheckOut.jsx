@@ -29,7 +29,7 @@ function classNames(...classes) {
 
 const CheckOut = () => {
   const [selectedDeliveryMethod, setSelectedDeliveryMethod] = useState(
-    deliveryMethods[0]
+    deliveryMethods[0],
   );
 
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const CheckOut = () => {
   const totalPrice = Object.values(cartItems).reduce(
     (total, item) =>
       total + item.price.$numberDecimal * item.quantity * 1000000,
-    0
+    0,
   );
 
   const formattedValue = totalPrice.toLocaleString("vi-VN", {
@@ -270,7 +270,7 @@ const CheckOut = () => {
                         classNames(
                           checked ? "border-transparent" : "border-gray-300",
                           active ? "ring-2 ring-indigo-500" : "",
-                          "relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none"
+                          "relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus:outline-none",
                         )
                       }
                     >
@@ -310,7 +310,7 @@ const CheckOut = () => {
                               checked
                                 ? "border-indigo-500"
                                 : "border-transparent",
-                              "pointer-events-none absolute -inset-px rounded-lg"
+                              "pointer-events-none absolute -inset-px rounded-lg",
                             )}
                             aria-hidden="true"
                           />
@@ -350,7 +350,7 @@ const CheckOut = () => {
               </fieldset>
               {selectedPaymentMethod === "COD" && (
                 <div className="mt-6 grid grid-cols-4 gap-y-6 gap-x-4">
-                  <div className="col-span-4"></div>
+                  <div className="col-span-4" />
                 </div>
               )}
               {/* VNPAY form */}

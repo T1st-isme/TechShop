@@ -9,7 +9,7 @@ async function updateStockAndsold(order) {
   const products = await Product.find({ _id: { $in: productIds } }).exec();
   const updatePromises = products.map((product) => {
     const item = order.items.find(
-      (item) => item.productId?.toString() === product._id.toString()
+      (item) => item.productId?.toString() === product._id.toString(),
     );
     if (item) {
       product.stock -= item.purchasedQty;
@@ -26,7 +26,7 @@ const updateOrder = asyncHandler(async (req, res) => {
   const order = await Order.findByIdAndUpdate(
     id,
     { orderStatus: status },
-    { new: true }
+    { new: true },
   );
   if (order) {
     order.paymentStatus =
@@ -54,7 +54,7 @@ const deleteOrder = asyncHandler(async (req, res) => {
 const myOrder = asyncHandler(async (req, res) => {
   console.log(req.user._id);
   const order = await Order.find({ user: req.user._id }).populate(
-    "items.productId"
+    "items.productId",
   );
   res.status(200).json({
     success: Boolean(order),
@@ -75,7 +75,7 @@ const addOrder = asyncHandler(async (req, res) => {
   let hasEnoughStock = true;
   cartItems.forEach((item) => {
     const product = products.find(
-      (p) => p._id.toString() === item.productId?.toString()
+      (p) => p._id.toString() === item.productId?.toString(),
     );
     if (!product || product.stock < item.purchasedQty) {
       console.log(product?.stock, item.purchasedQty);
@@ -112,7 +112,7 @@ const getOrders = asyncHandler(async (req, res) => {
 
   const orders = await Order.find({ orderBy: _id })
     .select(
-      "_id user paymentStatus paymentType orderStatus totalPrice items createdAt"
+      "_id user paymentStatus paymentType orderStatus totalPrice items createdAt",
     )
     .populate("user", "_id firstname lastname email")
     .populate("items.productId", "_id name proImg")
@@ -158,7 +158,7 @@ const createPaymentLink = asyncHandler(async (req, res) => {
   const url = "http://localhost:5173";
   const orderCode = Number(String(Date.now()).slice(-6));
   const body = {
-    orderCode: orderCode,
+    orderCode,
     amount: Number(req.body.amount),
     // amount: 10000, //giá test
     description: "Don hang #" + orderCode,
