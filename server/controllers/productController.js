@@ -104,7 +104,8 @@ const getProducts = asyncHandler(async (req, res) => {
     .search()
     .filter()
     .sort()
-    .pagination(resPerPage); // Note: No need to pass sort here
+    //pagination response
+    .pagination(resPerPage);
 
   const products = await apiFeatures.query.exec();
 

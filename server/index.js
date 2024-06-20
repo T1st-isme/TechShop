@@ -10,7 +10,6 @@ import dbConnect from "./dbConnect.js";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errHandler.js";
 import bodyParser from "body-parser";
-// Express app
 const app = express();
 
 // configure dotenv
@@ -25,13 +24,14 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(
   cors({
-    origin: "*", // allow to server to accept request from different origin
+    origin: function (origin, callback) {
+      callback(null, true);
+    },
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // allow session cookie from browser to pass through
     preflightContinue: false,
   })
 );
-app.set("http://localhost:8080", 1);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

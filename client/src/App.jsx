@@ -71,6 +71,7 @@ import { updateCart } from "./redux/Actions/CartAction.js";
 import { isUserLoggedIn } from "./redux/Actions/UserAction.js";
 import Profile from "./pages/Auth/UserProfile/Profile.jsx";
 import OrderSuccessful from "./pages/CheckOut/OrderSuccessfull.jsx";
+import OrderFailed from "./pages/CheckOut/OrderFailed.jsx";
 import UpdateProduct from "./pages/Admin/Product/UpdateProduct.jsx";
 import OrderList from "./pages/Admin/Order/OrderList.jsx";
 import OrderDetail from "./pages/Admin/Order/OrderDetail.jsx";
@@ -116,6 +117,7 @@ function App() {
         <Route path="/Cart" element={<Cart />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/order-success" element={<OrderSuccessful />} />
+        <Route path="/order-failed" element={<OrderFailed />} />
         <Route path="/admin/update-product/:slug" element={<UpdateProduct />} />
         <Route path="/admin/create-product" element={<NewProduct />} />
         <Route path="/admin/order" element={<OrderList />} />

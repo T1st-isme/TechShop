@@ -6,7 +6,7 @@ import { removeCartItem } from "../../redux/Actions/CartAction";
 import { createOrder } from "../../redux/Actions/OrderAction";
 import { useNavigate } from "react-router-dom";
 import { MDBBtn } from "mdb-react-ui-kit";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const deliveryMethods = [
   {
@@ -18,8 +18,9 @@ const deliveryMethods = [
   { id: 2, title: "Express", turnaround: "2–5 business days", price: "$16.00" },
 ];
 const paymentMethods = [
-  { id: "credit-card", title: "Credit card" },
+  { id: "COD", title: "COD" },
   { id: "VNPAY", title: "VNPAY" },
+  { id: "PayOS", title: "PayOS" },
 ];
 
 function classNames(...classes) {
@@ -58,28 +59,46 @@ const CheckOut = () => {
 
   const cartItemsArray = Object.values(cartItems);
 
-  const submitOrder = () => {
+  const submitOrder = (event) => {
+    event.preventDefault();
     const reformattedCartItems = cartItemsArray.map((item) => ({
       productId: item._id,
       payablePrice: Number(item.price.$numberDecimal),
       purchasedQty: item.quantity,
     }));
-    const rs = dispatch(createOrder(reformattedCartItems, totalPrice));
-    if (rs) {
-      // toast.success('Đặt hàng thành công')
-      alert("Đặt hàng thành công");
-      setTimeout(() => {
-        navigate("/order-success");
-      }, 1000);
-    } else {
-      // toast.error("Đặt hàng thất bại");
-      alert("Đặt hàng thất bại");
+
+    try {
+      const rs = dispatch(createOrder(reformattedCartItems, totalPrice));
+      if (rs) {
+        toast.success("Đặt hàng thành công");
+        setTimeout(() => {
+          navigate("/order-success");
+        }, 1000);
+      } else {
+        toast.error("Đặt hàng thất bại");
+        setTimeout(() => {
+          navigate("/order-failed");
+        }, 1000);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   useEffect(() => {
     setCartItems(cart.cartItems);
   }, [cart.cartItems]);
+  let action = "";
+  if (selectedPaymentMethod === "VNPAY") {
+    action = "http://localhost:8080/order/create_payment_url";
+  } else if (selectedPaymentMethod === "PayOS") {
+    action = "http://localhost:8080/order/create-payment-link";
+  }
+
+  let method = "";
+  if (selectedPaymentMethod === "VNPAY" || selectedPaymentMethod === "PayOS") {
+    method = "POST";
+  }
 
   return (
     <div className="bg-gray-50">
@@ -88,15 +107,12 @@ const CheckOut = () => {
 
         <form
           className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16"
-          action={
-            selectedPaymentMethod === "VNPAY"
-              ? "http://localhost:8080/order/create_payment_url"
-              : ""
-          }
-          method={selectedPaymentMethod === "VNPAY" ? "POST" : ""}
+          action={action}
+          method={method}
+          onSubmit={submitOrder}
         >
           <div>
-            <div>
+            {/* <div>
               <h2 className="text-lg font-medium text-gray-900">
                 Contact information
               </h2>
@@ -111,16 +127,16 @@ const CheckOut = () => {
                 <div className="mt-1">
                   <input
                     type="email"
-                    id="email-address"
-                    name="email-address"
+                    // id="email-address"
+                    // name="email-address"
                     autoComplete="email"
                     className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="mt-10 border-t border-gray-200 pt-10">
+            {/* <div className="mt-10 border-t border-gray-200 pt-10">
               <h2 className="text-lg font-medium text-gray-900">
                 Shipping information
               </h2>
@@ -136,8 +152,8 @@ const CheckOut = () => {
                   <div className="mt-1">
                     <input
                       type="text"
-                      id="first-name"
-                      name="first-name"
+                      // id="first-name"
+                      // name="first-name"
                       autoComplete="given-name"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -154,8 +170,8 @@ const CheckOut = () => {
                   <div className="mt-1">
                     <input
                       type="text"
-                      id="last-name"
-                      name="last-name"
+                      // id="last-name"
+                      // name="last-name"
                       autoComplete="family-name"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -172,8 +188,8 @@ const CheckOut = () => {
                   <div className="mt-1">
                     <input
                       type="text"
-                      name="address"
-                      id="address"
+                      // name="address"
+                      // id="address"
                       autoComplete="street-address"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -190,8 +206,8 @@ const CheckOut = () => {
                   <div className="mt-1">
                     <input
                       type="text"
-                      name="city"
-                      id="city"
+                      // name="city"
+                      // id="city"
                       autoComplete="address-level2"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -208,8 +224,8 @@ const CheckOut = () => {
                   <div className="mt-1">
                     <input
                       type="text"
-                      name="region"
-                      id="region"
+                      // name="region"
+                      // id="region"
                       autoComplete="address-level1"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
@@ -226,15 +242,15 @@ const CheckOut = () => {
                   <div className="mt-1">
                     <input
                       type="text"
-                      name="phone"
-                      id="phone"
+                      // name="phone"
+                      // id="phone"
                       autoComplete="tel"
                       className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                     />
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="mt-10 border-t border-gray-200 pt-10">
               <RadioGroup
@@ -317,7 +333,7 @@ const CheckOut = () => {
                     <div key={paymentMethod.id} className="flex items-center">
                       <input
                         id={paymentMethod.id}
-                        name="payment-type"
+                        // name="payment-type"
                         type="radio"
                         defaultChecked={paymentMethodIdx === 0}
                         className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
@@ -332,79 +348,9 @@ const CheckOut = () => {
                   ))}
                 </div>
               </fieldset>
-              {selectedPaymentMethod === "credit-card" && (
+              {selectedPaymentMethod === "COD" && (
                 <div className="mt-6 grid grid-cols-4 gap-y-6 gap-x-4">
-                  <div className="col-span-4">
-                    <label
-                      htmlFor="card-number"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Card number
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        id="card-number"
-                        name="card-number"
-                        autoComplete="cc-number"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-span-4">
-                    <label
-                      htmlFor="name-on-card"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Name on card
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        id="name-on-card"
-                        name="name-on-card"
-                        autoComplete="cc-name"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-span-3">
-                    <label
-                      htmlFor="expiration-date"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      Expiration date (MM/YY)
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        name="expiration-date"
-                        id="expiration-date"
-                        autoComplete="cc-exp"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label
-                      htmlFor="cvc"
-                      className="block text-sm font-medium text-gray-700"
-                    >
-                      CVC
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        name="cvc"
-                        id="cvc"
-                        autoComplete="cc-csc"
-                        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                      />
-                    </div>
-                  </div>
+                  <div className="col-span-4"></div>
                 </div>
               )}
               {/* VNPAY form */}
@@ -541,6 +487,32 @@ const CheckOut = () => {
                   {/* </form> */}
                 </>
               )}
+              {/* PayOS form */}
+              {selectedPaymentMethod === "PayOS" && (
+                <>
+                  {" "}
+                  <label
+                    className="block text-sm font-medium text-gray-700"
+                    name="payablePrice"
+                    style={{
+                      color: "black",
+                      fontWeight: "bold",
+                      fontSize: "17px",
+                    }}
+                  >
+                    Số tiền
+                  </label>
+                  <input
+                    style={{ color: "black", fontWeight: "400" }}
+                    id="amount"
+                    name="amount"
+                    placeholder="Số tiền"
+                    className="block w-52 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                    value={parseInt(formattedValue.replace(/[^\d]/g, ""), 10)}
+                    readOnly
+                  />
+                </>
+              )}
             </div>
           </div>
 
@@ -550,7 +522,11 @@ const CheckOut = () => {
 
             <div className="mt-4 rounded-lg border border-gray-200 bg-white shadow-sm">
               <h3 className="sr-only">Items in your cart</h3>
-              <ul role="list" className="divide-y divide-gray-200">
+              <ul
+                role="list"
+                className="divide-y divide-gray-200"
+                name="cartItems"
+              >
                 {Object.keys(cartItems).map((key) => (
                   <li key={key} className="flex py-6 px-4 sm:px-6">
                     <div className="flex-shrink-0">
@@ -625,7 +601,11 @@ const CheckOut = () => {
                 </div>
                 <div className="flex items-center justify-between border-t border-gray-200 pt-6">
                   <dt className="text-base font-medium">Total</dt>
-                  <dd className="text-base font-medium text-gray-900">
+                  <dd
+                    className="text-base font-medium text-gray-900"
+                    name="totalPrice"
+                    id="totalPrice"
+                  >
                     {formattedValue}
                   </dd>
                 </div>
@@ -633,11 +613,8 @@ const CheckOut = () => {
 
               <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                 <MDBBtn
-                  type={selectedPaymentMethod === "VNPAY" ? "submit" : "button"}
+                  type="submit"
                   className="w-full rounded-md border border-transparent bg-indigo-600 py-3 px-4 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
-                  onClick={
-                    selectedPaymentMethod !== "VNPAY" ? submitOrder : undefined
-                  }
                 >
                   Xác nhận đặt hàng
                 </MDBBtn>

@@ -6,19 +6,19 @@ import fs from "fs";
 import path from "path";
 import crypto from "crypto";
 import express from "express";
-import { userModels } from "../models/userModel.js";
-import Product from "../models/productModel.js";
 import Cart from "../models/cartModel.js";
 import Order from "../models/orderModel.js";
 import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
 import {
   addOrder,
+  createPaymentLink,
   deleteOrder,
   getOrder,
   getOrders,
   myOrder,
   updateOrder,
 } from "../controllers/OrderController.js";
+import payOS from "../Utils/payos.js";
 const router = express.Router();
 
 // add order
@@ -46,6 +46,7 @@ router.get("/", function (req, res, next) {
   res.render("orderlist", { title: "Danh sách đơn hàng" });
 });
 
+//VNPay
 // router.get("/create_payment_url", function (req, res, next) {
 //   const amount = req.query.amount;
 //   const orderId = req.query.orderId;
@@ -403,5 +404,118 @@ function sortObject(obj) {
   }
   return sorted;
 }
+
+//payOS
+
+router.post("/create", async function (req, res) {
+  const { description, returnUrl, cancelUrl, amount } = req.body;
+  const body = {
+    orderCode: Number(String(new Date().getTime()).slice(-6)),
+    amount,
+    description,
+    cancelUrl,
+    returnUrl,
+  };
+  try {
+    const paymentLinkRes = await payOS.createPaymentLink(body);
+    return res.json({
+      error: 0,
+      message: "Success",
+      data: {
+        bin: paymentLinkRes.bin,
+        checkoutUrl: paymentLinkRes.checkoutUrl,
+        accountNumber: paymentLinkRes.accountNumber,
+        accountName: paymentLinkRes.accountName,
+        amount: paymentLinkRes.amount,
+        description: paymentLinkRes.description,
+        orderCode: paymentLinkRes.orderCode,
+        qrCode: paymentLinkRes.qrCode,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      error: -1,
+      message: "fail",
+      data: null,
+    });
+  }
+});
+
+router.get("/:orderId", async function (req, res) {
+  try {
+    const order = await payOS.getPaymentLinkInfomation(req.params.orderId);
+    if (!order) {
+      return res.json({
+        error: -1,
+        message: "failed",
+        data: null,
+      });
+    }
+    return res.json({
+      error: 0,
+      message: "ok",
+      data: order,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      error: -1,
+      message: "failed",
+      data: null,
+    });
+  }
+});
+
+router.put("/:orderId", async function (req, res) {
+  try {
+    const { orderId } = req.params;
+    const body = req.body;
+    const order = await payOS.cancelPaymentLink(
+      orderId,
+      body.cancellationReason
+    );
+    if (!order) {
+      return res.json({
+        error: -1,
+        message: "failed",
+        data: null,
+      });
+    }
+    return res.json({
+      error: 0,
+      message: "ok",
+      data: order,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      error: -1,
+      message: "failed",
+      data: null,
+    });
+  }
+});
+
+router.post("/confirm-webhook", async (req, res) => {
+  const { webhookUrl } = req.body;
+  try {
+    await payOS.confirmWebhook(webhookUrl);
+    return res.json({
+      error: 0,
+      message: "ok",
+      data: null,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.json({
+      error: -1,
+      message: "failed",
+      data: null,
+    });
+  }
+});
+
+router.post("/create-payment-link", requiredSignin, createPaymentLink);
 
 export default router;
