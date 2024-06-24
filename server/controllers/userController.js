@@ -4,7 +4,7 @@ import validator from "validator";
 import sendToken from "../Utils/jwtToken.js";
 import asyncHandler from "express-async-handler";
 
-//Login
+// Login
 const userLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -195,7 +195,7 @@ const userProfile = asyncHandler(async (req, res, next) => {
   });
 });
 
-//update profile
+// update profile
 const updateUserProfile = asyncHandler(async (req, res, next) => {
   const user = await userModels.findById(req.user._id);
   if (user) {
