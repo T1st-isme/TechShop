@@ -12,7 +12,7 @@ import {
   getTopBrands,
 } from "../controllers/productController.js";
 import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
-import uploadCloud from "../config/cloudinary.config.js";
+import { uploadCloud } from "../config/cloudinary.config.js";
 
 const router = express.Router();
 

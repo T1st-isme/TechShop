@@ -129,7 +129,7 @@ const userLogout = asyncHandler(async (req, res) => {
 
   res.status(200).json({
     success: true,
-    message: "Logged out",
+    message: "Logged out!",
   });
 });
 

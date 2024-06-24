@@ -39,7 +39,7 @@ router
   .put(requiredSignin, updateOrder)
   .delete(requiredSignin, deleteOrder);
 
-const configPath = path.resolve("../server/config/default.json"); // adjust path as needed
+const configPath = path.resolve("./config/default.json"); // adjust path as needed
 const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
 
 router.get("/", function (req, res, next) {

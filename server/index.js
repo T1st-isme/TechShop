@@ -18,6 +18,11 @@ dotenv.config();
 // Connect to MongoDB
 dbConnect();
 
+//test
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
