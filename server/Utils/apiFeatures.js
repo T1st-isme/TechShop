@@ -41,6 +41,7 @@ class APIFeatures {
     this.query = this.query.skip(skip).limit(resPerPage);
     return this;
   }
+
   sort() {
     // console.log("Sorting by:", this.queryStr.sort); // Add this line to debug
     const sortBy = this.queryStr.sort
