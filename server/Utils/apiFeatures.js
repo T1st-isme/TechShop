@@ -38,7 +38,7 @@ class APIFeatures {
     const currentPage = Number(this.queryStr.page) || 1;
     const skip = resPerPage * (currentPage - 1);
 
-    this.query = this.query.limit(resPerPage).skip(skip);
+    this.query = this.query.skip(skip).limit(resPerPage);
     return this;
   }
   sort() {

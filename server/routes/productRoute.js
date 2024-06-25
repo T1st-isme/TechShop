@@ -19,7 +19,7 @@ const router = express.Router();
 // GET all products
 router.get("/", getProducts);
 
-router.get("/admin", isAdmin, requiredSignin, AdGetProducts);
+router.get("/admin", requiredSignin, isAdmin, AdGetProducts);
 
 // GET all brands
 router.get("/brands", getBrands);

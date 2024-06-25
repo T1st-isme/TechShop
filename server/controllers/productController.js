@@ -107,6 +107,7 @@ const getProducts = asyncHandler(async (req, res) => {
     //pagination response
     .pagination(resPerPage);
 
+  apiFeatures.query = apiFeatures.query.sort("_id");
   const products = await apiFeatures.query.exec();
 
   const filteredProductsCount = products.length;

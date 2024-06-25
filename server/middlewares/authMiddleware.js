@@ -20,6 +20,7 @@ export const requiredSignin = catchAsyncError(async (req, res, next) => {
 export const isAdmin = async (req, res, next) => {
   try {
     const user = await userModels.findById(req.user._id);
+    console.log(user);
     if (user.role != "admin") {
       return res.send({
         success: false,
