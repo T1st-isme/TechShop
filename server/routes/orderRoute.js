@@ -49,7 +49,7 @@ router.get("/", function (req, res, next) {
   res.render("orderlist", { title: "Danh sách đơn hàng" });
 });
 
-//VNPay
+// VNPay
 // router.get("/create_payment_url", function (req, res, next) {
 //   const amount = req.query.amount;
 //   const orderId = req.query.orderId;
@@ -298,7 +298,7 @@ router.post("/querydr", function (req, res, next) {
     },
     function (error, response, body) {
       console.log(response);
-    }
+    },
   );
 });
 
@@ -388,7 +388,7 @@ router.post("/refund", function (req, res, next) {
     },
     function (error, response, body) {
       console.log(response);
-    }
+    },
   );
 });
 
@@ -408,7 +408,7 @@ function sortObject(obj) {
   return sorted;
 }
 
-//payOS
+// payOS
 
 router.post("/create", async function (req, res) {
   const { description, returnUrl, cancelUrl, amount } = req.body;
@@ -476,7 +476,7 @@ router.put("/:orderId", async function (req, res) {
     const body = req.body;
     const order = await payOS.cancelPaymentLink(
       orderId,
-      body.cancellationReason
+      body.cancellationReason,
     );
     if (!order) {
       return res.json({
