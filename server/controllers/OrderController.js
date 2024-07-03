@@ -124,6 +124,17 @@ const getOrders = asyncHandler(async (req, res) => {
   });
 });
 
+const getOrderDetail = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const order = await Order.findById(id)
+    .populate("items.productId", "_id name proImg")
+    .exec();
+  res.status(200).json({
+    success: Boolean(order),
+    data: order ? { order } : "Không tìm thấy đơn hàng!!!",
+  });
+});
+
 const AdGetOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find()
     .select("_id paymentStatus paymentType orderStatus items")
@@ -197,6 +208,7 @@ export {
   addOrder,
   getOrders,
   getOrder,
+  getOrderDetail,
   AdGetOrders,
   updateOrder,
   deleteOrder,

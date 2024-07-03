@@ -4,8 +4,9 @@ import catchAsyncError from "./catchAsyncError.js";
 import ErrorHandler from "../Utils/ErrorHandler.js";
 
 export const requiredSignin = catchAsyncError(async (req, res, next) => {
-  const { token } = req.cookies;
-
+  const token = req.headers.authorization?.split(" ")[1] || req.cookies.token;
+  // const token = req.cookies.token;
+  // console.log(token);
   if (!token) {
     return next(new ErrorHandler("Login first to access this resource.", 401));
   }
@@ -15,7 +16,6 @@ export const requiredSignin = catchAsyncError(async (req, res, next) => {
 
   next();
 });
-
 // admin access
 export const isAdmin = async (req, res, next) => {
   try {

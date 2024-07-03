@@ -14,6 +14,7 @@ import {
   createPaymentLink,
   deleteOrder,
   getOrder,
+  getOrderDetail,
   getOrders,
   myOrder,
   updateOrder,
@@ -27,6 +28,8 @@ router.post("/add-order", requiredSignin, addOrder);
 // get order
 
 router.get("/get-order/:id", requiredSignin, getOrder);
+
+router.get("/get-order-detail/:id", requiredSignin, getOrderDetail);
 
 router.get("/me/order", requiredSignin, myOrder);
 
