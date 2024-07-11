@@ -26,7 +26,7 @@ export const addItemToCart = asyncHandler(async (req, res) => {
       }
 
       const item = cart.cartItems.find(
-        (c) => c.product.toString() === product._id.toString()
+        (c) => c.product.toString() === product._id.toString(),
       );
       let condition, update;
       if (item) {
@@ -71,7 +71,7 @@ export const addItemToCart = asyncHandler(async (req, res) => {
           quantity: item.quantity,
           price: product.price * item.quantity, // calculate the price
         };
-      })
+      }),
     );
 
     const cart = new Cart({
@@ -87,11 +87,11 @@ export const addItemToCart = asyncHandler(async (req, res) => {
   }
 });
 
-//clear all item in cart
+// clear all item in cart
 export const clearCart = asyncHandler(async (req, res) => {
   const result = await Cart.updateOne(
     { user: req.user._id },
-    { $set: { cartItems: [] } }
+    { $set: { cartItems: [] } },
   ).exec();
 
   if (!result) {
@@ -121,7 +121,7 @@ export const clearCart = asyncHandler(async (req, res) => {
 //     }
 // }
 
-//update quantity product in cart
+// update quantity product in cart
 export const updateCart = asyncHandler(async (req, res) => {
   const { productId, quantity } = req.body; // Ensure these fields are present in the request body
 
@@ -133,7 +133,7 @@ export const updateCart = asyncHandler(async (req, res) => {
   const cart = await Cart.findOneAndUpdate(
     { user: req.user._id, "cartItems.product": productId },
     { $set: { "cartItems.$.quantity": quantity } },
-    { new: true }
+    { new: true },
   );
 
   if (!cart) {
@@ -160,7 +160,7 @@ export const getCartItems = asyncHandler(async (req, res) => {
           _id: item.product._id.toString(),
           name: item.product.name,
           img: item.product.proImg[0]?.img || "",
-          price: item.product.price * item.quantity, //price with quantity
+          price: item.product.price * item.quantity, // price with quantity
           quantity: item.quantity,
         },
       });
@@ -172,13 +172,13 @@ export const getCartItems = asyncHandler(async (req, res) => {
     total_items: cart.cartItems.length,
     total_price: (
       cart.cartItems.reduce(
-        (total, item) => total + parseFloat(item.product.price * item.quantity), //total price with quantity
-        0
+        (total, item) => total + parseFloat(item.product.price * item.quantity), // total price with quantity
+        0,
       ) * 1000000
     ).toFixed(2),
     total_quantity: cart.cartItems.reduce(
       (total, item) => total + item.quantity,
-      0
+      0,
     ),
     cartItems,
   });
@@ -195,7 +195,7 @@ export const removeCartItems = asyncHandler(async (req, res) => {
 
   const result = await Cart.updateOne(
     { user: req.user._id },
-    { $pull: { cartItems: { product: productId } } }
+    { $pull: { cartItems: { product: productId } } },
   ).exec();
 
   if (result) {
