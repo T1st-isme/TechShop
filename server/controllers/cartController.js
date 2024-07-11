@@ -87,6 +87,19 @@ export const addItemToCart = asyncHandler(async (req, res) => {
   }
 });
 
+//clear all item in cart
+export const clearCart = asyncHandler(async (req, res) => {
+  const result = await Cart.updateOne(
+    { user: req.user._id },
+    { $set: { cartItems: [] } }
+  ).exec();
+
+  if (!result) {
+    return res.status(400).json({ error: "Failed to clear cart" });
+  }
+  return res.status(200).json({ success: true });
+});
+
 // exports.addToCart = (req, res) => {
 //     const { cartItems } = req.body;
 //     if(cartItems){
@@ -186,7 +199,7 @@ export const removeCartItems = asyncHandler(async (req, res) => {
   ).exec();
 
   if (result) {
-    res.status(20).json({ result });
+    res.status(200).json({ result });
   } else {
     res.status(400).json({ error: "Xóa thất bại!!" });
   }

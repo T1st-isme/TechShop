@@ -18,6 +18,8 @@ import {
   getOrders,
   myOrder,
   updateOrder,
+  createOrder,
+  updatePaymentStatus,
 } from "../controllers/OrderController.js";
 import payOS from "../Utils/payos.js";
 const router = express.Router();
@@ -33,10 +35,15 @@ router.get("/get-order-detail/:id", requiredSignin, getOrderDetail);
 
 router.get("/me/order", requiredSignin, myOrder);
 
+// update payment status
+router.put(
+  "/update-payment-status/:orderCode",
+  requiredSignin,
+  updatePaymentStatus
+);
+
 // admin route
-
 router.get("/admin/get-orders", requiredSignin, getOrders);
-
 router
   .route("/admin/:id")
   .put(requiredSignin, updateOrder)
@@ -138,12 +145,17 @@ router.get("/vnpay_return", async function (req, res, next) {
     if (vnp_Params.vnp_ResponseCode == "00") {
       const status = "ok";
       try {
-        const user = JSON.parse(req.cookies.user);
+        // const user = JSON.parse(req.cookies.user);
+        const user = req.body.user;
+        if (!user || !user._id) {
+          throw new Error("User ID is missing");
+        }
         console.log(user._id); // Clear cart
         const cart = await Cart.findOne({ user: user._id });
         console.log(cart);
         // Save order to database
         const order = new Order({
+          orderCode: Number(String(Date.now()).slice(-6)),
           totalPrice: vnp_Params.vnp_Amount,
           items: cart.cartItems.map((item) => ({
             productId: item.product,
@@ -154,22 +166,38 @@ router.get("/vnpay_return", async function (req, res, next) {
           paymentType: "VNPAY PAYMENT",
         });
 
-        await order.save();
-        await Cart.deleteOne({ user: user._id }).exec();
+        try {
+          //clear cart
+          const cart = await Cart.findOne({ user: req.user._id });
+          cart.cartItems = [];
+          await cart.save();
+        } catch (error) {
+          console.error("Error deleting cart:", error);
+          return res.status(500).json({ error: "Error deleting cart" });
+        }
+        try {
+          await order.save();
+        } catch (error) {
+          console.error("Error saving order:", error);
+          return res.status(500).json({ error: "Error saving order" });
+        }
 
         // Redirect to the success page
         res.redirect("http://localhost:5173/order-success");
+        // res.redirect("app://techshopflutter/checkout/order-success");
       } catch (error) {
         // Handle error when saving order and clearing cart
         console.error(error);
         res.redirect("http://localhost:5173/error-payment");
+        // res.redirect("app://techshopflutter/checkout/order-failed");
       }
     } else {
       // Payment failed
       res.redirect("http://localhost:5173/error-payment");
+      // res.redirect("app://techshopflutter/checkout/order-failed");
     }
   } else {
-    res.send("success", { code: "97" });
+    res.status(200).send({ code: "97" });
   }
 });
 
@@ -409,45 +437,11 @@ function sortObject(obj) {
 }
 
 //payOS
-
-router.post("/create", async function (req, res) {
-  const { description, returnUrl, cancelUrl, amount } = req.body;
-  const body = {
-    orderCode: Number(String(new Date().getTime()).slice(-6)),
-    amount,
-    description,
-    cancelUrl,
-    returnUrl,
-  };
-  try {
-    const paymentLinkRes = await payOS.createPaymentLink(body);
-    return res.json({
-      error: 0,
-      message: "Success",
-      data: {
-        bin: paymentLinkRes.bin,
-        checkoutUrl: paymentLinkRes.checkoutUrl,
-        accountNumber: paymentLinkRes.accountNumber,
-        accountName: paymentLinkRes.accountName,
-        amount: paymentLinkRes.amount,
-        description: paymentLinkRes.description,
-        orderCode: paymentLinkRes.orderCode,
-        qrCode: paymentLinkRes.qrCode,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    return res.json({
-      error: -1,
-      message: "fail",
-      data: null,
-    });
-  }
-});
+router.post("/create", requiredSignin, createOrder);
 
 router.get("/:orderId", async function (req, res) {
   try {
-    const order = await payOS.getPaymentLinkInfomation(req.params.orderId);
+    const order = await payOS.getPaymentLinkInformation(req.params.orderId);
     if (!order) {
       return res.json({
         error: -1,

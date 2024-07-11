@@ -1,5 +1,4 @@
 import express from "express";
-
 import { isAdmin, requiredSignin } from "../middlewares/authMiddleware.js";
 import {
   userLogin,
@@ -13,6 +12,8 @@ import {
   createUser,
   updateUserProfile,
 } from "../controllers/userController.js";
+import { uploadAvatar } from "../config/cloudinary.config.js"; // Import the uploadAvatar middleware
+
 const router = express.Router();
 
 // auth middleware
@@ -30,7 +31,7 @@ router.get("/logout", userLogout);
 router
   .route("/me")
   .get(requiredSignin, userProfile)
-  .put(requiredSignin, updateUserProfile);
+  .put(requiredSignin, uploadAvatar, updateUserProfile); // Use uploadAvatar middleware
 
 // Admin
 router.route("/admin/users").get(requiredSignin, isAdmin, allUsers);

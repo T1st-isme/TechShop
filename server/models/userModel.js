@@ -27,8 +27,14 @@ const userSchema = new Schema(
       lowercase: true,
       unique: true,
     },
+    avatar: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/dzyf7iccb/image/upload/v1720293502/kfmbibviz6fyjuvxnmch.png",
+    },
     password: {
       type: String,
+      minlength: 6,
       required: true,
     },
     cart: [
@@ -45,6 +51,23 @@ const userSchema = new Schema(
     },
     refreshToken: {
       type: String,
+    },
+    address: {
+      type: String,
+      default: "",
+    },
+    phone: {
+      type: String,
+      default: "",
+      unique: true,
+      index: true,
+      trim: true,
+      // validate: [
+      //   {
+      //     validator: /^\d{10}$/,
+      //     message: "{VALUE} is not a valid phone number",
+      //   },
+      // ],
     },
   },
   { timestamps: true }

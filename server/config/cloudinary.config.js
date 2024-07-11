@@ -13,10 +13,17 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   allowedFormats: ["jpg", "png"],
-  params: {
-    folder: "TechShop",
-    resource_type: "auto",
+  params: (req, file) => {
+    let folder = "TechShop";
+    if (file.fieldname === "avatar") {
+      folder = "TechShop/Avatars";
+    }
+    return {
+      folder,
+      resource_type: "auto",
+    };
   },
 });
 
 export const uploadCloud = multer({ storage }).array("proImg");
+export const uploadAvatar = multer({ storage }).single("avatar");

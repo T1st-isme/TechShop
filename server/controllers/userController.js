@@ -135,7 +135,7 @@ const userLogout = asyncHandler(async (req, res) => {
 
 // Admin Routes
 
-// Get all users   =>   /api/v1/admin/users
+// Get all users   =>   /admin/users
 const allUsers = asyncHandler(async (req, res, next) => {
   const users = await userModels.find();
 
@@ -145,7 +145,7 @@ const allUsers = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Get user details   =>   /api/v1/admin/user/:id
+// Get user details   =>  /admin/user/:id
 const getUserDetails = asyncHandler(async (req, res, next) => {
   const user = await userModels.findById(req.params.id);
 
@@ -155,7 +155,7 @@ const getUserDetails = asyncHandler(async (req, res, next) => {
   });
 });
 
-// Update user profile   =>   /api/v1/admin/user/:id
+// Update user profile   =>   /admin/user/:id
 const updateUser = asyncHandler(async (req, res, next) => {
   const newUserData = {
     fullname: req.body.fullname,
@@ -195,25 +195,45 @@ const userProfile = asyncHandler(async (req, res, next) => {
   });
 });
 
-//update profile
+// update profile
 const updateUserProfile = asyncHandler(async (req, res, next) => {
-  const user = await userModels.findById(req.user._id);
-  if (user) {
-    user.fullname = req.body.fullname;
-    user.email = req.body.email;
-    if (req.body.password) {
-      user.password = req.body.password;
-    }
+  // Check if a file is uploaded
+  if (req.file) {
+    req.body.avatar = req.file.path;
+  }
 
-    const updatedUser = await user.save();
-    res.status(200).json({
-      success: true,
-      user: updatedUser,
-    });
-  } else {
+  // Check if password is being updated
+  if (req.body.password) {
+    const salt = await bcrypt.genSalt(10);
+    req.body.password = await bcrypt.hash(req.body.password, salt);
+  }
+
+  const user = await userModels.findByIdAndUpdate(
+    req.user._id,
+    {
+      fullname: req.body.fullname,
+      email: req.body.email,
+      password: req.body.password,
+      avatar: req.body.avatar,
+      address: req.body.address,
+      phone: req.body.phone,
+    },
+    {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    }
+  );
+
+  if (!user) {
     res.status(404);
     throw new Error("User not found");
   }
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
 });
 
 export {
