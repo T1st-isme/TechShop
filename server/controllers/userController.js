@@ -4,7 +4,7 @@ import validator from "validator";
 import sendToken from "../Utils/jwtToken.js";
 import asyncHandler from "express-async-handler";
 
-//Login
+// Login
 const userLogin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -222,7 +222,7 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
       new: true,
       runValidators: true,
       useFindAndModify: false,
-    }
+    },
   );
 
   if (!user) {
