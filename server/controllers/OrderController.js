@@ -9,7 +9,7 @@ async function updateStockAndsold(order) {
   const products = await Product.find({ _id: { $in: productIds } }).exec();
   const updatePromises = products.map((product) => {
     const item = order.items.find(
-      (item) => item.productId?.toString() === product._id.toString()
+      (item) => item.productId?.toString() === product._id.toString(),
     );
     if (item) {
       product.stock -= item.purchasedQty;
@@ -26,7 +26,7 @@ const updateOrder = asyncHandler(async (req, res) => {
   const order = await Order.findByIdAndUpdate(
     id,
     { orderStatus: status },
-    { new: true }
+    { new: true },
   );
   if (order) {
     order.paymentStatus =
@@ -83,7 +83,7 @@ const addOrder = asyncHandler(async (req, res) => {
   let hasEnoughStock = true;
   cartItems.forEach((item) => {
     const product = products.find(
-      (p) => p._id.toString() === item.productId?.toString()
+      (p) => p._id.toString() === item.productId?.toString(),
     );
     if (!product || product.stock < item.purchasedQty) {
       console.log(product?.stock, item.purchasedQty);
@@ -97,7 +97,7 @@ const addOrder = asyncHandler(async (req, res) => {
 
   const order = new Order(req.body);
   try {
-    //clear cart
+    // clear cart
     const cart = await Cart.findOne({ user: req.user._id });
     cart.cartItems = [];
     await cart.save();
@@ -123,7 +123,7 @@ const getOrders = asyncHandler(async (req, res) => {
 
   const orders = await Order.find({ orderBy: _id })
     .select(
-      "_id user paymentStatus paymentType orderStatus totalPrice items createdAt"
+      "_id user paymentStatus paymentType orderStatus totalPrice items createdAt",
     )
     .populate("user", "_id firstname lastname email")
     .populate("items.productId", "_id name proImg")
@@ -181,12 +181,12 @@ const createPaymentLink = asyncHandler(async (req, res) => {
   const orderCode = Number(String(Date.now()).slice(-6));
   const { amount, returnUrl, cancelUrl, items } = req.body;
   const body = {
-    orderCode: orderCode,
+    orderCode,
     // amount: Number(amount),
     amount: 10000,
     description: "Don hang #" + orderCode,
-    returnUrl: returnUrl,
-    cancelUrl: cancelUrl,
+    returnUrl,
+    cancelUrl,
   };
   console.log(body);
 
@@ -304,14 +304,14 @@ const createOrder = asyncHandler(async function (req, res) {
   }
 });
 
-//update payment status
+// update payment status
 const updatePaymentStatus = asyncHandler(async (req, res) => {
   const { orderCode } = req.params;
   const { paymentStatus } = req.body;
   const order = await Order.findOneAndUpdate(
     { orderCode },
     { paymentStatus },
-    { new: true }
+    { new: true },
   );
   res.status(200).json({ success: Boolean(order), data: order });
 });
