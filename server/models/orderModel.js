@@ -30,18 +30,18 @@ const orderSchema = new Schema({
   ],
   paymentStatus: {
     type: String,
-    enum: ["pending", "completed", "cancelled", "refund"],
+    enum: ["Đang xử lý", "Hoàn tất", "Đã hủy", "Hoàn tiền"],
   },
   paymentType: {
     type: String,
-    enum: ["COD", "VNPAY PAYMENT", "PAYOS"],
+    enum: ["COD", "VNPAY PAYMENT", "VietQR"],
     default: "COD",
     required: true,
   },
   orderStatus: {
     type: String,
-    enum: ["ordered", "processing", "delivered", "cancelled"],
-    default: "ordered",
+    enum: ["Đã đặt hàng", "Đang xử lý", "Đã giao", "Đã hủy"],
+    default: "Đã đặt hàng",
   },
   createdAt: {
     type: Date,

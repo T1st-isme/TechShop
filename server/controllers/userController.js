@@ -208,16 +208,22 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
     req.body.password = await bcrypt.hash(req.body.password, salt);
   }
 
+  const updateFields = {
+    fullname: req.body.fullname,
+    email: req.body.email,
+    avatar: req.body.avatar,
+    address: req.body.address,
+    phone: req.body.phone,
+  };
+
+  // Only include password if it is being updated
+  if (req.body.password) {
+    updateFields.password = req.body.password;
+  }
+
   const user = await userModels.findByIdAndUpdate(
     req.user._id,
-    {
-      fullname: req.body.fullname,
-      email: req.body.email,
-      password: req.body.password,
-      avatar: req.body.avatar,
-      address: req.body.address,
-      phone: req.body.phone,
-    },
+    updateFields,
     {
       new: true,
       runValidators: true,

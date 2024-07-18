@@ -6,6 +6,7 @@ import categoryRoute from "./routes/categoryRoute.js";
 import productRoute from "./routes/productRoute.js";
 import cartRoute from "./routes/cartRoute.js";
 import orderRoute from "./routes/orderRoute.js";
+import wishListRoute from "./routes/wishListRoute.js";
 import dbConnect from "./dbConnect.js";
 import cookieParser from "cookie-parser";
 import errorHandler from "./middlewares/errHandler.js";
@@ -46,6 +47,7 @@ app.use("/category", categoryRoute);
 app.use("/product", productRoute);
 app.use("/cart", cartRoute);
 app.use("/order", orderRoute);
+app.use("/wishlist", wishListRoute);
 
 app.use(errorHandler);
 

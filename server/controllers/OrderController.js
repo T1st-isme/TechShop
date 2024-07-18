@@ -206,9 +206,9 @@ const createPaymentLink = asyncHandler(async (req, res) => {
           purchasedQty: item.quantity,
           payablePrice: item.price,
         })),
-        paymentStatus: "pending",
-        paymentType: "PAYOS",
-        orderStatus: "ordered",
+        paymentStatus: "Đang xử lý",
+        paymentType: "VietQR",
+        orderStatus: "Đã đặt hàng",
       });
       try {
         await order.save();
@@ -263,9 +263,9 @@ const createOrder = asyncHandler(async function (req, res) {
         purchasedQty: item.quantity,
         payablePrice: item.price,
       })),
-      paymentStatus: "pending",
-      paymentType: "PAYOS",
-      orderStatus: "ordered",
+      paymentStatus: "Đang xử lý",
+      paymentType: "VietQR",
+      orderStatus: "Đã đặt hàng",
     });
     try {
       cart.cartItems = [];
