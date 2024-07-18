@@ -13,7 +13,7 @@ export const addItemToWishList = asyncHandler(async (req, res) => {
 
   if (wishList) {
     const itemExists = wishList.wishListItems.find(
-      (item) => item.product.toString() === product._id.toString()
+      (item) => item.product.toString() === product._id.toString(),
     );
 
     if (itemExists) {
@@ -37,7 +37,7 @@ export const addItemToWishList = asyncHandler(async (req, res) => {
 export const getWishListItems = asyncHandler(async (req, res) => {
   const wishList = await WishList.findOne({ user: req.user._id }).populate(
     "wishListItems.product",
-    "_id name price proImg slug"
+    "_id name price proImg slug",
   );
 
   if (!wishList) {
@@ -59,7 +59,7 @@ export const removeItemFromWishList = asyncHandler(async (req, res) => {
   }
 
   wishList.wishListItems = wishList.wishListItems.filter(
-    (item) => item.product.toString() !== req.body.productId
+    (item) => item.product.toString() !== req.body.productId,
   );
 
   await wishList.save();

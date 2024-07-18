@@ -19,7 +19,7 @@ dotenv.config();
 // Connect to MongoDB
 dbConnect();
 
-//test
+// test
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
@@ -36,7 +36,7 @@ app.use(
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // allow session cookie from browser to pass through
     preflightContinue: true,
-  })
+  }),
 );
 
 app.use(bodyParser.json());

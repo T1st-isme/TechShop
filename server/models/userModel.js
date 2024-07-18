@@ -73,7 +73,7 @@ const userSchema = new Schema(
   {
     wishList: [{ type: Schema.Types.ObjectId, ref: "WishList" }],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Encrypt password
