@@ -155,7 +155,7 @@ export const updateOrder = (id, status) => async (dispatch) => {
     const { data } = await axios.put(
       `${port}/order/admin/${id}`,
       {
-        status,
+        orderStatus: status,
       },
       {
         withCredentials: true,

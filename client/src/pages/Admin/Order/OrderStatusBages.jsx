@@ -1,11 +1,11 @@
 import PropTypes from "prop-types"; // Import PropTypes
 const getOrderStatusText = (orderStatus) => {
   switch (orderStatus) {
-    case "ordered":
+    case "Đã đặt hàng":
       return "Đã đặt hàng";
-    case "delivered":
+    case "Đã giao":
       return "Hoàn thành";
-    case "canceled":
+    case "Đã huỷ":
       return "Đã huỷ";
     default:
       return "Đang xử lý";
@@ -14,11 +14,11 @@ const getOrderStatusText = (orderStatus) => {
 
 const getOrderStatusColor = (orderStatus) => {
   switch (orderStatus) {
-    case "ordered":
+    case "Đã đặt hàng":
       return "bg-red-700";
-    case "delivered":
+    case "Đã giao":
       return "bg-green-700";
-    case "canceled":
+    case "Đã huỷ":
       return "bg-gray-700";
     default:
       return "bg-yellow-700";
